@@ -1,0 +1,126 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:wght@300;400;600&display=swap');
+
+:root {
+  --background: hsl(0, 0%, 0%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(0, 0%, 15%);
+  --muted-foreground: hsl(0, 0%, 65%);
+  --popover: hsl(0, 0%, 9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(0, 0%, 9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(0, 0%, 17%);
+  --input: hsl(0, 0%, 17%);
+  --primary: hsl(0, 72%, 51%);
+  --primary-foreground: hsl(0, 0%, 98%);
+  --secondary: hsl(0, 0%, 17%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(0, 0%, 17%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62%, 30%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(0, 72%, 51%);
+  --radius: 0.5rem;
+  
+  /* Keffiyeh colors */
+  --keffiyeh-black: hsl(0, 0%, 0%);
+  --keffiyeh-white: hsl(0, 0%, 100%);
+  --keffiyeh-charcoal: hsl(0, 0%, 18%);
+  --keffiyeh-gray: hsl(0, 0%, 26%);
+  --keffiyeh-light: hsl(0, 0%, 96%);
+  --keffiyeh-red: hsl(0, 72%, 51%);
+  --keffiyeh-green: hsl(122, 39%, 49%);
+}
+
+.dark {
+  --background: hsl(0, 0%, 0%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(0, 0%, 15%);
+  --muted-foreground: hsl(0, 0%, 65%);
+  --popover: hsl(0, 0%, 9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(0, 0%, 9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(0, 0%, 17%);
+  --input: hsl(0, 0%, 17%);
+  --primary: hsl(0, 72%, 51%);
+  --primary-foreground: hsl(0, 0%, 98%);
+  --secondary: hsl(0, 0%, 17%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(0, 0%, 17%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62%, 30%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(0, 72%, 51%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+  .keffiyeh-pattern {
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(255, 255, 255, 0.03) 10px,
+      rgba(255, 255, 255, 0.03) 20px
+    );
+  }
+  
+  .street-text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+  
+  .pattern-step {
+    @apply w-5 h-5 border border-gray-600 rounded-sm bg-gray-800 transition-all duration-200;
+  }
+  
+  .pattern-step.active {
+    @apply bg-red-600 border-red-600;
+  }
+  
+  .pattern-step.current {
+    @apply border-green-500 border-2;
+  }
+  
+  .instrument-toggle input:checked + .slider {
+    @apply bg-red-600;
+  }
+  
+  .instrument-toggle input:checked + .slider:before {
+    transform: translateX(26px);
+  }
+  
+  .slider {
+    @apply absolute cursor-pointer top-0 left-0 right-0 bottom-0 bg-gray-600 transition-all duration-300 rounded-full;
+  }
+  
+  .slider:before {
+    @apply absolute content-[''] h-4 w-4 left-1 bottom-1 bg-white transition-all duration-300 rounded-full;
+  }
+}
+
+@layer utilities {
+  .grid-cols-16 {
+    grid-template-columns: repeat(16, minmax(0, 1fr));
+  }
+}
