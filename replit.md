@@ -1,0 +1,114 @@
+# Drummers for Palestine
+
+## Overview
+
+This is a full-stack web application that teaches samba rhythms and protest beats in solidarity with Palestine. The application features an interactive drum machine/beatbox player that allows users to learn traditional samba tunes and protest rhythms. Built with React, Express, TypeScript, and designed with a focus on musical activism and social justice.
+
+## System Architecture
+
+The application follows a modern full-stack architecture with clear separation between frontend and backend:
+
+### Frontend Architecture
+- **Framework**: React 18 with TypeScript
+- **Styling**: Tailwind CSS with custom Keffiyeh-inspired design system
+- **UI Components**: Radix UI primitives with custom theming
+- **State Management**: React hooks with TanStack Query for server state
+- **Routing**: Wouter for lightweight client-side routing
+- **Audio**: Web Audio API for rhythm playback and visualization
+
+### Backend Architecture
+- **Runtime**: Node.js with Express.js
+- **Language**: TypeScript with ES modules
+- **Database**: PostgreSQL with Drizzle ORM
+- **Session Storage**: Connect-pg-simple for PostgreSQL-backed sessions
+- **Development**: Vite with HMR for development server
+
+### Build System
+- **Bundler**: Vite for frontend, esbuild for backend
+- **Development**: Hot module replacement and runtime error overlays
+- **Production**: Static file serving with Express
+
+## Key Components
+
+### Audio Engine
+- Web Audio API-based rhythm player
+- Real-time pattern visualization
+- Individual instrument volume controls
+- Tempo adjustment and pattern looping
+- Synthetic drum sound generation for demo purposes
+
+### Pattern System
+- Complex rhythm notation using string patterns
+- Support for multiple instruments (surdo, repinique, snare, tamborim, agogô, shaker)
+- Mnemonic support for learning aid
+- Pattern referencing and volume adjustments
+
+### Data Models
+- **Tunes**: Traditional samba rhythms with multiple patterns
+- **Protest Beats**: Simplified rhythms for demonstrations
+- **Users**: Basic user management (prepared for future auth)
+
+### UI Components
+- **BeatboxPlayer**: Main interactive rhythm player
+- **PatternVisualizer**: Real-time step visualization
+- **InstrumentToggle**: Individual instrument controls
+- **Navigation**: Responsive navigation with protest theming
+
+## Data Flow
+
+1. **Frontend Request**: React components fetch tune/beat data via TanStack Query
+2. **API Layer**: Express routes handle CRUD operations for tunes and protest beats
+3. **Storage Layer**: In-memory storage with database schema ready for PostgreSQL
+4. **Audio Processing**: Web Audio API processes patterns and generates audio output
+5. **Real-time Updates**: Pattern visualization updates synchronized with audio playback
+
+## External Dependencies
+
+### Core Technologies
+- **@neondatabase/serverless**: PostgreSQL database connectivity
+- **drizzle-orm**: Type-safe database ORM with PostgreSQL dialect
+- **@tanstack/react-query**: Server state management and caching
+- **@radix-ui/***: Accessible UI component primitives
+
+### Audio & Visualization
+- Web Audio API (native browser)
+- Custom audio synthesis for drum sounds
+- Pattern parsing and visualization system
+
+### Development Tools
+- **tsx**: TypeScript execution for development
+- **@replit/vite-plugin-***: Replit-specific development enhancements
+- **tailwindcss**: Utility-first CSS framework
+
+## Deployment Strategy
+
+### Development
+- Vite dev server with HMR for frontend
+- tsx with file watching for backend
+- Database migrations via Drizzle Kit
+- Environment-based configuration
+
+### Production Build
+- Frontend: Vite build to static assets
+- Backend: esbuild bundle to single executable
+- Static file serving through Express
+- PostgreSQL database deployment
+
+### Database Management
+- Drizzle schema with type generation
+- Migration system for schema changes
+- Connection pooling via Neon serverless
+
+### Environment Configuration
+- `DATABASE_URL` for PostgreSQL connection
+- `NODE_ENV` for environment-specific behavior
+- Replit-specific development features
+
+## Changelog
+
+Changelog:
+- July 03, 2025. Initial setup
+
+## User Preferences
+
+Preferred communication style: Simple, everyday language.
