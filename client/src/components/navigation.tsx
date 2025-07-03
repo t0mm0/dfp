@@ -9,8 +9,9 @@ export default function Navigation() {
 
   const navItems = [
     { path: "/", label: "Home" },
-    { path: "/tunes", label: "Tunes" },
     { path: "/protest-beats", label: "Protest Beats" },
+    { path: "/tunes", label: "Tunes" },
+    { path: "/experiment", label: "Create Your Own" },
     { path: "/about", label: "About" },
   ];
 

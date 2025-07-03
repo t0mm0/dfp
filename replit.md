@@ -122,6 +122,11 @@ The application follows a modern full-stack architecture with clear separation b
 - July 03, 2025. Implemented agogo character mapping (a = low bell ag_61.mp3, o = high bell ag_6f.mp3)  
 - July 03, 2025. Updated protest beats to match uploaded patterns with accurate levels and descriptions
 - July 03, 2025. Added support for specific audio files: ls_73.mp3, hs_74.mp3, sn_2e.mp3, sn_58.mp3, re_58.mp3, ag_61.mp3, ag_6f.mp3
+- July 03, 2025. Fixed main page logo to use transparent version consistently throughout site
+- July 03, 2025. Reorganized navigation - made Protest Beats the second tab, moved Tunes to third
+- July 03, 2025. Completely redesigned Protest Beats page to use individual players like Tunes page, arranged in rows not columns
+- July 03, 2025. Created new "Create Your Own" experiment page for users to design custom beats with intuitive 16-step grid interface
+- July 03, 2025. Added experiment page to navigation and routing system
 
 ## User Preferences
 

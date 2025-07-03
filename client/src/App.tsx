@@ -7,6 +7,7 @@ import Navigation from "@/components/navigation";
 import Home from "@/pages/home";
 import Tunes from "@/pages/tunes";
 import ProtestBeats from "@/pages/protest-beats";
+import Experiment from "@/pages/experiment";
 import About from "@/pages/about";
 import NotFound from "@/pages/not-found";
 
@@ -16,8 +17,9 @@ function Router() {
       <Navigation />
       <Switch>
         <Route path="/" component={Home} />
-        <Route path="/tunes" component={Tunes} />
         <Route path="/protest-beats" component={ProtestBeats} />
+        <Route path="/tunes" component={Tunes} />
+        <Route path="/experiment" component={Experiment} />
         <Route path="/about" component={About} />
         <Route component={NotFound} />
       </Switch>
