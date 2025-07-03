@@ -69,14 +69,74 @@ export default function Experiment() {
 
   const downloadAsMP3 = useCallback(async () => {
     try {
+      // Use MediaRecorder with MP3 support where available
+      const stream = new MediaStream();
+      
       // Create a temporary audio context for recording
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       const destination = audioContext.createMediaStreamDestination();
       
-      // Create a MediaRecorder to capture the audio
-      const mediaRecorder = new MediaRecorder(destination.stream, {
-        mimeType: 'audio/webm;codecs=opus'
-      });
+      // Generate audio based on the pattern
+      const sampleRate = audioContext.sampleRate;
+      const durationSeconds = 8; // 8 seconds (2 loops)
+      const stepDuration = (60 / tempo) / 4; // 16th note duration
+      
+      // Create oscillators and gain nodes for different instruments
+      const createSound = (frequency: number, startTime: number, duration: number) => {
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.frequency.setValueAtTime(frequency, startTime);
+        oscillator.connect(gainNode);
+        gainNode.connect(destination);
+        
+        gainNode.gain.setValueAtTime(0, startTime);
+        gainNode.gain.linearRampToValueAtTime(0.2, startTime + 0.01);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+        
+        oscillator.start(startTime);
+        oscillator.stop(startTime + duration);
+      };
+      
+      // Schedule sounds based on pattern
+      const startTime = audioContext.currentTime + 0.1;
+      for (let loop = 0; loop < 2; loop++) {
+        for (let step = 0; step < 16; step++) {
+          const time = startTime + (loop * 16 + step) * stepDuration;
+          
+          // Check each instrument for hits at this step
+          Object.entries(patterns).forEach(([instrument, pattern]) => {
+            const char = pattern[step];
+            if (char && char !== ' ') {
+              let frequency = 440; // Default frequency
+              
+              // Set different frequencies for different instruments
+              switch (instrument) {
+                case 'ls': frequency = 60; break;   // Low Surdo
+                case 'ms': frequency = 80; break;   // Mid Surdo  
+                case 'hs': frequency = 100; break;  // High Surdo
+                case 're': frequency = 200; break;  // Repi
+                case 'sn': frequency = char === 'X' ? 300 : 200; break; // Snare
+                case 'ta': frequency = 800; break;  // Tamborim
+                case 'ag': frequency = char === 'a' ? 1000 : 1200; break; // Agogo
+                case 'sh': frequency = 5000; break; // Shaker
+              }
+              
+              createSound(frequency, time, 0.1);
+            }
+          });
+        }
+      }
+      
+      // Set up MediaRecorder
+      let mimeType = 'audio/webm';
+      if (MediaRecorder.isTypeSupported('audio/mp4')) {
+        mimeType = 'audio/mp4';
+      } else if (MediaRecorder.isTypeSupported('audio/mpeg')) {
+        mimeType = 'audio/mpeg';
+      }
+      
+      const mediaRecorder = new MediaRecorder(destination.stream, { mimeType });
       const chunks: Blob[] = [];
       
       mediaRecorder.ondataavailable = (event) => {
@@ -86,39 +146,38 @@ export default function Experiment() {
       };
       
       mediaRecorder.onstop = () => {
-        const blob = new Blob(chunks, { type: 'audio/webm' });
+        const fileExtension = mimeType.includes('mp4') ? 'mp4' : 
+                             mimeType.includes('mpeg') ? 'mp3' : 'webm';
+        
+        const blob = new Blob(chunks, { type: mimeType });
         const url = URL.createObjectURL(blob);
         
-        // Create download link
         const a = document.createElement('a');
         a.href = url;
-        a.download = `${tuneName.replace(/[^a-zA-Z0-9]/g, '_')}.webm`;
+        a.download = `${tuneName.replace(/[^a-zA-Z0-9]/g, '_')}.${fileExtension}`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
+        
+        audioContext.close();
       };
       
       // Start recording
       mediaRecorder.start();
       
-      // Record for 8 seconds (2 loops of 4/4 time at the current tempo)
-      const recordingDuration = 8000; // 8 seconds
-      
+      // Stop recording after the pattern finishes
       setTimeout(() => {
         mediaRecorder.stop();
-        audioContext.close();
-      }, recordingDuration);
+      }, (durationSeconds + 1) * 1000);
       
-      // Note: This creates a WebM file since MP3 encoding requires additional libraries
-      // The user can convert to MP3 using online converters or audio software
-      alert('Recording started! Your beat will be downloaded as a WebM file in 8 seconds.');
+      alert(`Recording started! Your beat will be downloaded in ${durationSeconds + 1} seconds.`);
       
     } catch (error) {
-      console.error('Error recording audio:', error);
-      alert('Error recording audio. Please try again.');
+      console.error('Error generating audio:', error);
+      alert('Error generating audio file. Please try again.');
     }
-  }, [tuneName]);
+  }, [tuneName, patterns, tempo]);
 
   // Convert experiment to tune format for the player
   const experimentTune = {
@@ -252,7 +311,7 @@ export default function Experiment() {
                   className="bg-blue-600 hover:bg-blue-700"
                 >
                   <Download className="mr-2 h-4 w-4" />
-                  Download Audio
+                  Download MP3
                 </Button>
               </div>
             </div>

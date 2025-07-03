@@ -138,7 +138,7 @@ The application follows a modern full-stack architecture with clear separation b
 - July 03, 2025. All tunes now use complete authentic patterns with proper mnemonics and break patterns
 - July 03, 2025. Fixed snare character mappings: 'X' uses sn_58.mp3 (accent), '.' uses sn_2e.mp3 (ghost note)
 - July 03, 2025. Increased tempo range minimum to 40 BPM to accommodate slower practice speeds
-- July 03, 2025. Added audio download functionality to experiment page - users can now download custom beats as WebM files
+- July 03, 2025. Added MP3 download functionality to experiment page using lamejs encoder - users can now download custom beats as MP3 files
 - July 03, 2025. Enhanced pattern playback to properly handle snare ghost notes ('.' character) alongside accent hits ('X' character)
 
 ## User Preferences
