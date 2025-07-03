@@ -130,6 +130,12 @@ The application follows a modern full-stack architecture with clear separation b
 - July 03, 2025. Updated protest beats to use same 16-step grid visualization as other pages with numbered beats 1-16
 - July 03, 2025. Fixed BeatboxPlayer component to automatically select first available pattern and work with experiment page
 - July 03, 2025. Resolved TypeScript issues with instrument state management in BeatboxPlayer component
+- July 03, 2025. Updated all tunes with authentic patterns from uploaded files (Wolf, Afoxe, Angela Davis, Bhangra, Core Breaks, Custard, Drum-Bass, Funk, Hedgehog, Jericho, Karla, More Breaks, Ragga, Samba Reggae, Sambasso, Stolen)
+- July 03, 2025. Implemented proper stroke-to-audio file mapping system (ls_73.mp3, hs_74.mp3, sn_2e.mp3, sn_58.mp3, re_58.mp3, ag_61.mp3, ag_6f.mp3)
+- July 03, 2025. Updated audio engine to use correct file paths from public/audio directory
+- July 03, 2025. Enhanced agogo character mapping: 'a' = low bell (ag_61.mp3), 'o' = high bell (ag_6f.mp3)
+- July 03, 2025. Updated protest beats with authentic Level 1-5 patterns from uploaded documentation
+- July 03, 2025. All tunes now use complete authentic patterns with proper mnemonics and break patterns
 
 ## User Preferences
 

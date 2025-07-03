@@ -53,15 +53,15 @@ export function useAudioEngine({
       }
     };
 
-    // Load the specific audio files you mentioned
+    // Audio files should be in public directory for proper access
     const audioFiles = {
-      ls_73: '/src/ls_73.mp3',      // Low surdo slap
-      hs_74: '/src/hs_74.mp3',      // High surdo (using your specified file)
-      sn_2e: '/src/sn_2e.mp3',      // Snare ghost note
-      sn_58: '/src/sn_58.mp3',      // Snare accent
-      re_58: '/src/re_58.mp3',      // Repi hit
-      ag_61: '/src/ag_61.mp3',      // Agogo low bell
-      ag_6f: '/src/ag_6f.mp3',      // Agogo high bell
+      ls_73: '/audio/ls_73.mp3',      // Low surdo slap
+      hs_74: '/audio/hs_74.mp3',      // High surdo 
+      sn_2e: '/audio/sn_2e.mp3',      // Snare ghost note
+      sn_58: '/audio/sn_58.mp3',      // Snare accent
+      re_58: '/audio/re_58.mp3',      // Repi hit
+      ag_61: '/audio/ag_61.mp3',      // Agogo low bell
+      ag_6f: '/audio/ag_6f.mp3',      // Agogo high bell
     };
 
     const audioBuffers: Record<string, AudioBuffer | null> = {};
