@@ -7,7 +7,7 @@ export default function About() {
     <div className="min-h-screen bg-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
-          <img src="/src/logo_1751572787125.png" alt="Drummers For Palestine" className="max-w-lg mx-auto mb-8" />
+          <img src="/src/logo-removebg-preview_1751573624346.png" alt="Drummers For Palestine" className="max-w-lg mx-auto mb-8" />
           <h1 className="street-text font-bold text-4xl md:text-5xl mb-4">Who We Are</h1>
           <p className="text-xl text-gray-300">We are a collective of passionate drummers united by a shared purpose</p>
         </div>

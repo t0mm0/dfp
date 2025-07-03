@@ -25,22 +25,36 @@ export default function PatternVisualizer({ pattern, currentStep, instrumentStat
     return hasHit;
   };
 
+  // Group steps into rows of 16
+  const rows = [];
+  for (let i = 0; i < patternLength; i += 16) {
+    rows.push(Array.from({ length: Math.min(16, patternLength - i) }, (_, j) => i + j));
+  }
+
   return (
     <div className="bg-black p-4 rounded-lg">
-      <div className="grid grid-cols-16 gap-1 mb-4">
-        {Array.from({ length: patternLength }, (_, i) => (
-          <div
-            key={i}
-            className={`pattern-step ${getStepState(i) ? 'active' : ''} ${i === currentStep ? 'current' : ''}`}
-            title={`Step ${i + 1}`}
-          />
-        ))}
-      </div>
-      <div className="flex justify-between text-xs text-gray-500">
-        {Array.from({ length: Math.ceil(patternLength / 4) }, (_, i) => (
-          <span key={i}>{i * 4 + 1}</span>
-        ))}
-      </div>
+      {rows.map((row, rowIndex) => (
+        <div key={rowIndex} className="mb-4">
+          {/* Step indicators */}
+          <div className="grid grid-cols-16 gap-1 mb-2">
+            {row.map((stepIndex) => (
+              <div
+                key={stepIndex}
+                className={`pattern-step ${getStepState(stepIndex) ? 'active' : ''} ${stepIndex === currentStep ? 'current' : ''}`}
+                title={`Step ${stepIndex + 1}`}
+              />
+            ))}
+          </div>
+          {/* Step numbers 1-16 */}
+          <div className="grid grid-cols-16 gap-1 text-xs text-gray-500">
+            {row.map((stepIndex) => (
+              <div key={stepIndex} className="text-center">
+                {(stepIndex % 16) + 1}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

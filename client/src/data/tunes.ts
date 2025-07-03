@@ -276,6 +276,60 @@ export const tunes: Tune[] = [
         ag: "o ao  a  oaoo a ",
         sh: 'X . . . X . . . ',
         mnemonics: { ag: "This tune we play, I think it's sto-len" }
+      },
+      "Break 1": {
+        time: 3,
+        ls: "                     X                       X                       X                       X     X        X        X  ",
+        ms: "                     X                       X                       X                       X     X        X        X  ",
+        hs: "                     X                       X                       X                       X     X        X        X  ",
+        re: "XXXXXXXXXXXXX X  X      XXXXXXXXXXXXX X  X      XXXXXXXXXXXXX X  X      XXXXXXXXXXXXX X  X     fX       fX       fX     ",
+        sn: "                     X                       X                       X                       X     X        X        X  ",
+        ta: "                     X                       X                       X                       X     X        X        X  ",
+        ag: "                     X                       X                       X                       X     X        X        X  ",
+        sh: "                     X                       X                       X                       X     X        X        X  ",
+        mnemonics: {
+          ls: "Nope Nope Nope Nope Yep Yep Yep",
+          re: "A-ny-one got a-ny tips a-bout fin-ding that sto-len beat? A-ny-one got a-ny tips a-bout fin-ding that sto-len beat? A-ny-one got a-ny tips a-bout fin-ding that sto-len beat? A-ny-one got a-ny tips a-bout fin-ding that sto-len beat? Y' sure? Y' sure? Y' sure? "
+        }
+      },
+      "2/4 Break": {
+        ls: "X   X   X X X X ",
+        ms: "X   X   X X X X ",
+        hs: "X   X   X X X X ",
+        re: "X   X   X X X X ",
+        sn: "X   X   X X X X ",
+        ta: "X   X   X X X X ",
+        ag: "X   X   X X X X ",
+        sh: "X   X   X X X X "
+      },
+      "Break 3": {
+        ls: "X  X XX  X XX X X  X XX  X XX X X  X XX  X XX X X          XX X ",
+        ms: "X  X XX  X XX X X  X XX  X XX X X  X XX  X XX X X          XX X ",
+        hs: "X  X XX  X XX X X  X XX  X XX X X  X XX  X XX X X          XX X ",
+        re: "X  X XX  X XX X X  X XX  X XX X X  X XX  X XX X X          XX X ",
+        sn: "X..X.XX..X.XX.X.X..X.XX..X.XX.X.X..X.XX..X.XX.X.X          XX X ",
+        ta: "X  X XX  X XX X X  X XX  X XX X X  X XX  X XX X X          XX X ",
+        ag: "X  X XX  X XX X X  X XX  X XX X X  X XX  X XX X X          XX X ",
+        sh: "X  X XX  X XX X X  X XX  X XX X X  X XX  X XX X X          XX X ",
+        mnemonics: {
+          ls: "Sto-len, you say? That's ba-na-nas Sto-len, you say? That's ba-na-nas Sto-len, you say? That's ba-na-nas That's ba-na-nas",
+          sn: "Sto . . len . you say? . . That's . ba na . nas . Sto . . len . you say? . . That's . ba na . nas . Sto . . len . you say? . . That's . ba na . nas . That's ba-na-nas"
+        }
+      },
+      "Whistle Break": {
+        loop: true,
+        ls: "X  XX  XXX XX   ",
+        ms: "X  XX  XXX XX   ",
+        hs: "X  XX  XXX XX   ",
+        re: "  X   X   X   X ",
+        sn: "  X   X   X   X ",
+        ta: "  X   X   X   X ",
+        ag: "  X   X   X   X ",
+        sh: "X  XX  XXX XX   ",
+        mnemonics: {
+          ls: "Time to nick the Sheff whi-stle break",
+          re: "Yep Yep Yep Yep"
+        }
       }
     }
   },
@@ -315,6 +369,43 @@ export const tunes: Tune[] = [
         ta: 'X X     X X     XX XXX XX       X XX XX X X X X XX XXX XX       ',
         sh: 'X   .   .   .   X   .   .   .   X   .   .   .   X   .   .   .   ',
         mnemonics: { ta: "Big Bad Wolf is hu-ffing and pu-ffing real tough " + "Dressed up like your nan, come in close so Wol-fie can go-bble you up" }
+      },
+      "Break 1": {
+        upbeat: 1,
+        ls: 'XX X X X X       ',
+        ms: 'XX X X X X       ',
+        hs: 'XX X X X X       ',
+        re: 'XX X X X X       ',
+        sn: 'XX X X X X       ',
+        ta: 'XX X X X X       ',
+        ag: 'XX X X X X       ',
+        sh: 'XX X X X X       ',
+        ot: '           E D   ',
+        mnemonics: {
+          ls: "No we're not scared at all",
+          ot: "Ah Woo!"
+        }
+      },
+      "Break 2": {
+        loop: true,
+        ls: 'XXXXXXXXX  X XXXX     XXX       ',
+        ms: 'XXXXXXXXX  X XXXX     XXX       ',
+        hs: 'XXXXXXXXX  X XXXX     XXX       ',
+        sh: 'X   .   .   .   X   .   .   .   ',
+        mnemonics: { 
+          ls: "Li-ttle pi-ggies got rid of the wolf, " + "So did Li-ttle Red With an axe"
+        }
+      },
+      "Tune Break 2": {
+        loop: true,
+        ls: 'XXXXXXXXX  X XXXX     XXX       ',
+        ms: 'XXXXXXXXX  X XXXX     XXX       ',
+        hs: 'XXXXXXXXX  X XXXX     XXX       ',
+        re: 'X XX  r X X X rrX XX  r  X XX rr',
+        sn: 'f.X...X...X...X.f.X...X...X...X.',
+        ta: 'X X     X X     XX XXX XX       ',
+        ag: 'o ooo a   a   a o ooo a   a   a',
+        sh: 'X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.'
       }
     }
   }

@@ -114,6 +114,10 @@ The application follows a modern full-stack architecture with clear separation b
 - July 03, 2025. Removed all random stock images and "rhythms of resistance" references
 - July 03, 2025. Enhanced About page with content from uploaded HTML file including code of conduct
 - July 03, 2025. Maintained existing audio engine functionality as requested by user
+- July 03, 2025. Updated logo to new transparent version (logo-removebg-preview_1751573624346.png)
+- July 03, 2025. Fixed tune accuracy by reading uploaded tune files and adding authentic breaks for Stolen and Wolf tunes
+- July 03, 2025. Updated pattern visualizer to show beats in rows of 16 with 1-16 numbering format
+- July 03, 2025. Fixed TypeScript interface to allow proper pattern indexing with string keys
 
 ## User Preferences
 
