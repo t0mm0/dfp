@@ -134,7 +134,7 @@ export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
               <Slider
                 value={[tempo]}
                 onValueChange={(value) => setTempo(value[0])}
-                min={80}
+                min={40}
                 max={160}
                 step={1}
                 className="w-24"

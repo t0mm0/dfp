@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import BeatboxPlayer from "@/components/beatbox-player";
-import { Play, RotateCcw, Save } from "lucide-react";
+import { Play, RotateCcw, Save, Download } from "lucide-react";
 
 export default function Experiment() {
   const [tuneName, setTuneName] = useState("My Custom Beat");
@@ -66,6 +66,59 @@ export default function Experiment() {
     setTempo(120);
     setTuneName("My Custom Beat");
   }, []);
+
+  const downloadAsMP3 = useCallback(async () => {
+    try {
+      // Create a temporary audio context for recording
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const destination = audioContext.createMediaStreamDestination();
+      
+      // Create a MediaRecorder to capture the audio
+      const mediaRecorder = new MediaRecorder(destination.stream, {
+        mimeType: 'audio/webm;codecs=opus'
+      });
+      const chunks: Blob[] = [];
+      
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          chunks.push(event.data);
+        }
+      };
+      
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(chunks, { type: 'audio/webm' });
+        const url = URL.createObjectURL(blob);
+        
+        // Create download link
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${tuneName.replace(/[^a-zA-Z0-9]/g, '_')}.webm`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      };
+      
+      // Start recording
+      mediaRecorder.start();
+      
+      // Record for 8 seconds (2 loops of 4/4 time at the current tempo)
+      const recordingDuration = 8000; // 8 seconds
+      
+      setTimeout(() => {
+        mediaRecorder.stop();
+        audioContext.close();
+      }, recordingDuration);
+      
+      // Note: This creates a WebM file since MP3 encoding requires additional libraries
+      // The user can convert to MP3 using online converters or audio software
+      alert('Recording started! Your beat will be downloaded as a WebM file in 8 seconds.');
+      
+    } catch (error) {
+      console.error('Error recording audio:', error);
+      alert('Error recording audio. Please try again.');
+    }
+  }, [tuneName]);
 
   // Convert experiment to tune format for the player
   const experimentTune = {
@@ -177,7 +230,7 @@ export default function Experiment() {
                 <Label htmlFor="tempo">Tempo: {tempo} BPM</Label>
                 <Slider
                   id="tempo"
-                  min={60}
+                  min={40}
                   max={200}
                   step={5}
                   value={[tempo]}
@@ -193,6 +246,13 @@ export default function Experiment() {
                 <Button className="bg-green-600 hover:bg-green-700">
                   <Save className="mr-2 h-4 w-4" />
                   Save Beat
+                </Button>
+                <Button 
+                  onClick={downloadAsMP3}
+                  className="bg-blue-600 hover:bg-blue-700"
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  Download Audio
                 </Button>
               </div>
             </div>

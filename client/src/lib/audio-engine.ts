@@ -89,6 +89,10 @@ export function useAudioEngine({
     // Store individual agogo sounds for pattern-specific playback
     soundsRef.current.ag_low = audioBuffers.ag_61 || soundsRef.current.ag;
     soundsRef.current.ag_high = audioBuffers.ag_6f || soundsRef.current.ag;
+    
+    // Store individual snare sounds for pattern-specific playback
+    soundsRef.current.sn_accent = audioBuffers.sn_58 || soundsRef.current.sn; // X = accent (sn_58)
+    soundsRef.current.sn_ghost = audioBuffers.sn_2e || soundsRef.current.sn;  // . = ghost (sn_2e)
   }, []);
 
   // Fallback synthetic sound creation
@@ -138,6 +142,16 @@ export function useAudioEngine({
       } else {
         soundBuffer = soundsRef.current[instrument];
       }
+    } 
+    // Handle snare-specific character mappings
+    else if (instrument === 'sn' && char) {
+      if (char === 'X' && soundsRef.current.sn_accent) {
+        soundBuffer = soundsRef.current.sn_accent;
+      } else if (char === '.' && soundsRef.current.sn_ghost) {
+        soundBuffer = soundsRef.current.sn_ghost;
+      } else {
+        soundBuffer = soundsRef.current[instrument];
+      }
     } else {
       soundBuffer = soundsRef.current[instrument];
     }
@@ -168,7 +182,7 @@ export function useAudioEngine({
     Object.keys(instrumentStates).forEach(instrument => {
       if (instrumentStates[instrument].enabled && pattern[instrument]) {
         const char = pattern[instrument][currentStep];
-        if (char && char !== ' ' && char !== '.') {
+        if (char && char !== ' ') {
           playSound(instrument, char);
         }
       }
