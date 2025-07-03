@@ -106,9 +106,17 @@ The application follows a modern full-stack architecture with clear separation b
 
 ## Changelog
 
-Changelog:
 - July 03, 2025. Initial setup
+- July 03, 2025. Updated theme to black and white design focused on Palestinian solidarity
+- July 03, 2025. Added Drummers For Palestine logo throughout the application
+- July 03, 2025. Added missing tunes: Stolen and Wolf with authentic pattern data
+- July 03, 2025. Updated protest beats with Palestinian solidarity themes (Gaza, End The Occupation, We Are The People, etc.)
+- July 03, 2025. Removed all random stock images and "rhythms of resistance" references
+- July 03, 2025. Enhanced About page with content from uploaded HTML file including code of conduct
+- July 03, 2025. Maintained existing audio engine functionality as requested by user
 
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+Design preference: Black and white theme, no random images, only relevant Palestinian solidarity imagery.
+Audio preference: Keep existing sound players intact as they are working well.

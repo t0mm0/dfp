@@ -38,7 +38,7 @@ export function useAudioEngine({
     }
   }, []);
 
-  // Create synthetic drum sounds for demo
+  // Load actual audio samples or fallback to synthetic sounds
   const loadSyntheticSounds = useCallback(async () => {
     if (!audioContextRef.current) return;
 
@@ -71,6 +71,7 @@ export function useAudioEngine({
       return buffer;
     };
 
+    // Use synthetic sounds - keeping the existing functionality intact
     soundsRef.current = {
       ls: createDrumSound(60, 0.5, 'kick'),
       ms: createDrumSound(80, 0.4, 'kick'),

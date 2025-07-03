@@ -24,8 +24,8 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center space-x-2 text-white hover:text-red-400 transition-colors">
-              <Drum className="h-8 w-8 text-red-600" />
+            <Link href="/" className="flex items-center space-x-3 text-white hover:text-white transition-colors">
+              <img src="/src/logo_1751572787125.png" alt="Drummers For Palestine" className="h-10 w-auto" />
               <h1 className="street-text text-xl font-bold">
                 Drummers For Palestine
               </h1>

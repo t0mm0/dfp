@@ -13,10 +13,10 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h1 className="street-text font-bold text-4xl md:text-6xl mb-6 leading-tight">
-                Rhythm of <span className="text-red-600">Resistance</span>
+                Drummers For <span className="text-white">Palestine</span>
               </h1>
               <p className="text-xl md:text-2xl mb-8 text-gray-300">
-                Unite through music. Create solidarity beats. Amplify the voices of justice through the power of samba rhythms.
+                Unite through music. Learn samba rhythms. Amplify Palestinian solidarity through the power of percussive purpose.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/tunes">
@@ -32,13 +32,8 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-            <div className="relative">
-              <img
-                src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
-                alt="Drummers at solidarity protest"
-                className="rounded-xl shadow-2xl w-full h-auto"
-              />
-              <div className="absolute inset-0 bg-red-600 bg-opacity-20 rounded-xl"></div>
+            <div className="relative flex items-center justify-center p-8">
+              <img src="/src/logo_1751572787125.png" alt="Drummers For Palestine" className="max-w-lg w-full h-auto opacity-80" />
             </div>
           </div>
         </div>

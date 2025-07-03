@@ -1,8 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:wght@300;400;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro:wght@300;400;600&display=swap');
 
 :root {
   --background: hsl(0, 0%, 0%);
@@ -15,25 +15,25 @@
   --card-foreground: hsl(0, 0%, 98%);
   --border: hsl(0, 0%, 17%);
   --input: hsl(0, 0%, 17%);
-  --primary: hsl(0, 72%, 51%);
-  --primary-foreground: hsl(0, 0%, 98%);
+  --primary: hsl(0, 0%, 100%);
+  --primary-foreground: hsl(0, 0%, 0%);
   --secondary: hsl(0, 0%, 17%);
   --secondary-foreground: hsl(0, 0%, 98%);
   --accent: hsl(0, 0%, 17%);
   --accent-foreground: hsl(0, 0%, 98%);
   --destructive: hsl(0, 62%, 30%);
   --destructive-foreground: hsl(0, 0%, 98%);
-  --ring: hsl(0, 72%, 51%);
+  --ring: hsl(0, 0%, 100%);
   --radius: 0.5rem;
   
-  /* Keffiyeh colors */
+  /* Keffiyeh colors - more black and white focused */
   --keffiyeh-black: hsl(0, 0%, 0%);
   --keffiyeh-white: hsl(0, 0%, 100%);
   --keffiyeh-charcoal: hsl(0, 0%, 18%);
   --keffiyeh-gray: hsl(0, 0%, 26%);
   --keffiyeh-light: hsl(0, 0%, 96%);
-  --keffiyeh-red: hsl(0, 72%, 51%);
-  --keffiyeh-green: hsl(122, 39%, 49%);
+  --keffiyeh-red: hsl(0, 0%, 100%);
+  --keffiyeh-green: hsl(0, 0%, 100%);
 }
 
 .dark {
@@ -47,15 +47,15 @@
   --card-foreground: hsl(0, 0%, 98%);
   --border: hsl(0, 0%, 17%);
   --input: hsl(0, 0%, 17%);
-  --primary: hsl(0, 72%, 51%);
-  --primary-foreground: hsl(0, 0%, 98%);
+  --primary: hsl(0, 0%, 100%);
+  --primary-foreground: hsl(0, 0%, 0%);
   --secondary: hsl(0, 0%, 17%);
   --secondary-foreground: hsl(0, 0%, 98%);
   --accent: hsl(0, 0%, 17%);
   --accent-foreground: hsl(0, 0%, 98%);
   --destructive: hsl(0, 62%, 30%);
   --destructive-foreground: hsl(0, 0%, 98%);
-  --ring: hsl(0, 72%, 51%);
+  --ring: hsl(0, 0%, 100%);
 }
 
 @layer base {

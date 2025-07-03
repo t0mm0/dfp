@@ -7,83 +7,75 @@ export default function About() {
     <div className="min-h-screen bg-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
-          <h1 className="street-text font-bold text-4xl md:text-5xl mb-4">About Our Mission</h1>
-          <p className="text-xl text-gray-300">Music as a force for justice and solidarity</p>
+          <img src="/src/logo_1751572787125.png" alt="Drummers For Palestine" className="max-w-lg mx-auto mb-8" />
+          <h1 className="street-text font-bold text-4xl md:text-5xl mb-4">Who We Are</h1>
+          <p className="text-xl text-gray-300">We are a collective of passionate drummers united by a shared purpose</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-          <div>
-            <h2 className="street-text font-bold text-2xl mb-6">Why Music Matters</h2>
-            <p className="text-lg text-gray-300 mb-6">
-              Music has always been at the heart of social movements. From the civil rights movement to anti-apartheid protests, 
-              rhythms and songs have united people across cultural and linguistic barriers.
-            </p>
-            <p className="text-lg text-gray-300 mb-6">
-              Brazilian samba, with its roots in resistance and community, provides the perfect foundation for modern protest music. 
-              These rhythms were born from the struggle of enslaved people and have evolved into a powerful tool for social change.
+        <div className="max-w-4xl mx-auto mb-16">
+          <p className="text-lg text-gray-300 mb-6">
+            We are a collective of passionate drummers united by a shared purpose:
+            to amplify the Palestinian movement and raise morale through the power of rhythm.
+            Our beats echo in the streets, providing a rallying call for justice, solidarity, and resistance.
+          </p>
+          
+          <h2 className="street-text font-bold text-2xl mb-6">Our Code of Conduct</h2>
+          <p className="text-lg text-gray-300 mb-6">
+            As members of MD4P, we commit to the following guiding principles:
+          </p>
+          
+          <ul className="text-lg text-gray-300 space-y-4 mb-8">
+            <li className="flex items-start gap-3">
+              <Check className="h-5 w-5 text-white mt-1 flex-shrink-0" />
+              We treat others how we want to be treated—both in person and online.
+              We act with kindness and respect, fostering an inclusive space for all.
+            </li>
+            <li className="flex items-start gap-3">
+              <Check className="h-5 w-5 text-white mt-1 flex-shrink-0" />
+              We remain mindful of how our tone or phrasing might impact others,
+              striving for open and constructive dialogue.
+            </li>
+            <li className="flex items-start gap-3">
+              <Check className="h-5 w-5 text-white mt-1 flex-shrink-0" />
+              We challenge any oppressive behavior (sexism, racism, homophobia) in ourselves and others,
+              aiming to keep the group safe and welcoming.
+            </li>
+            <li className="flex items-start gap-3">
+              <Check className="h-5 w-5 text-white mt-1 flex-shrink-0" />
+              We commit to using protective equipment (like ear protection) during events,
+              and encourage others to do the same.
+            </li>
+            <li className="flex items-start gap-3">
+              <Check className="h-5 w-5 text-white mt-1 flex-shrink-0" />
+              If approached about our behavior, we stay open and reflective on how to improve.
+            </li>
+          </ul>
+          
+          <div className="bg-gray-800 p-6 rounded-lg border-l-4 border-white">
+            <p className="text-xl font-bold text-white mb-2">
+              "Our mission is to amplify the Palestinian movement and raise morale."
             </p>
             <p className="text-lg text-gray-300">
-              Today, we channel that same energy in solidarity with Palestine and all oppressed peoples fighting for their freedom.
+              We invite everyone to join our percussive purpose. 
+              We bring thunder in the streets until Palestine is free!
             </p>
-          </div>
-          <div>
-            <img
-              src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
-              alt="Samba musicians performing"
-              className="rounded-xl shadow-lg w-full h-auto"
-            />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-          <div className="lg:order-2">
-            <h2 className="street-text font-bold text-2xl mb-6">Our Tools</h2>
-            <p className="text-lg text-gray-300 mb-6">
-              This platform provides professional-grade tools for learning and playing samba rhythms. Whether you're a beginner 
-              or an experienced drummer, you'll find everything you need to participate in musical activism.
-            </p>
-            <ul className="text-lg text-gray-300 space-y-3">
-              <li className="flex items-center gap-3">
-                <Check className="h-5 w-5 text-green-500" />
-                High-quality audio samples from authentic instruments
-              </li>
-              <li className="flex items-center gap-3">
-                <Check className="h-5 w-5 text-green-500" />
-                Interactive learning tools with visual pattern guides
-              </li>
-              <li className="flex items-center gap-3">
-                <Check className="h-5 w-5 text-green-500" />
-                Protest-specific rhythms designed for demonstrations
-              </li>
-              <li className="flex items-center gap-3">
-                <Check className="h-5 w-5 text-green-500" />
-                Community features to connect with other drummers
-              </li>
-            </ul>
-          </div>
-          <div className="lg:order-1">
-            <img
-              src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
-              alt="Traditional samba instruments"
-              className="rounded-xl shadow-lg w-full h-auto"
-            />
           </div>
         </div>
 
         <Card className="bg-gray-800 border-gray-700">
           <CardContent className="p-8 text-center">
-            <h3 className="street-text font-bold text-2xl mb-4">Join the Movement</h3>
+            <h3 className="street-text font-bold text-2xl mb-4">Join Our Percussive Purpose</h3>
             <p className="text-lg text-gray-300 mb-6">
-              Ready to use your musical skills for justice? Connect with drummers worldwide who are making their voices heard.
+              Learn samba rhythms, participate in solidarity actions, and help amplify the Palestinian movement through music.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white">
+              <Button size="lg" className="bg-white hover:bg-gray-200 text-black">
                 <Users className="mr-2 h-5 w-5" />
-                Join Community
+                Join Our Mission
               </Button>
-              <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white">
+              <Button size="lg" className="bg-white hover:bg-gray-200 text-black">
                 <Heart className="mr-2 h-5 w-5" />
-                Support Palestine
+                Free Palestine
               </Button>
             </div>
           </CardContent>

@@ -12,6 +12,7 @@ export interface TunePattern {
   ot?: string;
   mnemonics?: Record<string, string>;
   volumeHack?: Record<string, number> | Record<string, Record<number, number>>;
+  [key: string]: any; // Allow indexing with string keys
 }
 
 export interface Tune {
@@ -243,6 +244,77 @@ export const tunes: Tune[] = [
           ta: "The D-J plays bang-in' tunes The D-J plays bang-in' tunes",
           ag: "Drum and bass is so cool Drum and bass is so cool Drum and bass is so cool Drum and bass is so cool"
         }
+      }
+    }
+  },
+  {
+    name: "stolen",
+    displayName: "Stolen",
+    categories: ["common", "tricky"],
+    speed: 200,
+    patterns: {
+      "Tune": {
+        loop: true,
+        ls: "XXXXXXXXX",
+        ms: "  X   X   XX XX",
+        hs: "@ms",
+        re: "..X...X...X..XX.",
+        sn: "..X...X...X...X.",
+        ta: "X   X   X  XX X",
+        ag: "          oa ao ",
+        sh: "@sn",
+        mnemonics: {
+          ls: "This beat? We've been pla-ying it for years",
+          ms: "Hey wait, Where's this one from?",
+          re: ". . Who . . . said . . . it's . . half-inched? .",
+          ta: "Sto-len? That's ba-na-nas",
+          ag: "Where's this one from?"
+        }
+      },
+      "Alt Agogo": {
+        loop: true,
+        ag: "o ao  a  oaoo a ",
+        sh: 'X . . . X . . . ',
+        mnemonics: { ag: "This tune we play, I think it's sto-len" }
+      }
+    }
+  },
+  {
+    name: "wolf",
+    displayName: "Wolf",
+    categories: ["new", "tricky"],
+    speed: 120,
+    patterns: {
+      "Tune": {
+        loop: true,
+        ls: 'X XXX   XXXXX   X XXX   X   X   ',
+        ms: '      XX      XX      XXXXXXXXXX',
+        hs: '@ms',
+        re: 'X  XX r X X X rrX  XX r  XXXX rr',
+        sn: 'f.X...X...X...X.f.X...X...X...X.',
+        ta: 'X X     X X     XX XXX XX       ',
+        ag: 'o ooo a   a   a o ooo a   a   a',
+        sh: 'X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.X.',
+        mnemonics: {
+          ls: "Here comes the wolf, ve-ry sca-ry wolf Here comes the Big Bad Wolf",
+          ms: "And huff And puff Wolf will blow your li-ttle pi-ggy house down",
+          re: "No-one told the Big Bad Wolf Li-ttle Red Ri-ding Hood was like as hard as nails",
+          sn: "Grr . the . . . Big . . . Bad . . . Wolf . Grr . the . . . Big . . . Bad . . . Wolf .",
+          ta: "Big Bad Wolf is hu-ffing and pu-ffing real tough",
+          ag: "Pi-ggies aren't scared of the wolf Pi-ggies aren't scared of the wolf"
+        }
+      },
+      "Alt Repi": {
+        loop: true,
+        re: 'X  XX  XX X X   XXXXX  XX X X   X  XX  XX X X   XXXXX  XX       ',
+        sh: 'X   .   .   .   X   .   .   .   X   .   .   .   X   .   .   .   ',
+        mnemonics: { re: "Here he comes, the Big Bad Wolf Ve-ry sca-ry guy, the Big Bad Wolf " + "Here he comes, the Big Bad Wolf Ve-ry sca-ry guy, the wolf" }
+      },
+      "Alt Tam": {
+        loop: true,
+        ta: 'X X     X X     XX XXX XX       X XX XX X X X X XX XXX XX       ',
+        sh: 'X   .   .   .   X   .   .   .   X   .   .   .   X   .   .   .   ',
+        mnemonics: { ta: "Big Bad Wolf is hu-ffing and pu-ffing real tough " + "Dressed up like your nan, come in close so Wol-fie can go-bble you up" }
       }
     }
   }
