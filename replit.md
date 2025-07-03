@@ -118,6 +118,10 @@ The application follows a modern full-stack architecture with clear separation b
 - July 03, 2025. Fixed tune accuracy by reading uploaded tune files and adding authentic breaks for Stolen and Wolf tunes
 - July 03, 2025. Updated pattern visualizer to show beats in rows of 16 with 1-16 numbering format
 - July 03, 2025. Fixed TypeScript interface to allow proper pattern indexing with string keys
+- July 03, 2025. Updated audio engine to use real audio files with proper stroke-to-audio mapping
+- July 03, 2025. Implemented agogo character mapping (a = low bell ag_61.mp3, o = high bell ag_6f.mp3)  
+- July 03, 2025. Updated protest beats to match uploaded patterns with accurate levels and descriptions
+- July 03, 2025. Added support for specific audio files: ls_73.mp3, hs_74.mp3, sn_2e.mp3, sn_58.mp3, re_58.mp3, ag_61.mp3, ag_6f.mp3
 
 ## User Preferences
 
