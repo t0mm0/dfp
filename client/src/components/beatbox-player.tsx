@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
@@ -13,12 +13,14 @@ interface BeatboxPlayerProps {
 }
 
 export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
-  const [selectedPattern, setSelectedPattern] = useState("Tune");
-  const [tempo, setTempo] = useState(120);
+  // Automatically select the first available pattern
+  const firstPatternName = Object.keys(tune.patterns)[0] || "Tune";
+  const [selectedPattern, setSelectedPattern] = useState(firstPatternName);
+  const [tempo, setTempo] = useState(tune.speed || 120);
   const [volume, setVolume] = useState(70);
   const [currentStep, setCurrentStep] = useState(0);
   
-  const [instrumentStates, setInstrumentStates] = useState({
+  const [instrumentStates, setInstrumentStates] = useState<Record<string, { enabled: boolean; volume: number }>>({
     ls: { enabled: true, volume: 80 },
     ms: { enabled: true, volume: 75 },
     hs: { enabled: true, volume: 70 },
@@ -28,6 +30,14 @@ export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
     ag: { enabled: true, volume: 65 },
     sh: { enabled: true, volume: 60 }
   });
+
+  // Update selected pattern when tune changes
+  useEffect(() => {
+    const firstPattern = Object.keys(tune.patterns)[0];
+    if (firstPattern && !tune.patterns[selectedPattern]) {
+      setSelectedPattern(firstPattern);
+    }
+  }, [tune, selectedPattern]);
 
   const { isPlaying, play, pause, stop } = useAudioEngine({
     tune,

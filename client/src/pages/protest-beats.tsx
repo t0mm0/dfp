@@ -65,9 +65,31 @@ export default function ProtestBeats() {
               <CardContent>
                 <div className="space-y-6">
                   <div className="bg-black p-4 rounded-lg">
-                    <h4 className="text-white font-semibold mb-2">Pattern:</h4>
-                    <div className="font-mono text-lg tracking-wider text-white">
-                      {beat.pattern}
+                    <h4 className="text-white font-semibold mb-4">Pattern:</h4>
+                    <div className="space-y-3">
+                      {/* 16-step grid visualization */}
+                      <div className="grid grid-cols-16 gap-1 mb-2">
+                        {Array.from({ length: 16 }, (_, i) => (
+                          <div
+                            key={i}
+                            className={`w-8 h-8 border border-gray-600 rounded flex items-center justify-center text-sm font-mono ${
+                              beat.pattern[i] && beat.pattern[i] !== ' ' 
+                                ? 'bg-white text-black' 
+                                : 'bg-gray-800 text-gray-500'
+                            }`}
+                          >
+                            {beat.pattern[i] === ' ' ? '·' : beat.pattern[i]}
+                          </div>
+                        ))}
+                      </div>
+                      {/* Step numbers 1-16 */}
+                      <div className="grid grid-cols-16 gap-1 text-xs text-gray-500">
+                        {Array.from({ length: 16 }, (_, i) => (
+                          <div key={i} className="text-center">
+                            {i + 1}
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                   
