@@ -539,11 +539,11 @@ export const tunes: Tune[] = [
     patterns: {
       Tune: {
         loop: true,
-        ls: "XXX   XX XX XXX   XX XX XXX   XX XX XXX   XX XX XXX   XX XX ",
+        ls: "X     XX        X     XX        X     XX        X     XX X XX X ",
         ms: "    X       X       X       X       X       X       X  X X XX X ",
         hs: "@ms",
         re: "X  XX  X X XX X X  XX  X X XX X X  XX  X X XX X X  XX  X X XX X ",
-        sn: "    X  X  X     X  X  X     X  X  X     X  X  X     X  X  X    ",
+        sn: "....X.......X.......X.......X.......X.......X.......X.......X...",
         ta: "    X       X       X  X X XX       X       X       X  X X XX   ",
         ag: "o  oa o o  oa o o  oa o o  oa o o  oa o o  oa o o  oa o o  oa o ",
         sh: "................................................................",
