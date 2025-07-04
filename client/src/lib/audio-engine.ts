@@ -1,6 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import type { Tune } from "@/data/tunes";
 
+// Global audio cache to store loaded audio files across all tunes
+const globalAudioCache = new Map<string, AudioBuffer>();
+const loadingPromises = new Map<string, Promise<AudioBuffer | null>>();
+
 interface AudioEngineOptions {
   tune: Tune;
   pattern: string;
@@ -37,20 +41,52 @@ export function useAudioEngine({
       await audioContextRef.current.resume();
     }
 
-    // Load audio samples if not already loaded
-    if (!audioLoadedRef.current) {
-      setIsAudioLoaded(false);
-      await loadAudioSamples();
-      audioLoadedRef.current = true;
-      setIsAudioLoaded(true);
-    }
+    // Load audio samples for the current tune
+    setIsAudioLoaded(false);
+    await loadAudioSamples();
+    setIsAudioLoaded(true);
+  }, [tune]);
+
+  // Function to determine which audio files a tune actually needs
+  const getRequiredAudioFiles = useCallback((tune: Tune) => {
+    const requiredFiles = new Set<string>();
+    
+    // Analyze all patterns in the tune to see what instruments are used
+    Object.values(tune.patterns).forEach(pattern => {
+      // Check each instrument pattern for non-empty characters
+      if (pattern.ls && pattern.ls.replace(/\s/g, '')) requiredFiles.add('ls_73');
+      if (pattern.ms && pattern.ms.replace(/\s/g, '')) requiredFiles.add('ls_73'); // MS uses same as LS
+      if (pattern.hs && pattern.hs.replace(/\s/g, '')) requiredFiles.add('hs_74');
+      if (pattern.re && pattern.re.replace(/\s/g, '')) requiredFiles.add('re_58');
+      if (pattern.sn && pattern.sn.replace(/\s/g, '')) {
+        requiredFiles.add('sn_58'); // Accent
+        requiredFiles.add('sn_2e'); // Ghost note
+      }
+      if (pattern.ta && pattern.ta.replace(/\s/g, '')) requiredFiles.add('ta_58');
+      if (pattern.ag && pattern.ag.replace(/\s/g, '')) {
+        requiredFiles.add('ag_61'); // Low bell
+        requiredFiles.add('ag_6f'); // High bell
+      }
+      if (pattern.sh && pattern.sh.replace(/\s/g, '')) requiredFiles.add('sh_2e');
+    });
+    
+    return Array.from(requiredFiles);
   }, []);
 
-  // Load actual audio samples
-  const loadAudioSamples = useCallback(async () => {
-    if (!audioContextRef.current) return;
-
-    const loadAudioFile = async (url: string): Promise<AudioBuffer | null> => {
+  // Cached audio file loader with global cache
+  const loadAudioFile = useCallback(async (url: string, filename: string): Promise<AudioBuffer | null> => {
+    // Check if already in cache
+    if (globalAudioCache.has(filename)) {
+      return globalAudioCache.get(filename)!;
+    }
+    
+    // Check if already loading
+    if (loadingPromises.has(filename)) {
+      return await loadingPromises.get(filename)!;
+    }
+    
+    // Start loading
+    const loadPromise = (async () => {
       try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -60,12 +96,27 @@ export function useAudioEngine({
         if (arrayBuffer.byteLength === 0) {
           throw new Error('Empty audio file');
         }
-        return await audioContextRef.current!.decodeAudioData(arrayBuffer);
+        const buffer = await audioContextRef.current!.decodeAudioData(arrayBuffer);
+        globalAudioCache.set(filename, buffer);
+        return buffer;
       } catch (error) {
         console.warn(`Failed to load audio file: ${url}`, error);
         return null;
+      } finally {
+        loadingPromises.delete(filename);
       }
-    };
+    })();
+    
+    loadingPromises.set(filename, loadPromise);
+    return await loadPromise;
+  }, []);
+
+  // Load only the audio samples needed for this specific tune
+  const loadAudioSamples = useCallback(async () => {
+    if (!audioContextRef.current) return;
+    
+    const requiredFiles = getRequiredAudioFiles(tune);
+    console.log(`Loading ${requiredFiles.length} audio files for ${tune.name}:`, requiredFiles);
 
     // Get the base URL for direct audio access
     const getAudioBaseUrl = () => {
@@ -153,9 +204,11 @@ export function useAudioEngine({
 
     const audioBuffers: Record<string, AudioBuffer | null> = {};
 
-    // Load all available audio files
-    for (const [key, url] of Object.entries(audioFiles)) {
-      audioBuffers[key] = await loadAudioFile(url);
+    // Load only the required audio files for this tune
+    for (const filename of requiredFiles) {
+      if (audioFiles[filename as keyof typeof audioFiles]) {
+        audioBuffers[filename] = await loadAudioFile(audioFiles[filename as keyof typeof audioFiles], filename);
+      }
     }
 
     // Map to instruments using best available sounds with fallback to synthetic
@@ -204,7 +257,7 @@ export function useAudioEngine({
     soundsRef.current.ms_muted = audioBuffers.ms_58 || soundsRef.current.ms; // muted sound
     soundsRef.current.hs_open = audioBuffers.hs_30 || soundsRef.current.hs;  // open sound
     soundsRef.current.hs_muted = audioBuffers.hs_58 || soundsRef.current.hs; // muted sound
-  }, []);
+  }, [tune, getRequiredAudioFiles, loadAudioFile]);
 
   // Fallback synthetic sound creation
   const createFallbackSound = (
