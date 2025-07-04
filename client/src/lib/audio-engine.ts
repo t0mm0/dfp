@@ -50,85 +50,98 @@ export function useAudioEngine({
   // Function to determine which audio files a tune actually needs
   const getRequiredAudioFiles = useCallback((tune: Tune) => {
     const requiredFiles = new Set<string>();
-    
+
     // Analyze all patterns in the tune to see what instruments are used
-    Object.values(tune.patterns).forEach(pattern => {
+    Object.values(tune.patterns).forEach((pattern) => {
       // Check each instrument pattern for non-empty characters
-      if (pattern.ls && pattern.ls.replace(/\s/g, '')) requiredFiles.add('ls_73');
-      if (pattern.ms && pattern.ms.replace(/\s/g, '')) requiredFiles.add('ls_73'); // MS uses same as LS
-      if (pattern.hs && pattern.hs.replace(/\s/g, '')) requiredFiles.add('hs_74');
-      if (pattern.re && pattern.re.replace(/\s/g, '')) requiredFiles.add('re_58');
-      if (pattern.sn && pattern.sn.replace(/\s/g, '')) {
-        requiredFiles.add('sn_58'); // Accent
-        requiredFiles.add('sn_2e'); // Ghost note
+      if (pattern.ls && pattern.ls.replace(/\s/g, ""))
+        requiredFiles.add("ls_73");
+      if (pattern.ms && pattern.ms.replace(/\s/g, ""))
+        requiredFiles.add("ms_73"); // MS uses ms_73
+      if (pattern.hs && pattern.hs.replace(/\s/g, ""))
+        requiredFiles.add("hs_74");
+      if (pattern.re && pattern.re.replace(/\s/g, ""))
+        requiredFiles.add("re_58");
+      if (pattern.sn && pattern.sn.replace(/\s/g, "")) {
+        requiredFiles.add("sn_58"); // Accent
+        requiredFiles.add("sn_2e"); // Ghost note
       }
-      if (pattern.ta && pattern.ta.replace(/\s/g, '')) requiredFiles.add('ta_58');
-      if (pattern.ag && pattern.ag.replace(/\s/g, '')) {
-        requiredFiles.add('ag_61'); // Low bell
-        requiredFiles.add('ag_6f'); // High bell
+      if (pattern.ta && pattern.ta.replace(/\s/g, ""))
+        requiredFiles.add("ta_58");
+      if (pattern.ag && pattern.ag.replace(/\s/g, "")) {
+        requiredFiles.add("ag_61"); // Low bell
+        requiredFiles.add("ag_6f"); // High bell
       }
-      if (pattern.sh && pattern.sh.replace(/\s/g, '')) requiredFiles.add('sh_2e');
+      if (pattern.sh && pattern.sh.replace(/\s/g, ""))
+        requiredFiles.add("sh_2e");
     });
-    
+
     return Array.from(requiredFiles);
   }, []);
 
   // Cached audio file loader with global cache
-  const loadAudioFile = useCallback(async (url: string, filename: string): Promise<AudioBuffer | null> => {
-    // Check if already in cache
-    if (globalAudioCache.has(filename)) {
-      return globalAudioCache.get(filename)!;
-    }
-    
-    // Check if already loading
-    if (loadingPromises.has(filename)) {
-      return await loadingPromises.get(filename)!;
-    }
-    
-    // Start loading
-    const loadPromise = (async () => {
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
-        const arrayBuffer = await response.arrayBuffer();
-        if (arrayBuffer.byteLength === 0) {
-          throw new Error('Empty audio file');
-        }
-        const buffer = await audioContextRef.current!.decodeAudioData(arrayBuffer);
-        globalAudioCache.set(filename, buffer);
-        return buffer;
-      } catch (error) {
-        console.warn(`Failed to load audio file: ${url}`, error);
-        return null;
-      } finally {
-        loadingPromises.delete(filename);
+  const loadAudioFile = useCallback(
+    async (url: string, filename: string): Promise<AudioBuffer | null> => {
+      // Check if already in cache
+      if (globalAudioCache.has(filename)) {
+        return globalAudioCache.get(filename)!;
       }
-    })();
-    
-    loadingPromises.set(filename, loadPromise);
-    return await loadPromise;
-  }, []);
+
+      // Check if already loading
+      if (loadingPromises.has(filename)) {
+        return await loadingPromises.get(filename)!;
+      }
+
+      // Start loading
+      const loadPromise = (async () => {
+        try {
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
+          const arrayBuffer = await response.arrayBuffer();
+          if (arrayBuffer.byteLength === 0) {
+            throw new Error("Empty audio file");
+          }
+          const buffer =
+            await audioContextRef.current!.decodeAudioData(arrayBuffer);
+          globalAudioCache.set(filename, buffer);
+          return buffer;
+        } catch (error) {
+          console.warn(`Failed to load audio file: ${url}`, error);
+          return null;
+        } finally {
+          loadingPromises.delete(filename);
+        }
+      })();
+
+      loadingPromises.set(filename, loadPromise);
+      return await loadPromise;
+    },
+    [],
+  );
 
   // Load only the audio samples needed for this specific tune
   const loadAudioSamples = useCallback(async () => {
     if (!audioContextRef.current) return;
-    
+
     const requiredFiles = getRequiredAudioFiles(tune);
-    console.log(`Loading ${requiredFiles.length} audio files for ${tune.name}:`, requiredFiles);
+    console.log(
+      `Loading ${requiredFiles.length} audio files for ${tune.name}:`,
+      requiredFiles,
+    );
 
     // Get the base URL for direct audio access
     const getAudioBaseUrl = () => {
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         // In production, use the deployment URL directly
-        if (window.location.hostname.includes('replit.app')) {
-          return window.location.origin + '/audio/';
+        if (window.location.hostname.includes("replit.app")) {
+          return window.location.origin + "/audio/";
         }
         // In development, use the local URL
-        return window.location.origin + '/audio/';
+        return window.location.origin + "/audio/";
       }
-      return '/audio/';
+      return "/audio/";
     };
 
     const audioBaseUrl = getAudioBaseUrl();
@@ -137,7 +150,7 @@ export function useAudioEngine({
     const audioFiles = {
       // Low Surdo variants
       ls_30: audioBaseUrl + "ls_30.mp3",
-      ls_58: audioBaseUrl + "ls_58.mp3", 
+      ls_58: audioBaseUrl + "ls_58.mp3",
       ls_68: audioBaseUrl + "ls_68.mp3",
       ls_72: audioBaseUrl + "ls_72.mp3",
       ls_73: audioBaseUrl + "ls_73.mp3",
@@ -145,7 +158,7 @@ export function useAudioEngine({
       // Mid Surdo variants
       ms_30: audioBaseUrl + "ms_30.mp3",
       ms_58: audioBaseUrl + "ms_58.mp3",
-      ms_68: audioBaseUrl + "ms_68.mp3", 
+      ms_68: audioBaseUrl + "ms_68.mp3",
       ms_72: audioBaseUrl + "ms_72.mp3",
       ms_73: audioBaseUrl + "ms_73.mp3",
       ms_74: audioBaseUrl + "ms_74.mp3",
@@ -153,7 +166,7 @@ export function useAudioEngine({
       hs_30: audioBaseUrl + "hs_30.mp3",
       hs_58: audioBaseUrl + "hs_58.mp3",
       hs_68: audioBaseUrl + "hs_68.mp3",
-      hs_72: audioBaseUrl + "hs_72.mp3", 
+      hs_72: audioBaseUrl + "hs_72.mp3",
       hs_73: audioBaseUrl + "hs_73.mp3",
       hs_74: audioBaseUrl + "hs_74.mp3",
       // Snare variants
@@ -207,7 +220,10 @@ export function useAudioEngine({
     // Load only the required audio files for this tune
     for (const filename of requiredFiles) {
       if (audioFiles[filename as keyof typeof audioFiles]) {
-        audioBuffers[filename] = await loadAudioFile(audioFiles[filename as keyof typeof audioFiles], filename);
+        audioBuffers[filename] = await loadAudioFile(
+          audioFiles[filename as keyof typeof audioFiles],
+          filename,
+        );
       }
     }
 
@@ -223,14 +239,29 @@ export function useAudioEngine({
 
     soundsRef.current = {
       // Low Surdo - prefer ls_73 or ls_74 for main sound
-      ls: getFallbackSound(audioBuffers.ls_73 || audioBuffers.ls_74, 60, 0.5, "kick"),
-      // Mid Surdo - prefer ms_73 or ms_74 
-      ms: getFallbackSound(audioBuffers.ms_73 || audioBuffers.ms_74, 80, 0.4, "kick"),
+      ls: getFallbackSound(
+        audioBuffers.ls_73 || audioBuffers.ls_74,
+        100,
+        0.5,
+        "kick",
+      ),
+      // Mid Surdo - prefer ms_73 or ms_74
+      ms: getFallbackSound(
+        audioBuffers.ms_73 || audioBuffers.ms_74,
+        80,
+        0.4,
+        "kick",
+      ),
       // High Surdo - prefer hs_74 or hs_73
-      hs: getFallbackSound(audioBuffers.hs_74 || audioBuffers.hs_73, 100, 0.3, "kick"),
+      hs: getFallbackSound(
+        audioBuffers.hs_74 || audioBuffers.hs_73,
+        100,
+        0.3,
+        "kick",
+      ),
       // Repi - prefer re_58
       re: getFallbackSound(audioBuffers.re_58, 200, 0.2, "snare"),
-      // Snare - prefer sn_58 for general use  
+      // Snare - prefer sn_58 for general use
       sn: getFallbackSound(audioBuffers.sn_58, 150, 0.2, "snare"),
       // Tamborim - use ta_58 if available
       ta: getFallbackSound(audioBuffers.ta_58, 300, 0.1, "hihat"),
@@ -243,19 +274,19 @@ export function useAudioEngine({
     };
 
     // Store individual agogo sounds for pattern-specific playback
-    soundsRef.current.ag_low = audioBuffers.ag_61 || soundsRef.current.ag;   // 'a' character
-    soundsRef.current.ag_high = audioBuffers.ag_6f || soundsRef.current.ag;  // 'o' character
+    soundsRef.current.ag_low = audioBuffers.ag_61 || soundsRef.current.ag; // 'a' character
+    soundsRef.current.ag_high = audioBuffers.ag_6f || soundsRef.current.ag; // 'o' character
 
     // Store individual snare sounds for pattern-specific playback
     soundsRef.current.sn_accent = audioBuffers.sn_58 || soundsRef.current.sn; // 'X' character
-    soundsRef.current.sn_ghost = audioBuffers.sn_2e || soundsRef.current.sn;  // '.' character
+    soundsRef.current.sn_ghost = audioBuffers.sn_2e || soundsRef.current.sn; // '.' character
 
     // Store additional surdo variations if available
-    soundsRef.current.ls_open = audioBuffers.ls_30 || soundsRef.current.ls;  // open sound
+    soundsRef.current.ls_open = audioBuffers.ls_30 || soundsRef.current.ls; // open sound
     soundsRef.current.ls_muted = audioBuffers.ls_58 || soundsRef.current.ls; // muted sound
-    soundsRef.current.ms_open = audioBuffers.ms_30 || soundsRef.current.ms;  // open sound
+    soundsRef.current.ms_open = audioBuffers.ms_30 || soundsRef.current.ms; // open sound
     soundsRef.current.ms_muted = audioBuffers.ms_58 || soundsRef.current.ms; // muted sound
-    soundsRef.current.hs_open = audioBuffers.hs_30 || soundsRef.current.hs;  // open sound
+    soundsRef.current.hs_open = audioBuffers.hs_30 || soundsRef.current.hs; // open sound
     soundsRef.current.hs_muted = audioBuffers.hs_58 || soundsRef.current.hs; // muted sound
   }, [tune, getRequiredAudioFiles, loadAudioFile]);
 
@@ -462,11 +493,12 @@ export async function renderAuthenticAudio(
   patternName: string,
   tempo: number,
   instrumentStates: Record<string, { enabled: boolean; volume: number }>,
-  durationSeconds: number = 8
+  durationSeconds: number = 8,
 ): Promise<AudioBuffer> {
   // Create audio context for rendering
-  const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-  
+  const audioContext = new (window.AudioContext ||
+    (window as any).webkitAudioContext)();
+
   // Load the same audio samples as the player
   const loadAudioFile = async (url: string): Promise<AudioBuffer | null> => {
     try {
@@ -482,15 +514,15 @@ export async function renderAuthenticAudio(
 
   // Get the base URL for direct audio access
   const getAudioBaseUrl = () => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       // In production, use the deployment URL directly
-      if (window.location.hostname.includes('replit.app')) {
-        return window.location.origin + '/audio/';
+      if (window.location.hostname.includes("replit.app")) {
+        return window.location.origin + "/audio/";
       }
       // In development, use the local URL
-      return window.location.origin + '/audio/';
+      return window.location.origin + "/audio/";
     }
-    return '/audio/';
+    return "/audio/";
   };
 
   const audioBaseUrl = getAudioBaseUrl();
@@ -498,7 +530,7 @@ export async function renderAuthenticAudio(
   // Same audio files mapping as in the player - using direct URLs for faster loading
   const audioFiles = {
     ls_73: audioBaseUrl + "ls_73.mp3",
-    hs_74: audioBaseUrl + "hs_74.mp3", 
+    hs_74: audioBaseUrl + "hs_74.mp3",
     sn_2e: audioBaseUrl + "sn_2e.mp3", // Ghost note
     sn_58: audioBaseUrl + "sn_58.mp3", // Accent
     re_58: audioBaseUrl + "re_58.mp3",
@@ -531,35 +563,43 @@ export async function renderAuthenticAudio(
   };
 
   // Create offline context for rendering
-  const offlineContext = new OfflineAudioContext(1, audioContext.sampleRate * durationSeconds, audioContext.sampleRate);
-  
+  const offlineContext = new OfflineAudioContext(
+    1,
+    audioContext.sampleRate * durationSeconds,
+    audioContext.sampleRate,
+  );
+
   const pattern = tune.patterns[patternName];
   if (!pattern) {
     audioContext.close();
-    throw new Error('Pattern not found');
+    throw new Error("Pattern not found");
   }
 
-  const stepDuration = (60 / tempo) / 4; // 16th note duration
+  const stepDuration = 60 / tempo / 4; // 16th note duration
   const patternLength = 16;
 
   // Render the pattern
-  for (let loop = 0; loop < Math.floor(durationSeconds / (stepDuration * patternLength)); loop++) {
+  for (
+    let loop = 0;
+    loop < Math.floor(durationSeconds / (stepDuration * patternLength));
+    loop++
+  ) {
     for (let step = 0; step < patternLength; step++) {
       const time = (loop * patternLength + step) * stepDuration;
-      
+
       // Check each instrument at this step
-      Object.keys(instrumentStates).forEach(instrument => {
+      Object.keys(instrumentStates).forEach((instrument) => {
         if (!instrumentStates[instrument].enabled) return;
-        
+
         const instrumentPattern = pattern[instrument];
         if (!instrumentPattern || step >= instrumentPattern.length) return;
-        
+
         const char = instrumentPattern[step];
-        if (!char || char === ' ') return;
-        
+        if (!char || char === " ") return;
+
         // Get the appropriate sound buffer
         let soundBuffer: AudioBuffer | null = null;
-        
+
         if (instrument === "ag") {
           if (char === "a") soundBuffer = sounds.ag_low;
           else if (char === "o") soundBuffer = sounds.ag_high;
@@ -571,26 +611,26 @@ export async function renderAuthenticAudio(
         } else {
           soundBuffer = sounds[instrument];
         }
-        
+
         if (!soundBuffer) return;
-        
+
         // Create audio source
         const source = offlineContext.createBufferSource();
         const gainNode = offlineContext.createGain();
-        
+
         source.buffer = soundBuffer;
         source.connect(gainNode);
         gainNode.connect(offlineContext.destination);
-        
+
         // Apply volume
         const instrumentVolume = instrumentStates[instrument]?.volume || 70;
         gainNode.gain.value = (instrumentVolume / 100) * 0.7; // Master volume
-        
+
         source.start(time);
       });
     }
   }
-  
+
   // Render and return the buffer
   const renderedBuffer = await offlineContext.startRendering();
   audioContext.close();

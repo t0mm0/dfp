@@ -185,6 +185,7 @@ The application follows a modern full-stack architecture with clear separation b
 - July 04, 2025. Fixed slight right shift on protest beats page by adjusting container padding (px-4 sm:px-6 lg:px-8) and removing asymmetrical px-1 padding from pattern visualization rows for perfect centering
 - July 04, 2025. Reduced margins on tunes and protest beats pages to ensure all 16 circles fit on screen without scrolling - changed container padding from px-4 sm:px-6 lg:px-8 to px-2 sm:px-3 lg:px-4, reduced beatbox player content padding to px-2 sm:px-4, and minimized pattern visualizer padding from p-2 md:p-4 to p-1 md:p-2
 - July 04, 2025. Increased surdo volume levels significantly - boosted all surdo instruments (low surdo, mid surdo, high surdo) to maximum volume (100) making them 3 times louder than other drums for better bass presence
+- July 04, 2025. Fixed mid surdo audio mapping bug - mid surdo (ms) was incorrectly using ls_73.mp3 instead of ms_73.mp3, causing it to sound identical to low surdo. Now properly uses ms_73.mp3 for authentic mid surdo sound
 
 ## User Preferences
 
