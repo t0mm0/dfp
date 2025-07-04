@@ -785,7 +785,7 @@ export const tunes: Tune[] = [
     name: "Stolen",
     displayName: "Stolen",
     categories: ["common", "tricky"],
-    speed: 200,
+    speed: 160,
     time: 2,
     description:
       "A fast-paced rhythm with mysterious origins - some say it was stolen from another tradition.",
