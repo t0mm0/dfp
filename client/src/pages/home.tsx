@@ -33,7 +33,7 @@ export default function Home() {
               </div>
             </div>
             <div className="relative flex items-center justify-center p-8">
-              <img src="/src/logo-removebg-preview_1751573624346.png" alt="Drummers For Palestine" className="max-w-lg w-full h-auto opacity-80" />
+              <img src="/logo.png" alt="Drummers For Palestine" className="max-w-lg w-full h-auto opacity-80" />
             </div>
           </div>
         </div>
