@@ -77,7 +77,7 @@ export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
   return (
     <Card className="bg-gray-800 border-gray-700">
       <CardHeader>
-        <CardTitle className="street-text text-2xl">Beatbox Player</CardTitle>
+        <CardTitle className="street-text text-2xl">D4P Player</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Pattern Selection */}
