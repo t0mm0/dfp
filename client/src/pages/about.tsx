@@ -4,12 +4,23 @@ import { Check, Users, Heart } from "lucide-react";
 
 export default function About() {
   return (
-    <div className="min-h-screen bg-black">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="text-center mb-12">
-          <img src="/logo.png" alt="Drummers For Palestine" className="max-w-lg mx-auto mb-8" />
-          <h1 className="street-text font-bold text-4xl md:text-5xl mb-4">Who We Are</h1>
-          <p className="text-xl text-gray-300">We are a collective of passionate drummers united by a shared purpose</p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
+        <div className="text-center mb-8 md:mb-12">
+          <div className="relative mb-6 md:mb-8">
+            <img 
+              src="/logo.png" 
+              alt="Drummers For Palestine" 
+              className="w-32 h-32 md:w-48 md:h-48 lg:w-64 lg:h-64 mx-auto object-contain drop-shadow-2xl" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-red-500/20 to-green-500/20 rounded-full blur-3xl"></div>
+          </div>
+          <h1 className="street-text font-bold text-3xl md:text-4xl lg:text-5xl mb-4 bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
+            Who We Are
+          </h1>
+          <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            We are a collective of passionate drummers united by a shared purpose
+          </p>
         </div>
 
         <div className="max-w-4xl mx-auto mb-16">

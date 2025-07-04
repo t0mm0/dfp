@@ -197,40 +197,183 @@ export default function Experiment() {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-16 gap-1">
-            {Array.from({ length: 16 }, (_, i) => (
-              <div key={i} className="flex flex-col items-center">
-                <div className="text-xs text-gray-500 mb-1">{i + 1}</div>
-                <button
-                  className="w-8 h-8 border border-gray-600 rounded text-white bg-black hover:bg-gray-700 focus:ring-2 focus:ring-white focus:outline-none"
-                  onClick={() => {
-                    const currentChar = pattern[i];
-                    let nextChar = ' ';
-                    
-                    if (instrument.key === 'ag') {
-                      // Agogo: cycle through space, a, o
-                      if (currentChar === ' ') nextChar = 'a';
-                      else if (currentChar === 'a') nextChar = 'o';
-                      else nextChar = ' ';
-                    } else if (instrument.key === 'sn') {
-                      // Snare: cycle through space, ., X
-                      if (currentChar === ' ') nextChar = '.';
-                      else if (currentChar === '.') nextChar = 'X';
-                      else nextChar = ' ';
-                    } else {
-                      // Other instruments: cycle through space, X
-                      nextChar = currentChar === 'X' ? ' ' : 'X';
-                    }
-                    
-                    updatePattern(instrument.key, i, nextChar);
-                  }}
-                >
-                  {pattern[i] === ' ' ? '·' : pattern[i]}
-                </button>
-              </div>
-            ))}
+          {/* Beat groupings with separators - mobile friendly */}
+          <div className="flex flex-wrap items-center gap-1 mb-2">
+            {/* Group 1 (beats 1-4) */}
+            <div className="flex gap-1">
+              {Array.from({ length: 4 }, (_, i) => (
+                <div key={i} className="flex flex-col items-center">
+                  <div className="text-xs text-gray-500 mb-1">{i + 1}</div>
+                  <button
+                    className={`w-6 h-6 md:w-8 md:h-8 border rounded-full text-xs font-bold transition-all duration-200 ${
+                      pattern[i] === ' '
+                        ? 'border-gray-600 bg-gray-800 hover:bg-gray-700 text-gray-400'
+                        : 'border-green-400 bg-green-500 text-white shadow-lg shadow-green-500/30'
+                    } focus:ring-2 focus:ring-white focus:outline-none`}
+                    onClick={() => {
+                      const currentChar = pattern[i];
+                      let nextChar = ' ';
+                      
+                      if (instrument.key === 'ag') {
+                        if (currentChar === ' ') nextChar = 'a';
+                        else if (currentChar === 'a') nextChar = 'o';
+                        else nextChar = ' ';
+                      } else if (instrument.key === 'sn') {
+                        if (currentChar === ' ') nextChar = '.';
+                        else if (currentChar === '.') nextChar = 'X';
+                        else nextChar = ' ';
+                      } else {
+                        nextChar = currentChar === 'X' ? ' ' : 'X';
+                      }
+                      
+                      updatePattern(instrument.key, i, nextChar);
+                    }}
+                  >
+                    {pattern[i] === ' ' ? '·' : pattern[i]}
+                  </button>
+                </div>
+              ))}
+            </div>
+            
+            {/* Vertical separator */}
+            <div className="w-0.5 h-8 bg-yellow-400 mx-1 shadow-lg shadow-yellow-400/50"></div>
+            
+            {/* Group 2 (beats 5-8) */}
+            <div className="flex gap-1">
+              {Array.from({ length: 4 }, (_, i) => {
+                const index = i + 4;
+                return (
+                  <div key={index} className="flex flex-col items-center">
+                    <div className="text-xs text-gray-500 mb-1">{index + 1}</div>
+                    <button
+                      className={`w-6 h-6 md:w-8 md:h-8 border rounded-full text-xs font-bold transition-all duration-200 ${
+                        pattern[index] === ' '
+                          ? 'border-gray-600 bg-gray-800 hover:bg-gray-700 text-gray-400'
+                          : 'border-green-400 bg-green-500 text-white shadow-lg shadow-green-500/30'
+                      } focus:ring-2 focus:ring-white focus:outline-none`}
+                      onClick={() => {
+                        const currentChar = pattern[index];
+                        let nextChar = ' ';
+                        
+                        if (instrument.key === 'ag') {
+                          if (currentChar === ' ') nextChar = 'a';
+                          else if (currentChar === 'a') nextChar = 'o';
+                          else nextChar = ' ';
+                        } else if (instrument.key === 'sn') {
+                          if (currentChar === ' ') nextChar = '.';
+                          else if (currentChar === '.') nextChar = 'X';
+                          else nextChar = ' ';
+                        } else {
+                          nextChar = currentChar === 'X' ? ' ' : 'X';
+                        }
+                        
+                        updatePattern(instrument.key, index, nextChar);
+                      }}
+                    >
+                      {pattern[index] === ' ' ? '·' : pattern[index]}
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+            
+            {/* Vertical separator */}
+            <div className="w-0.5 h-8 bg-yellow-400 mx-1 shadow-lg shadow-yellow-400/50"></div>
+            
+            {/* Group 3 (beats 9-12) */}
+            <div className="flex gap-1">
+              {Array.from({ length: 4 }, (_, i) => {
+                const index = i + 8;
+                return (
+                  <div key={index} className="flex flex-col items-center">
+                    <div className="text-xs text-gray-500 mb-1">{index + 1}</div>
+                    <button
+                      className={`w-6 h-6 md:w-8 md:h-8 border rounded-full text-xs font-bold transition-all duration-200 ${
+                        pattern[index] === ' '
+                          ? 'border-gray-600 bg-gray-800 hover:bg-gray-700 text-gray-400'
+                          : 'border-green-400 bg-green-500 text-white shadow-lg shadow-green-500/30'
+                      } focus:ring-2 focus:ring-white focus:outline-none`}
+                      onClick={() => {
+                        const currentChar = pattern[index];
+                        let nextChar = ' ';
+                        
+                        if (instrument.key === 'ag') {
+                          if (currentChar === ' ') nextChar = 'a';
+                          else if (currentChar === 'a') nextChar = 'o';
+                          else nextChar = ' ';
+                        } else if (instrument.key === 'sn') {
+                          if (currentChar === ' ') nextChar = '.';
+                          else if (currentChar === '.') nextChar = 'X';
+                          else nextChar = ' ';
+                        } else {
+                          nextChar = currentChar === 'X' ? ' ' : 'X';
+                        }
+                        
+                        updatePattern(instrument.key, index, nextChar);
+                      }}
+                    >
+                      {pattern[index] === ' ' ? '·' : pattern[index]}
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+            
+            {/* Vertical separator */}
+            <div className="w-0.5 h-8 bg-yellow-400 mx-1 shadow-lg shadow-yellow-400/50"></div>
+            
+            {/* Group 4 (beats 13-16) */}
+            <div className="flex gap-1">
+              {Array.from({ length: 4 }, (_, i) => {
+                const index = i + 12;
+                return (
+                  <div key={index} className="flex flex-col items-center">
+                    <div className="text-xs text-gray-500 mb-1">{index + 1}</div>
+                    <button
+                      className={`w-6 h-6 md:w-8 md:h-8 border rounded-full text-xs font-bold transition-all duration-200 ${
+                        pattern[index] === ' '
+                          ? 'border-gray-600 bg-gray-800 hover:bg-gray-700 text-gray-400'
+                          : 'border-green-400 bg-green-500 text-white shadow-lg shadow-green-500/30'
+                      } focus:ring-2 focus:ring-white focus:outline-none`}
+                      onClick={() => {
+                        const currentChar = pattern[index];
+                        let nextChar = ' ';
+                        
+                        if (instrument.key === 'ag') {
+                          if (currentChar === ' ') nextChar = 'a';
+                          else if (currentChar === 'a') nextChar = 'o';
+                          else nextChar = ' ';
+                        } else if (instrument.key === 'sn') {
+                          if (currentChar === ' ') nextChar = '.';
+                          else if (currentChar === '.') nextChar = 'X';
+                          else nextChar = ' ';
+                        } else {
+                          nextChar = currentChar === 'X' ? ' ' : 'X';
+                        }
+                        
+                        updatePattern(instrument.key, index, nextChar);
+                      }}
+                    >
+                      {pattern[index] === ' ' ? '·' : pattern[index]}
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <div className="mt-2 text-xs text-gray-500">
+          
+          {/* Beat counter labels */}
+          <div className="flex items-center gap-1 text-xs text-yellow-400 font-semibold mt-2">
+            <div className="text-center" style={{ width: '100px' }}>1-2-3-4</div>
+            <div className="w-0.5 mx-1"></div>
+            <div className="text-center" style={{ width: '100px' }}>1-2-3-4</div>
+            <div className="w-0.5 mx-1"></div>
+            <div className="text-center" style={{ width: '100px' }}>1-2-3-4</div>
+            <div className="w-0.5 mx-1"></div>
+            <div className="text-center" style={{ width: '100px' }}>1-2-3-4</div>
+          </div>
+          
+          <div className="mt-3 text-xs text-gray-500 text-center">
             {instrument.key === 'ag' ? 'Click: • → a → o → •' : 
              instrument.key === 'sn' ? 'Click: • → . → X → •' : 
              'Click: • → X → •'}
