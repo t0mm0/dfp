@@ -32,17 +32,17 @@ export default function PatternVisualizer({ pattern, currentStep, instrumentStat
   }
 
   return (
-    <div className="bg-gradient-to-br from-gray-900 via-black to-gray-900 p-3 md:p-6 rounded-xl shadow-2xl border border-gray-800">
+    <div className="bg-gradient-to-br from-gray-900 via-black to-gray-900 p-2 md:p-4 rounded-xl shadow-2xl border border-gray-800 overflow-x-auto">
       {rows.map((row, rowIndex) => (
-        <div key={rowIndex} className="mb-6">
+        <div key={rowIndex} className="mb-4">
           {/* Beat groupings with separators */}
-          <div className="flex items-center gap-1 mb-3">
+          <div className="flex items-center justify-center gap-0.5 md:gap-1 min-w-max">
             {/* Group 1 (beats 1-4) */}
             <div className="flex gap-0.5 md:gap-1">
               {row.slice(0, 4).map((stepIndex) => (
                 <div
                   key={stepIndex}
-                  className={`w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200 ${
+                  className={`w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200 ${
                     stepIndex === currentStep
                       ? 'bg-red-500 text-white shadow-lg shadow-red-500/50 scale-110'
                       : getStepState(stepIndex)
@@ -51,20 +51,20 @@ export default function PatternVisualizer({ pattern, currentStep, instrumentStat
                   }`}
                   title={`Step ${stepIndex + 1}`}
                 >
-                  {((stepIndex % 4) + 1)}
+                  {stepIndex + 1}
                 </div>
               ))}
             </div>
             
             {/* Vertical separator */}
-            <div className="w-0.5 h-6 bg-yellow-400 mx-1 shadow-lg shadow-yellow-400/50"></div>
+            <div className="w-0.5 h-4 bg-yellow-400 mx-0.5 shadow-lg shadow-yellow-400/50"></div>
             
             {/* Group 2 (beats 5-8) */}
             <div className="flex gap-0.5 md:gap-1">
               {row.slice(4, 8).map((stepIndex) => (
                 <div
                   key={stepIndex}
-                  className={`w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200 ${
+                  className={`w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200 ${
                     stepIndex === currentStep
                       ? 'bg-red-500 text-white shadow-lg shadow-red-500/50 scale-110'
                       : getStepState(stepIndex)
@@ -73,20 +73,20 @@ export default function PatternVisualizer({ pattern, currentStep, instrumentStat
                   }`}
                   title={`Step ${stepIndex + 1}`}
                 >
-                  {((stepIndex % 4) + 1)}
+                  {stepIndex + 1}
                 </div>
               ))}
             </div>
             
             {/* Vertical separator */}
-            <div className="w-0.5 h-6 bg-yellow-400 mx-1 shadow-lg shadow-yellow-400/50"></div>
+            <div className="w-0.5 h-4 bg-yellow-400 mx-0.5 shadow-lg shadow-yellow-400/50"></div>
             
             {/* Group 3 (beats 9-12) */}
             <div className="flex gap-0.5 md:gap-1">
               {row.slice(8, 12).map((stepIndex) => (
                 <div
                   key={stepIndex}
-                  className={`w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200 ${
+                  className={`w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200 ${
                     stepIndex === currentStep
                       ? 'bg-red-500 text-white shadow-lg shadow-red-500/50 scale-110'
                       : getStepState(stepIndex)
@@ -95,20 +95,20 @@ export default function PatternVisualizer({ pattern, currentStep, instrumentStat
                   }`}
                   title={`Step ${stepIndex + 1}`}
                 >
-                  {((stepIndex % 4) + 1)}
+                  {stepIndex + 1}
                 </div>
               ))}
             </div>
             
             {/* Vertical separator */}
-            <div className="w-0.5 h-6 bg-yellow-400 mx-1 shadow-lg shadow-yellow-400/50"></div>
+            <div className="w-0.5 h-4 bg-yellow-400 mx-0.5 shadow-lg shadow-yellow-400/50"></div>
             
             {/* Group 4 (beats 13-16) */}
             <div className="flex gap-0.5 md:gap-1">
               {row.slice(12, 16).map((stepIndex) => (
                 <div
                   key={stepIndex}
-                  className={`w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200 ${
+                  className={`w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200 ${
                     stepIndex === currentStep
                       ? 'bg-red-500 text-white shadow-lg shadow-red-500/50 scale-110'
                       : getStepState(stepIndex)
@@ -117,44 +117,9 @@ export default function PatternVisualizer({ pattern, currentStep, instrumentStat
                   }`}
                   title={`Step ${stepIndex + 1}`}
                 >
-                  {((stepIndex % 4) + 1)}
+                  {stepIndex + 1}
                 </div>
               ))}
-            </div>
-          </div>
-          
-          {/* Beat counter labels */}
-          <div className="flex items-center gap-1 text-xs text-yellow-400 font-semibold">
-            {/* Group 1 labels */}
-            <div className="flex gap-0.5 md:gap-1" style={{ width: '120px' }}>
-              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">1</div>
-              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">2</div>
-              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">3</div>
-              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">4</div>
-            </div>
-            <div className="w-0.5 mx-1"></div>
-            {/* Group 2 labels */}
-            <div className="flex gap-0.5 md:gap-1" style={{ width: '120px' }}>
-              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">1</div>
-              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">2</div>
-              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">3</div>
-              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">4</div>
-            </div>
-            <div className="w-0.5 mx-1"></div>
-            {/* Group 3 labels */}
-            <div className="flex gap-0.5 md:gap-1" style={{ width: '120px' }}>
-              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">1</div>
-              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">2</div>
-              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">3</div>
-              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">4</div>
-            </div>
-            <div className="w-0.5 mx-1"></div>
-            {/* Group 4 labels */}
-            <div className="flex gap-0.5 md:gap-1" style={{ width: '120px' }}>
-              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">1</div>
-              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">2</div>
-              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">3</div>
-              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">4</div>
             </div>
           </div>
         </div>

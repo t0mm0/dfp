@@ -16,7 +16,7 @@ export default function Home() {
                 Drummers For <span className="text-white">Palestine</span>
               </h1>
               <p className="text-xl md:text-2xl mb-8 text-gray-300">
-                Unite through music. Learn samba rhythms. Amplify Palestinian solidarity through the power of percussive purpose.
+                Unite through music. Learn resistance rhythms. Amplify Palestinian solidarity through the power of percussive purpose.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/tunes">
@@ -50,8 +50,8 @@ export default function Home() {
             <Card className="bg-black border-gray-700">
               <CardContent className="p-6 text-center">
                 <Drum className="h-12 w-12 text-red-600 mx-auto mb-4" />
-                <h3 className="street-text font-semibold text-xl mb-2">Authentic Samba</h3>
-                <p className="text-gray-300">Traditional Brazilian samba instruments with professional-quality samples</p>
+                <h3 className="street-text font-semibold text-xl mb-2">Authentic Rhythms</h3>
+                <p className="text-gray-300">Traditional percussion instruments with professional-quality samples</p>
               </CardContent>
             </Card>
             <Card className="bg-black border-gray-700">
