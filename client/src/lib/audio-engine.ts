@@ -67,73 +67,88 @@ export function useAudioEngine({
       }
     };
 
-    // Audio files mapping - using available files from public/audio directory
+    // Get the base URL for direct audio access
+    const getAudioBaseUrl = () => {
+      if (typeof window !== 'undefined') {
+        // In production, use the deployment URL directly
+        if (window.location.hostname.includes('replit.app')) {
+          return window.location.origin + '/audio/';
+        }
+        // In development, use the local URL
+        return window.location.origin + '/audio/';
+      }
+      return '/audio/';
+    };
+
+    const audioBaseUrl = getAudioBaseUrl();
+
+    // Audio files mapping - using direct URLs for faster loading
     const audioFiles = {
       // Low Surdo variants
-      ls_30: "/audio/ls_30.mp3",
-      ls_58: "/audio/ls_58.mp3", 
-      ls_68: "/audio/ls_68.mp3",
-      ls_72: "/audio/ls_72.mp3",
-      ls_73: "/audio/ls_73.mp3",
-      ls_74: "/audio/ls_74.mp3",
+      ls_30: audioBaseUrl + "ls_30.mp3",
+      ls_58: audioBaseUrl + "ls_58.mp3", 
+      ls_68: audioBaseUrl + "ls_68.mp3",
+      ls_72: audioBaseUrl + "ls_72.mp3",
+      ls_73: audioBaseUrl + "ls_73.mp3",
+      ls_74: audioBaseUrl + "ls_74.mp3",
       // Mid Surdo variants
-      ms_30: "/audio/ms_30.mp3",
-      ms_58: "/audio/ms_58.mp3",
-      ms_68: "/audio/ms_68.mp3", 
-      ms_72: "/audio/ms_72.mp3",
-      ms_73: "/audio/ms_73.mp3",
-      ms_74: "/audio/ms_74.mp3",
+      ms_30: audioBaseUrl + "ms_30.mp3",
+      ms_58: audioBaseUrl + "ms_58.mp3",
+      ms_68: audioBaseUrl + "ms_68.mp3", 
+      ms_72: audioBaseUrl + "ms_72.mp3",
+      ms_73: audioBaseUrl + "ms_73.mp3",
+      ms_74: audioBaseUrl + "ms_74.mp3",
       // High Surdo variants
-      hs_30: "/audio/hs_30.mp3",
-      hs_58: "/audio/hs_58.mp3",
-      hs_68: "/audio/hs_68.mp3",
-      hs_72: "/audio/hs_72.mp3", 
-      hs_73: "/audio/hs_73.mp3",
-      hs_74: "/audio/hs_74.mp3",
+      hs_30: audioBaseUrl + "hs_30.mp3",
+      hs_58: audioBaseUrl + "hs_58.mp3",
+      hs_68: audioBaseUrl + "hs_68.mp3",
+      hs_72: audioBaseUrl + "hs_72.mp3", 
+      hs_73: audioBaseUrl + "hs_73.mp3",
+      hs_74: audioBaseUrl + "hs_74.mp3",
       // Snare variants
-      sn_2e: "/audio/sn_2e.mp3", // Ghost note
-      sn_58: "/audio/sn_58.mp3", // Accent
-      sn_66: "/audio/sn_66.mp3",
-      sn_72: "/audio/sn_72.mp3",
+      sn_2e: audioBaseUrl + "sn_2e.mp3", // Ghost note
+      sn_58: audioBaseUrl + "sn_58.mp3", // Accent
+      sn_66: audioBaseUrl + "sn_66.mp3",
+      sn_72: audioBaseUrl + "sn_72.mp3",
       // Repi variants
-      re_2e: "/audio/re_2e.mp3",
-      re_58: "/audio/re_58.mp3",
-      re_66: "/audio/re_66.mp3",
-      re_68: "/audio/re_68.mp3",
-      re_72: "/audio/re_72.mp3",
-      re_73: "/audio/re_73.mp3",
-      re_7a: "/audio/re_7a.mp3",
+      re_2e: audioBaseUrl + "re_2e.mp3",
+      re_58: audioBaseUrl + "re_58.mp3",
+      re_66: audioBaseUrl + "re_66.mp3",
+      re_68: audioBaseUrl + "re_68.mp3",
+      re_72: audioBaseUrl + "re_72.mp3",
+      re_73: audioBaseUrl + "re_73.mp3",
+      re_7a: audioBaseUrl + "re_7a.mp3",
       // Agogo variants
-      ag_2e: "/audio/ag_2e.mp3",
-      ag_61: "/audio/ag_61.mp3", // Low bell
-      ag_6f: "/audio/ag_6f.mp3", // High bell
-      ag_72: "/audio/ag_72.mp3",
+      ag_2e: audioBaseUrl + "ag_2e.mp3",
+      ag_61: audioBaseUrl + "ag_61.mp3", // Low bell
+      ag_6f: audioBaseUrl + "ag_6f.mp3", // High bell
+      ag_72: audioBaseUrl + "ag_72.mp3",
       // Tamborim variants
-      ta_58: "/audio/ta_58.mp3",
-      ta_66: "/audio/ta_66.mp3",
-      ta_72: "/audio/ta_72.mp3",
+      ta_58: audioBaseUrl + "ta_58.mp3",
+      ta_66: audioBaseUrl + "ta_66.mp3",
+      ta_72: audioBaseUrl + "ta_72.mp3",
       // Shaker variants
-      sh_2e: "/audio/sh_2e.mp3",
-      sh_58: "/audio/sh_58.mp3",
+      sh_2e: audioBaseUrl + "sh_2e.mp3",
+      sh_58: audioBaseUrl + "sh_58.mp3",
       // Other percussion
-      ot_32: "/audio/ot_32.mp3",
-      ot_33: "/audio/ot_33.mp3",
-      ot_34: "/audio/ot_34.mp3",
-      ot_35: "/audio/ot_35.mp3",
-      ot_36: "/audio/ot_36.mp3",
-      ot_41: "/audio/ot_41.mp3",
-      ot_42: "/audio/ot_42.mp3",
-      ot_43: "/audio/ot_43.mp3",
-      ot_44: "/audio/ot_44.mp3",
-      ot_45: "/audio/ot_45.mp3",
-      ot_46: "/audio/ot_46.mp3",
-      ot_47: "/audio/ot_47.mp3",
-      ot_48: "/audio/ot_48.mp3",
-      ot_49: "/audio/ot_49.mp3",
-      ot_4a: "/audio/ot_4a.mp3",
-      ot_4b: "/audio/ot_4b.mp3",
-      ot_77: "/audio/ot_77.mp3",
-      ot_79: "/audio/ot_79.mp3",
+      ot_32: audioBaseUrl + "ot_32.mp3",
+      ot_33: audioBaseUrl + "ot_33.mp3",
+      ot_34: audioBaseUrl + "ot_34.mp3",
+      ot_35: audioBaseUrl + "ot_35.mp3",
+      ot_36: audioBaseUrl + "ot_36.mp3",
+      ot_41: audioBaseUrl + "ot_41.mp3",
+      ot_42: audioBaseUrl + "ot_42.mp3",
+      ot_43: audioBaseUrl + "ot_43.mp3",
+      ot_44: audioBaseUrl + "ot_44.mp3",
+      ot_45: audioBaseUrl + "ot_45.mp3",
+      ot_46: audioBaseUrl + "ot_46.mp3",
+      ot_47: audioBaseUrl + "ot_47.mp3",
+      ot_48: audioBaseUrl + "ot_48.mp3",
+      ot_49: audioBaseUrl + "ot_49.mp3",
+      ot_4a: audioBaseUrl + "ot_4a.mp3",
+      ot_4b: audioBaseUrl + "ot_4b.mp3",
+      ot_77: audioBaseUrl + "ot_77.mp3",
+      ot_79: audioBaseUrl + "ot_79.mp3",
     };
 
     const audioBuffers: Record<string, AudioBuffer | null> = {};
@@ -412,17 +427,32 @@ export async function renderAuthenticAudio(
     }
   };
 
-  // Same audio files mapping as in the player
+  // Get the base URL for direct audio access
+  const getAudioBaseUrl = () => {
+    if (typeof window !== 'undefined') {
+      // In production, use the deployment URL directly
+      if (window.location.hostname.includes('replit.app')) {
+        return window.location.origin + '/audio/';
+      }
+      // In development, use the local URL
+      return window.location.origin + '/audio/';
+    }
+    return '/audio/';
+  };
+
+  const audioBaseUrl = getAudioBaseUrl();
+
+  // Same audio files mapping as in the player - using direct URLs for faster loading
   const audioFiles = {
-    ls_73: "/audio/ls_73.mp3",
-    hs_74: "/audio/hs_74.mp3", 
-    sn_2e: "/audio/sn_2e.mp3", // Ghost note
-    sn_58: "/audio/sn_58.mp3", // Accent
-    re_58: "/audio/re_58.mp3",
-    ag_61: "/audio/ag_61.mp3", // Low bell
-    ag_6f: "/audio/ag_6f.mp3", // High bell
-    ta_58: "/audio/ta_58.mp3",
-    sh_2e: "/audio/sh_2e.mp3",
+    ls_73: audioBaseUrl + "ls_73.mp3",
+    hs_74: audioBaseUrl + "hs_74.mp3", 
+    sn_2e: audioBaseUrl + "sn_2e.mp3", // Ghost note
+    sn_58: audioBaseUrl + "sn_58.mp3", // Accent
+    re_58: audioBaseUrl + "re_58.mp3",
+    ag_61: audioBaseUrl + "ag_61.mp3", // Low bell
+    ag_6f: audioBaseUrl + "ag_6f.mp3", // High bell
+    ta_58: audioBaseUrl + "ta_58.mp3",
+    sh_2e: audioBaseUrl + "sh_2e.mp3",
   };
 
   // Load all audio samples

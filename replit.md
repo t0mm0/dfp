@@ -150,6 +150,8 @@ The application follows a modern full-stack architecture with clear separation b
 - July 04, 2025. Fixed experiment page layout - repositioned download and reset buttons for better accessibility
 - July 04, 2025. Fixed audio download functionality - now uses same authentic drum samples as play button instead of synthetic sounds, ensuring downloaded file matches what users hear
 - July 04, 2025. Fixed logo display issue by importing logo as module through @assets alias for proper build inclusion
+- July 04, 2025. Optimized audio loading performance by switching from API requests to direct URL access - audio files now load directly from deployment URL (e.g., https://md4p.replit.app/audio/ag_61.mp3) for faster loading times
+- July 04, 2025. Enhanced audio loading system to automatically detect deployment vs development environment and use appropriate base URL for maximum performance
 
 ## User Preferences
 
