@@ -164,7 +164,7 @@ export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
 
         {/* Pattern Visualization */}
         <div>
-          <h3 className="street-text font-semibold text-lg mb-3">Pattern Visualization</h3>
+          <h3 className="street-text font-semibold text-lg mb-3">Pattern Visualisation</h3>
           <PatternVisualizer
             pattern={pattern}
             currentStep={currentStep}
