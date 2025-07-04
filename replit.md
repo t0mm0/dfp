@@ -182,6 +182,7 @@ The application follows a modern full-stack architecture with clear separation b
 - July 04, 2025. Updated experiment page to spread circles across full width using justify-between layout instead of centered positioning, removed yellow separators for cleaner full-width appearance
 - July 04, 2025. Fixed protest beats page centering issue and made pattern visualization responsive - replaced horizontal scrolling with 2-row layout (8 beats per row) using justify-between for perfect screen fit on any device
 - July 04, 2025. Added Play button to Create Your Own Beat page action buttons - positioned between existing Reset and Download buttons, includes loading state, play/pause functionality, and uses authentic audio engine
+- July 04, 2025. Fixed slight right shift on protest beats page by adjusting container padding (px-4 sm:px-6 lg:px-8) and removing asymmetrical px-1 padding from pattern visualization rows for perfect centering
 
 ## User Preferences
 

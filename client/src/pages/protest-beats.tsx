@@ -33,13 +33,13 @@ export default function ProtestBeats() {
 
   return (
     <div className="min-h-screen bg-black overflow-x-hidden">
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-8 sm:py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
         <div className="text-center mb-8 sm:mb-12">
           <h1 className="street-text font-bold text-3xl sm:text-4xl md:text-5xl mb-4">Protest Beats</h1>
           <p className="text-lg sm:text-xl text-gray-300">Rhythms of resistance and solidarity for Palestinian freedom</p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-4 sm:gap-8 items-start">
+        <div className="grid md:grid-cols-3 gap-6 sm:gap-8 items-start justify-center">
           <div className="md:col-span-1">
             <h2 className="text-lg sm:text-xl font-bold mb-4 text-white">Select Beat</h2>
             <div className="space-y-2 sm:space-y-3">
@@ -90,7 +90,7 @@ export default function ProtestBeats() {
                 <h4 className="text-white font-semibold mb-4 text-sm sm:text-base">Pattern Visualization:</h4>
                 
                 {/* First row: beats 1-8 */}
-                <div className="flex items-center justify-between mb-2 px-1">
+                <div className="flex items-center justify-between mb-2">
                   {Array.from({ length: 8 }, (_, i) => {
                     const shouldShowSeparator = i % 4 === 0 && i > 0;
                     return (
@@ -114,7 +114,7 @@ export default function ProtestBeats() {
                 </div>
                 
                 {/* Second row: beats 9-16 */}
-                <div className="flex items-center justify-between mb-4 px-1">
+                <div className="flex items-center justify-between mb-4">
                   {Array.from({ length: 8 }, (_, i) => {
                     const beatIndex = i + 8;
                     const shouldShowSeparator = i % 4 === 0 && i > 0;
