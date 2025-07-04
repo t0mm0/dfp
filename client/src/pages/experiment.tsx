@@ -69,109 +69,108 @@ export default function Experiment() {
 
   const downloadAsMP3 = useCallback(async () => {
     try {
-      // Use MediaRecorder with MP3 support where available
-      const stream = new MediaStream();
+      const { Mp3Encoder } = await import('lamejs');
       
-      // Create a temporary audio context for recording
+      // Create audio context
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const destination = audioContext.createMediaStreamDestination();
-      
-      // Generate audio based on the pattern
       const sampleRate = audioContext.sampleRate;
       const durationSeconds = 8; // 8 seconds (2 loops)
       const stepDuration = (60 / tempo) / 4; // 16th note duration
+      const totalSamples = sampleRate * durationSeconds;
       
-      // Create oscillators and gain nodes for different instruments
-      const createSound = (frequency: number, startTime: number, duration: number) => {
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-        
-        oscillator.frequency.setValueAtTime(frequency, startTime);
-        oscillator.connect(gainNode);
-        gainNode.connect(destination);
-        
-        gainNode.gain.setValueAtTime(0, startTime);
-        gainNode.gain.linearRampToValueAtTime(0.2, startTime + 0.01);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
-        
-        oscillator.start(startTime);
-        oscillator.stop(startTime + duration);
-      };
+      // Create audio buffer
+      const buffer = audioContext.createBuffer(1, totalSamples, sampleRate);
+      const channelData = buffer.getChannelData(0);
       
-      // Schedule sounds based on pattern
-      const startTime = audioContext.currentTime + 0.1;
+      // Generate audio based on the pattern
       for (let loop = 0; loop < 2; loop++) {
         for (let step = 0; step < 16; step++) {
-          const time = startTime + (loop * 16 + step) * stepDuration;
+          const startSample = Math.floor((loop * 16 + step) * stepDuration * sampleRate);
           
           // Check each instrument for hits at this step
           Object.entries(patterns).forEach(([instrument, pattern]) => {
             const char = pattern[step];
             if (char && char !== ' ') {
               let frequency = 440; // Default frequency
+              let amplitude = 0.1;
               
               // Set different frequencies for different instruments
               switch (instrument) {
-                case 'ls': frequency = 60; break;   // Low Surdo
-                case 'ms': frequency = 80; break;   // Mid Surdo  
-                case 'hs': frequency = 100; break;  // High Surdo
-                case 're': frequency = 200; break;  // Repi
-                case 'sn': frequency = char === 'X' ? 300 : 200; break; // Snare
-                case 'ta': frequency = 800; break;  // Tamborim
-                case 'ag': frequency = char === 'a' ? 1000 : 1200; break; // Agogo
-                case 'sh': frequency = 5000; break; // Shaker
+                case 'ls': frequency = 60; amplitude = 0.2; break;   // Low Surdo
+                case 'ms': frequency = 80; amplitude = 0.18; break;   // Mid Surdo  
+                case 'hs': frequency = 100; amplitude = 0.16; break;  // High Surdo
+                case 're': frequency = 200; amplitude = 0.14; break;  // Repi
+                case 'sn': frequency = char === 'X' ? 300 : 200; amplitude = char === 'X' ? 0.12 : 0.08; break; // Snare
+                case 'ta': frequency = 800; amplitude = 0.1; break;  // Tamborim
+                case 'ag': frequency = char === 'a' ? 1000 : 1200; amplitude = 0.04; break; // Agogo (very low)
+                case 'sh': frequency = 5000; amplitude = 0.06; break; // Shaker
               }
               
-              createSound(frequency, time, 0.1);
+              // Generate a simple drum-like sound
+              const attackDuration = 0.01;
+              const decayDuration = 0.15;
+              const totalDuration = attackDuration + decayDuration;
+              const soundSamples = Math.floor(totalDuration * sampleRate);
+              
+              for (let i = 0; i < soundSamples && startSample + i < totalSamples; i++) {
+                const t = i / sampleRate;
+                let envelope = 1;
+                
+                if (t < attackDuration) {
+                  envelope = t / attackDuration;
+                } else {
+                  envelope = Math.exp(-(t - attackDuration) / (decayDuration * 0.3));
+                }
+                
+                // Add some noise for more realistic drum sound
+                const noise = (Math.random() - 0.5) * 0.1;
+                const sine = Math.sin(2 * Math.PI * frequency * t);
+                const sample = (sine + noise) * amplitude * envelope;
+                
+                channelData[startSample + i] += sample;
+              }
             }
           });
         }
       }
       
-      // Set up MediaRecorder
-      let mimeType = 'audio/webm';
-      if (MediaRecorder.isTypeSupported('audio/mp4')) {
-        mimeType = 'audio/mp4';
-      } else if (MediaRecorder.isTypeSupported('audio/mpeg')) {
-        mimeType = 'audio/mpeg';
+      // Convert to PCM 16-bit
+      const pcmData = new Int16Array(totalSamples);
+      for (let i = 0; i < totalSamples; i++) {
+        pcmData[i] = Math.max(-32768, Math.min(32767, channelData[i] * 32767));
       }
       
-      const mediaRecorder = new MediaRecorder(destination.stream, { mimeType });
-      const chunks: Blob[] = [];
+      // Encode to MP3
+      const mp3Encoder = new Mp3Encoder(1, sampleRate, 128);
+      const mp3Data = [];
       
-      mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          chunks.push(event.data);
+      const blockSize = 1152;
+      for (let i = 0; i < pcmData.length; i += blockSize) {
+        const block = pcmData.slice(i, i + blockSize);
+        const mp3Block = mp3Encoder.encodeBuffer(block);
+        if (mp3Block.length > 0) {
+          mp3Data.push(mp3Block);
         }
-      };
+      }
       
-      mediaRecorder.onstop = () => {
-        const fileExtension = mimeType.includes('mp4') ? 'mp4' : 
-                             mimeType.includes('mpeg') ? 'mp3' : 'webm';
-        
-        const blob = new Blob(chunks, { type: mimeType });
-        const url = URL.createObjectURL(blob);
-        
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${tuneName.replace(/[^a-zA-Z0-9]/g, '_')}.${fileExtension}`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        
-        audioContext.close();
-      };
+      const mp3Final = mp3Encoder.flush();
+      if (mp3Final.length > 0) {
+        mp3Data.push(mp3Final);
+      }
       
-      // Start recording
-      mediaRecorder.start();
+      // Create blob and download
+      const blob = new Blob(mp3Data, { type: 'audio/mp3' });
+      const url = URL.createObjectURL(blob);
       
-      // Stop recording after the pattern finishes
-      setTimeout(() => {
-        mediaRecorder.stop();
-      }, (durationSeconds + 1) * 1000);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${tuneName.replace(/[^a-zA-Z0-9]/g, '_')}.mp3`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
       
-      alert(`Recording started! Your beat will be downloaded in ${durationSeconds + 1} seconds.`);
+      audioContext.close();
       
     } catch (error) {
       console.error('Error generating audio:', error);
@@ -297,22 +296,20 @@ export default function Experiment() {
                   className="mt-2"
                 />
               </div>
-              <div className="flex items-end gap-2">
-                <Button onClick={resetAll} variant="outline">
-                  <RotateCcw className="mr-2 h-4 w-4" />
-                  Reset All
-                </Button>
-                <Button className="bg-green-600 hover:bg-green-700">
-                  <Save className="mr-2 h-4 w-4" />
-                  Save Beat
-                </Button>
-                <Button 
-                  onClick={downloadAsMP3}
-                  className="bg-blue-600 hover:bg-blue-700"
-                >
-                  <Download className="mr-2 h-4 w-4" />
-                  Download MP3
-                </Button>
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <Button onClick={resetAll} variant="outline" className="flex-1">
+                    <RotateCcw className="mr-2 h-4 w-4" />
+                    Reset All
+                  </Button>
+                  <Button 
+                    onClick={downloadAsMP3}
+                    className="bg-blue-600 hover:bg-blue-700 flex-1"
+                  >
+                    <Download className="mr-2 h-4 w-4" />
+                    Download MP3
+                  </Button>
+                </div>
               </div>
             </div>
           </CardContent>

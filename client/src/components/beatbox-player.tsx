@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Play, Pause, OctagonMinus } from "lucide-react";
 import PatternVisualizer from "./pattern-visualizer";
 import InstrumentToggle from "./instrument-toggle";
@@ -27,7 +28,7 @@ export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
     re: { enabled: true, volume: 85 },
     sn: { enabled: true, volume: 90 },
     ta: { enabled: true, volume: 75 },
-    ag: { enabled: true, volume: 65 },
+    ag: { enabled: true, volume: 25 }, // Very low agogo volume
     sh: { enabled: true, volume: 60 }
   });
 
@@ -82,23 +83,22 @@ export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
         {/* Pattern Selection */}
         <div>
           <h3 className="street-text font-semibold text-lg mb-3">Pattern</h3>
-          <div className="flex flex-wrap gap-2">
-            {Object.keys(tune.patterns).map((patternName) => (
-              <Button
-                key={patternName}
-                variant={selectedPattern === patternName ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedPattern(patternName)}
-                className={
-                  selectedPattern === patternName
-                    ? "bg-red-600 hover:bg-red-700"
-                    : "border-gray-600 text-gray-300 hover:bg-gray-700"
-                }
-              >
-                {patternName}
-              </Button>
-            ))}
-          </div>
+          <Select value={selectedPattern} onValueChange={setSelectedPattern}>
+            <SelectTrigger className="w-full md:w-64 bg-black border-gray-600 text-white">
+              <SelectValue placeholder="Select a pattern" />
+            </SelectTrigger>
+            <SelectContent className="bg-gray-800 border-gray-600">
+              {Object.keys(tune.patterns).map((patternName) => (
+                <SelectItem 
+                  key={patternName} 
+                  value={patternName}
+                  className="text-white hover:bg-gray-700"
+                >
+                  {patternName}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Player Controls */}

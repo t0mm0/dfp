@@ -145,6 +145,11 @@ The application follows a modern full-stack architecture with clear separation b
 - July 04, 2025. Fixed logo path for deployment - moved logo to public directory and updated references
 - July 04, 2025. Added audio preloading system - audio files now load automatically when tune is selected
 - July 04, 2025. Enhanced play button with loading indicator - shows spinner and "Loading Audio..." when files are still loading
+- July 04, 2025. Converted pattern selector from buttons to dropdown for better visibility and usability
+- July 04, 2025. Set default agogo volume to 25% (very low) to prevent overwhelming other instruments
+- July 04, 2025. Fixed experiment page layout - repositioned download and reset buttons for better accessibility
+- July 04, 2025. Enhanced MP3 download functionality using lamejs encoder for proper MP3 generation with authentic drum frequencies
+- July 04, 2025. Fixed logo display issue by copying logo to public directory with simple /logo.png path
 
 ## User Preferences
 
