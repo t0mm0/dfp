@@ -39,7 +39,7 @@ export default function ProtestBeats() {
           <p className="text-lg sm:text-xl text-gray-300">Rhythms of resistance and solidarity for Palestinian freedom</p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-4 sm:gap-8">
+        <div className="grid md:grid-cols-3 gap-4 sm:gap-8 items-start">
           <div className="md:col-span-1">
             <h2 className="text-lg sm:text-xl font-bold mb-4 text-white">Select Beat</h2>
             <div className="space-y-2 sm:space-y-3">
@@ -86,15 +86,17 @@ export default function ProtestBeats() {
                 <p className="text-gray-400 text-sm sm:text-base">{selectedBeat.fullDescription}</p>
               </div>
 
-              <div className="bg-black p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 overflow-x-auto">
+              <div className="bg-black p-3 sm:p-4 rounded-lg mb-4 sm:mb-6">
                 <h4 className="text-white font-semibold mb-4 text-sm sm:text-base">Pattern Visualization:</h4>
-                <div className="flex items-center justify-center gap-0.5 sm:gap-1 mb-4 min-w-max">
-                  {Array.from({ length: 16 }, (_, i) => {
+                
+                {/* First row: beats 1-8 */}
+                <div className="flex items-center justify-between mb-2 px-1">
+                  {Array.from({ length: 8 }, (_, i) => {
                     const shouldShowSeparator = i % 4 === 0 && i > 0;
                     return (
                       <div key={i} className="flex items-center">
                         {shouldShowSeparator && (
-                          <div className="w-0.5 h-4 sm:h-6 bg-yellow-400 mx-0.5 sm:mx-1 shadow-lg shadow-yellow-400/50"></div>
+                          <div className="w-0.5 h-4 sm:h-6 bg-yellow-400 mx-1 shadow-lg shadow-yellow-400/50"></div>
                         )}
                         <div
                           className={`w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200 ${
@@ -105,6 +107,31 @@ export default function ProtestBeats() {
                           title={`Beat ${i + 1}`}
                         >
                           {i + 1}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                
+                {/* Second row: beats 9-16 */}
+                <div className="flex items-center justify-between mb-4 px-1">
+                  {Array.from({ length: 8 }, (_, i) => {
+                    const beatIndex = i + 8;
+                    const shouldShowSeparator = i % 4 === 0 && i > 0;
+                    return (
+                      <div key={beatIndex} className="flex items-center">
+                        {shouldShowSeparator && (
+                          <div className="w-0.5 h-4 sm:h-6 bg-yellow-400 mx-1 shadow-lg shadow-yellow-400/50"></div>
+                        )}
+                        <div
+                          className={`w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200 ${
+                            selectedBeat.pattern[beatIndex] && selectedBeat.pattern[beatIndex] !== ' ' 
+                              ? 'bg-green-500 text-white shadow-lg shadow-green-500/30' 
+                              : 'bg-gray-700 text-gray-400'
+                          }`}
+                          title={`Beat ${beatIndex + 1}`}
+                        >
+                          {beatIndex + 1}
                         </div>
                       </div>
                     );
