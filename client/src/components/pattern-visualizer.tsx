@@ -42,7 +42,7 @@ export default function PatternVisualizer({ pattern, currentStep, instrumentStat
               {row.slice(0, 4).map((stepIndex) => (
                 <div
                   key={stepIndex}
-                  className={`w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200 ${
+                  className={`w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200 ${
                     stepIndex === currentStep
                       ? 'bg-red-500 text-white shadow-lg shadow-red-500/50 scale-110'
                       : getStepState(stepIndex)
@@ -51,7 +51,7 @@ export default function PatternVisualizer({ pattern, currentStep, instrumentStat
                   }`}
                   title={`Step ${stepIndex + 1}`}
                 >
-                  {(stepIndex % 16) + 1}
+                  {((stepIndex % 4) + 1)}
                 </div>
               ))}
             </div>
@@ -64,7 +64,7 @@ export default function PatternVisualizer({ pattern, currentStep, instrumentStat
               {row.slice(4, 8).map((stepIndex) => (
                 <div
                   key={stepIndex}
-                  className={`w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200 ${
+                  className={`w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200 ${
                     stepIndex === currentStep
                       ? 'bg-red-500 text-white shadow-lg shadow-red-500/50 scale-110'
                       : getStepState(stepIndex)
@@ -73,7 +73,7 @@ export default function PatternVisualizer({ pattern, currentStep, instrumentStat
                   }`}
                   title={`Step ${stepIndex + 1}`}
                 >
-                  {(stepIndex % 16) + 1}
+                  {((stepIndex % 4) + 1)}
                 </div>
               ))}
             </div>
@@ -86,7 +86,7 @@ export default function PatternVisualizer({ pattern, currentStep, instrumentStat
               {row.slice(8, 12).map((stepIndex) => (
                 <div
                   key={stepIndex}
-                  className={`w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200 ${
+                  className={`w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200 ${
                     stepIndex === currentStep
                       ? 'bg-red-500 text-white shadow-lg shadow-red-500/50 scale-110'
                       : getStepState(stepIndex)
@@ -95,7 +95,7 @@ export default function PatternVisualizer({ pattern, currentStep, instrumentStat
                   }`}
                   title={`Step ${stepIndex + 1}`}
                 >
-                  {(stepIndex % 16) + 1}
+                  {((stepIndex % 4) + 1)}
                 </div>
               ))}
             </div>
@@ -108,7 +108,7 @@ export default function PatternVisualizer({ pattern, currentStep, instrumentStat
               {row.slice(12, 16).map((stepIndex) => (
                 <div
                   key={stepIndex}
-                  className={`w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200 ${
+                  className={`w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200 ${
                     stepIndex === currentStep
                       ? 'bg-red-500 text-white shadow-lg shadow-red-500/50 scale-110'
                       : getStepState(stepIndex)
@@ -117,7 +117,7 @@ export default function PatternVisualizer({ pattern, currentStep, instrumentStat
                   }`}
                   title={`Step ${stepIndex + 1}`}
                 >
-                  {(stepIndex % 16) + 1}
+                  {((stepIndex % 4) + 1)}
                 </div>
               ))}
             </div>

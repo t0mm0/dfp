@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,11 +6,13 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import BeatboxPlayer from "@/components/beatbox-player";
 import { renderAuthenticAudio } from "@/lib/audio-engine";
-import { Play, RotateCcw, Save, Download } from "lucide-react";
+import { Play, RotateCcw, Save, Download, Pin, PinOff } from "lucide-react";
 
 export default function Experiment() {
   const [tuneName, setTuneName] = useState("My Custom Beat");
   const [tempo, setTempo] = useState(120);
+  const [isPinned, setIsPinned] = useState(false);
+  const playerRef = useRef<any>(null);
   const [patterns, setPatterns] = useState({
     ls: "X   X   X   X   ", // Low Surdo
     ms: "  X   X   X   X ", // Mid Surdo
@@ -421,16 +423,33 @@ export default function Experiment() {
               </div>
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">
+                  <Button 
+                    onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}
+                    className="bg-green-600 hover:bg-green-700"
+                  >
+                    <Play className="mr-2 h-4 w-4" />
+                    Go to Player
+                  </Button>
+                  <Button 
+                    onClick={downloadAsMP3}
+                    className="bg-blue-600 hover:bg-blue-700"
+                  >
+                    <Download className="mr-2 h-4 w-4" />
+                    Download
+                  </Button>
+                </div>
+                <div className="flex items-center gap-2">
                   <Button onClick={resetAll} variant="outline" className="flex-1">
                     <RotateCcw className="mr-2 h-4 w-4" />
                     Reset All
                   </Button>
                   <Button 
-                    onClick={downloadAsMP3}
-                    className="bg-blue-600 hover:bg-blue-700 flex-1"
+                    onClick={() => setIsPinned(!isPinned)}
+                    variant="outline"
+                    className={isPinned ? "bg-yellow-600 hover:bg-yellow-700" : ""}
                   >
-                    <Download className="mr-2 h-4 w-4" />
-                    Download Audio
+                    {isPinned ? <PinOff className="mr-2 h-4 w-4" /> : <Pin className="mr-2 h-4 w-4" />}
+                    {isPinned ? "Unpin" : "Pin"} Player
                   </Button>
                 </div>
               </div>
@@ -446,22 +465,35 @@ export default function Experiment() {
         </div>
 
         {/* Player */}
-        <Card className="bg-gray-800 border-gray-700">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Play className="h-5 w-5" />
-              Test Your Beat
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <BeatboxPlayer 
-              tune={experimentTune} 
-            />
-          </CardContent>
-        </Card>
+        <div className={isPinned ? "fixed bottom-0 left-0 right-0 z-50 shadow-2xl" : ""}>
+          <Card className={`bg-gray-800 border-gray-700 ${isPinned ? "rounded-none border-t" : ""}`}>
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Play className="h-5 w-5" />
+                  Test Your Beat
+                </div>
+                {isPinned && (
+                  <Button 
+                    onClick={() => setIsPinned(false)}
+                    variant="outline"
+                    size="sm"
+                  >
+                    <PinOff className="h-4 w-4" />
+                  </Button>
+                )}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <BeatboxPlayer 
+                tune={experimentTune} 
+              />
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Instructions */}
-        <Card className="bg-gray-800 border-gray-700 mt-8">
+        <Card className={`bg-gray-800 border-gray-700 mt-8 ${isPinned ? "mb-32" : ""}`}>
           <CardHeader>
             <CardTitle>How to Use</CardTitle>
           </CardHeader>

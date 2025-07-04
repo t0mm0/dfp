@@ -33,7 +33,7 @@ export default function Navigation() {
               <img
                 src={logoSrc}
                 alt="Drummers For Palestine"
-                className="h-8 w-8 md:h-10 md:w-10 drop-shadow-lg"
+                className="h-8 md:h-10 w-auto drop-shadow-lg"
               />
               <h1 className="street-text text-lg md:text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                 Drummers For Palestine

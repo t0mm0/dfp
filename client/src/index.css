@@ -135,7 +135,7 @@
   }
   
   .pattern-beat-circle {
-    @apply w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 transform;
+    @apply w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 transform;
   }
   
   .pattern-beat-circle:hover {

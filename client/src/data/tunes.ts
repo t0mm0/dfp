@@ -685,10 +685,10 @@ export const tunes: Tune[] = [
   },
   {
     name: "Samba Reggae",
-    displayName: "Samba Reggae",
+    displayName: "Samba Fusion Reggae",
     categories: ["core", "medium"],
     speed: 120,
-    description: "A fusion of samba and reggae with food themes.",
+    description: "A fusion of samba fusion and reggae with food themes.",
     patterns: {
       Tune: {
         loop: true,
@@ -702,8 +702,8 @@ export const tunes: Tune[] = [
         sh: "................",
         mnemonics: {
           ls: "I quite like re-ggae",
-          ms: "Sam-ba re-ggae",
-          hs: "Time to play sam-ba re-ggae",
+          ms: "Samba fusion re-ggae",
+          hs: "Time to play samba fusion re-ggae",
           re: "Can I Get a Bit of Re-ggae",
           sn: "Bo . . ssa . . for . . . re . . ggae . .",
           ta: "Cla-ve for re-ggae",

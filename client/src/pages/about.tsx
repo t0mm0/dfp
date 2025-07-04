@@ -11,7 +11,7 @@ export default function About() {
             <img 
               src="/logo.png" 
               alt="Drummers For Palestine" 
-              className="w-32 h-32 md:w-48 md:h-48 lg:w-64 lg:h-64 mx-auto object-contain drop-shadow-2xl" 
+              className="w-32 md:w-48 lg:w-64 h-auto mx-auto object-contain drop-shadow-2xl" 
             />
             <div className="absolute inset-0 bg-gradient-to-br from-red-500/20 to-green-500/20 rounded-full blur-3xl"></div>
           </div>
