@@ -69,23 +69,19 @@ export default function Experiment() {
 
   const downloadAsMP3 = useCallback(async () => {
     try {
-      const { Mp3Encoder } = await import('lamejs');
-      
       // Create audio context
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       const sampleRate = audioContext.sampleRate;
       const durationSeconds = 8; // 8 seconds (2 loops)
       const stepDuration = (60 / tempo) / 4; // 16th note duration
-      const totalSamples = sampleRate * durationSeconds;
       
-      // Create audio buffer
-      const buffer = audioContext.createBuffer(1, totalSamples, sampleRate);
-      const channelData = buffer.getChannelData(0);
+      // Create offline context for rendering
+      const offlineContext = new OfflineAudioContext(1, sampleRate * durationSeconds, sampleRate);
       
       // Generate audio based on the pattern
       for (let loop = 0; loop < 2; loop++) {
         for (let step = 0; step < 16; step++) {
-          const startSample = Math.floor((loop * 16 + step) * stepDuration * sampleRate);
+          const startTime = (loop * 16 + step) * stepDuration;
           
           // Check each instrument for hits at this step
           Object.entries(patterns).forEach(([instrument, pattern]) => {
@@ -106,65 +102,40 @@ export default function Experiment() {
                 case 'sh': frequency = 5000; amplitude = 0.06; break; // Shaker
               }
               
-              // Generate a simple drum-like sound
+              // Create oscillator and gain for this hit
+              const oscillator = offlineContext.createOscillator();
+              const gainNode = offlineContext.createGain();
+              
+              oscillator.frequency.setValueAtTime(frequency, startTime);
+              oscillator.connect(gainNode);
+              gainNode.connect(offlineContext.destination);
+              
+              // Set envelope
               const attackDuration = 0.01;
               const decayDuration = 0.15;
-              const totalDuration = attackDuration + decayDuration;
-              const soundSamples = Math.floor(totalDuration * sampleRate);
               
-              for (let i = 0; i < soundSamples && startSample + i < totalSamples; i++) {
-                const t = i / sampleRate;
-                let envelope = 1;
-                
-                if (t < attackDuration) {
-                  envelope = t / attackDuration;
-                } else {
-                  envelope = Math.exp(-(t - attackDuration) / (decayDuration * 0.3));
-                }
-                
-                // Add some noise for more realistic drum sound
-                const noise = (Math.random() - 0.5) * 0.1;
-                const sine = Math.sin(2 * Math.PI * frequency * t);
-                const sample = (sine + noise) * amplitude * envelope;
-                
-                channelData[startSample + i] += sample;
-              }
+              gainNode.gain.setValueAtTime(0, startTime);
+              gainNode.gain.linearRampToValueAtTime(amplitude, startTime + attackDuration);
+              gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + attackDuration + decayDuration);
+              
+              oscillator.start(startTime);
+              oscillator.stop(startTime + attackDuration + decayDuration);
             }
           });
         }
       }
       
-      // Convert to PCM 16-bit
-      const pcmData = new Int16Array(totalSamples);
-      for (let i = 0; i < totalSamples; i++) {
-        pcmData[i] = Math.max(-32768, Math.min(32767, channelData[i] * 32767));
-      }
+      // Render the audio
+      const renderedBuffer = await offlineContext.startRendering();
       
-      // Encode to MP3
-      const mp3Encoder = new Mp3Encoder(1, sampleRate, 128);
-      const mp3Data = [];
-      
-      const blockSize = 1152;
-      for (let i = 0; i < pcmData.length; i += blockSize) {
-        const block = pcmData.slice(i, i + blockSize);
-        const mp3Block = mp3Encoder.encodeBuffer(block);
-        if (mp3Block.length > 0) {
-          mp3Data.push(mp3Block);
-        }
-      }
-      
-      const mp3Final = mp3Encoder.flush();
-      if (mp3Final.length > 0) {
-        mp3Data.push(mp3Final);
-      }
-      
-      // Create blob and download
-      const blob = new Blob(mp3Data, { type: 'audio/mp3' });
+      // Convert to WAV format (simpler than MP3)
+      const wavData = audioBufferToWav(renderedBuffer);
+      const blob = new Blob([wavData], { type: 'audio/wav' });
       const url = URL.createObjectURL(blob);
       
       const a = document.createElement('a');
       a.href = url;
-      a.download = `${tuneName.replace(/[^a-zA-Z0-9]/g, '_')}.mp3`;
+      a.download = `${tuneName.replace(/[^a-zA-Z0-9]/g, '_')}.wav`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -177,6 +148,54 @@ export default function Experiment() {
       alert('Error generating audio file. Please try again.');
     }
   }, [tuneName, patterns, tempo]);
+
+  // Helper function to convert AudioBuffer to WAV
+  const audioBufferToWav = (buffer: AudioBuffer): ArrayBuffer => {
+    const length = buffer.length;
+    const numberOfChannels = buffer.numberOfChannels;
+    const sampleRate = buffer.sampleRate;
+    const bytesPerSample = 2;
+    const blockAlign = numberOfChannels * bytesPerSample;
+    const byteRate = sampleRate * blockAlign;
+    const dataSize = length * blockAlign;
+    const bufferSize = 44 + dataSize;
+    
+    const arrayBuffer = new ArrayBuffer(bufferSize);
+    const view = new DataView(arrayBuffer);
+    
+    // WAV header
+    const writeString = (offset: number, string: string) => {
+      for (let i = 0; i < string.length; i++) {
+        view.setUint8(offset + i, string.charCodeAt(i));
+      }
+    };
+    
+    writeString(0, 'RIFF');
+    view.setUint32(4, bufferSize - 8, true);
+    writeString(8, 'WAVE');
+    writeString(12, 'fmt ');
+    view.setUint32(16, 16, true);
+    view.setUint16(20, 1, true);
+    view.setUint16(22, numberOfChannels, true);
+    view.setUint32(24, sampleRate, true);
+    view.setUint32(28, byteRate, true);
+    view.setUint16(32, blockAlign, true);
+    view.setUint16(34, 16, true);
+    writeString(36, 'data');
+    view.setUint32(40, dataSize, true);
+    
+    // Convert float samples to 16-bit PCM
+    let offset = 44;
+    for (let i = 0; i < length; i++) {
+      for (let channel = 0; channel < numberOfChannels; channel++) {
+        const sample = Math.max(-1, Math.min(1, buffer.getChannelData(channel)[i]));
+        view.setInt16(offset, sample * 0x7FFF, true);
+        offset += 2;
+      }
+    }
+    
+    return arrayBuffer;
+  };
 
   // Convert experiment to tune format for the player
   const experimentTune = {
@@ -307,7 +326,7 @@ export default function Experiment() {
                     className="bg-blue-600 hover:bg-blue-700 flex-1"
                   >
                     <Download className="mr-2 h-4 w-4" />
-                    Download MP3
+                    Download Audio
                   </Button>
                 </div>
               </div>
