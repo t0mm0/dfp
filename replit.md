@@ -178,6 +178,7 @@ The application follows a modern full-stack architecture with clear separation b
 - July 04, 2025. Added pattern length selection (8, 16, 24, 32, 40, 48, 56, 64 beats) with dynamic pattern extension/truncation
 - July 04, 2025. Removed pin player functionality and "Go to Player" button from experiment page as requested
 - July 04, 2025. Optimized experiment page for mobile with responsive circle sizing and overflow protection
+- July 04, 2025. Maximized screen width usage on experiment page - removed max-width constraints, increased circle sizes (w-6 h-6 to w-8 h-8), and improved spacing for better visual presence
 
 ## User Preferences
 

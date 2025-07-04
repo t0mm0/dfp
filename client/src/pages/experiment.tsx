@@ -224,20 +224,20 @@ export default function Experiment() {
         </CardHeader>
         <CardContent>
           {/* Pattern grid with 8 beats per row */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             {rows.map((row, rowIndex) => (
-              <div key={rowIndex} className="flex items-center justify-center gap-0.5 md:gap-1 overflow-x-auto">
+              <div key={rowIndex} className="flex items-center justify-center gap-1 sm:gap-2 overflow-x-auto">
                 {row.map((beatIndex) => {
                   const shouldShowSeparator = beatIndex % 4 === 0 && beatIndex > 0 && beatIndex % 8 !== 0;
                   return (
                     <div key={beatIndex} className="flex items-center">
                       {shouldShowSeparator && (
-                        <div className="w-0.5 h-4 bg-yellow-400 mx-0.5 shadow-lg shadow-yellow-400/50"></div>
+                        <div className="w-0.5 h-6 bg-yellow-400 mx-1 shadow-lg shadow-yellow-400/50"></div>
                       )}
                       <div className="flex flex-col items-center">
                         <div className="text-xs text-gray-500 mb-1">{beatIndex + 1}</div>
                         <button
-                          className={`w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 border rounded-full text-xs font-bold transition-all duration-200 ${
+                          className={`w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 border rounded-full text-xs font-bold transition-all duration-200 ${
                             pattern[beatIndex] === ' '
                               ? 'border-gray-600 bg-gray-800 hover:bg-gray-700 text-gray-400'
                               : 'border-green-400 bg-green-500 text-white shadow-lg shadow-green-500/30'
@@ -283,7 +283,7 @@ export default function Experiment() {
 
   return (
     <div className="min-h-screen bg-black overflow-x-hidden">
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-8 sm:py-16">
+      <div className="w-full max-w-none mx-auto px-2 sm:px-3 lg:px-4 py-8 sm:py-16">
         <div className="text-center mb-8 sm:mb-12">
           <h1 className="street-text font-bold text-3xl sm:text-4xl md:text-5xl mb-4">Create Your Own Beat</h1>
           <p className="text-lg sm:text-xl text-gray-300">Design custom rhythms for Palestinian solidarity</p>
