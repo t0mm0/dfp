@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Drum, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logoSrc from "@assets/logo-removebg-preview_1751573624346.png";
+import logoSrc from "/logo.png";
 
 export default function Navigation() {
   const [location] = useLocation();
@@ -26,8 +26,15 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center space-x-3 text-white hover:text-white transition-colors">
-              <img src={logoSrc} alt="Drummers For Palestine" className="h-10 w-auto" />
+            <Link
+              href="/"
+              className="flex items-center space-x-3 text-white hover:text-white transition-colors"
+            >
+              <img
+                src={logoSrc}
+                alt="Drummers For Palestine"
+                className="h-10 w-auto"
+              />
               <h1 className="street-text text-xl font-bold">
                 Drummers For Palestine
               </h1>
@@ -63,7 +70,11 @@ export default function Navigation() {
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="text-gray-400 hover:text-white"
             >
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {mobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </Button>
           </div>
         </div>
