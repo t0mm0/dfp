@@ -32,7 +32,7 @@ export default function PatternVisualizer({ pattern, currentStep, instrumentStat
   }
 
   return (
-    <div className="bg-gradient-to-br from-gray-900 via-black to-gray-900 p-2 md:p-4 rounded-xl shadow-2xl border border-gray-800 overflow-x-auto">
+    <div className="bg-gradient-to-br from-gray-900 via-black to-gray-900 p-1 md:p-2 rounded-xl shadow-2xl border border-gray-800 overflow-x-auto">
       {rows.map((row, rowIndex) => (
         <div key={rowIndex} className="mb-4">
           {/* Beat groupings with separators */}

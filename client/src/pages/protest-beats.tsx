@@ -33,7 +33,7 @@ export default function ProtestBeats() {
 
   return (
     <div className="min-h-screen bg-black overflow-x-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
+      <div className="max-w-7xl mx-auto px-2 sm:px-3 lg:px-4 py-8 sm:py-16">
         <div className="text-center mb-8 sm:mb-12">
           <h1 className="street-text font-bold text-3xl sm:text-4xl md:text-5xl mb-4">Protest Beats</h1>
           <p className="text-lg sm:text-xl text-gray-300">Rhythms of resistance and solidarity for Palestinian freedom</p>

@@ -8,7 +8,7 @@ export default function Tunes() {
 
   return (
     <div className="min-h-screen bg-black">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-7xl mx-auto px-2 sm:px-3 lg:px-4 py-16">
         <div className="text-center mb-12">
           <h1 className="street-text font-bold text-4xl md:text-5xl mb-4">Traditional Tunes</h1>
           <p className="text-xl text-gray-300">Master the classics of samba resistance</p>
