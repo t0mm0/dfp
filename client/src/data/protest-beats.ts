@@ -60,7 +60,7 @@ export const protestBeats: ProtestBeat[] = [
     description: "Continuous hi-hat pulse on every count",
     fullDescription:
       "Continuous hi-hat pulse on every count. Maximum energy and drive.",
-    pattern: "X XX X X XX X X",
+    pattern: "X   XX  X  X   XX  X  X X",
     difficulty: "Medium",
     tempo: 110,
     imageUrl: "",
