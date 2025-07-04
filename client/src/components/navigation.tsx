@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Drum, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logoSrc from "@assets/logo-removebg-preview_1751573624346.png";
 
 export default function Navigation() {
   const [location] = useLocation();
@@ -26,7 +27,7 @@ export default function Navigation() {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-3 text-white hover:text-white transition-colors">
-              <img src="/logo.png" alt="Drummers For Palestine" className="h-10 w-auto" />
+              <img src={logoSrc} alt="Drummers For Palestine" className="h-10 w-auto" />
               <h1 className="street-text text-xl font-bold">
                 Drummers For Palestine
               </h1>

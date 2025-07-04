@@ -149,7 +149,7 @@ The application follows a modern full-stack architecture with clear separation b
 - July 04, 2025. Set default agogo volume to 25% (very low) to prevent overwhelming other instruments
 - July 04, 2025. Fixed experiment page layout - repositioned download and reset buttons for better accessibility
 - July 04, 2025. Enhanced MP3 download functionality using lamejs encoder for proper MP3 generation with authentic drum frequencies
-- July 04, 2025. Fixed logo display issue by copying logo to public directory with simple /logo.png path
+- July 04, 2025. Fixed logo display issue by importing logo as module through @assets alias for proper build inclusion
 
 ## User Preferences
 
