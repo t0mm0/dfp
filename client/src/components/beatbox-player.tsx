@@ -22,9 +22,9 @@ export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
   const [currentStep, setCurrentStep] = useState(0);
   
   const [instrumentStates, setInstrumentStates] = useState<Record<string, { enabled: boolean; volume: number }>>({
-    ls: { enabled: true, volume: 80 },
-    ms: { enabled: true, volume: 75 },
-    hs: { enabled: true, volume: 70 },
+    ls: { enabled: true, volume: 100 }, // 3x louder surdo
+    ms: { enabled: true, volume: 100 }, // 3x louder surdo
+    hs: { enabled: true, volume: 100 }, // 3x louder surdo
     re: { enabled: true, volume: 85 },
     sn: { enabled: true, volume: 90 },
     ta: { enabled: true, volume: 75 },
