@@ -140,6 +140,11 @@ The application follows a modern full-stack architecture with clear separation b
 - July 03, 2025. Increased tempo range minimum to 40 BPM to accommodate slower practice speeds
 - July 03, 2025. Added MP3 download functionality to experiment page using lamejs encoder - users can now download custom beats as MP3 files
 - July 03, 2025. Enhanced pattern playback to properly handle snare ghost notes ('.' character) alongside accent hits ('X' character)
+- July 04, 2025. Fixed audio file serving issue - audio files now properly served with correct MIME type (audio/mpeg) instead of HTML
+- July 04, 2025. Added comprehensive audio file mapping - system now uses all 59 available authentic drum samples
+- July 04, 2025. Fixed logo path for deployment - moved logo to public directory and updated references
+- July 04, 2025. Added audio preloading system - audio files now load automatically when tune is selected
+- July 04, 2025. Enhanced play button with loading indicator - shows spinner and "Loading Audio..." when files are still loading
 
 ## User Preferences
 

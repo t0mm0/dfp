@@ -39,7 +39,7 @@ export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
     }
   }, [tune, selectedPattern]);
 
-  const { isPlaying, play, pause, stop } = useAudioEngine({
+  const { isPlaying, isAudioLoaded, play, pause, stop } = useAudioEngine({
     tune,
     pattern: selectedPattern,
     tempo,
@@ -107,9 +107,15 @@ export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
           <div className="flex flex-wrap gap-4 items-center">
             <Button
               onClick={togglePlayPause}
-              className="bg-red-600 hover:bg-red-700 text-white"
+              disabled={!isAudioLoaded}
+              className="bg-red-600 hover:bg-red-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isPlaying ? (
+              {!isAudioLoaded ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Loading Audio...
+                </>
+              ) : isPlaying ? (
                 <>
                   <Pause className="mr-2 h-4 w-4" />
                   Pause

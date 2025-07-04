@@ -20,22 +20,29 @@ export function useAudioEngine({
 }: AudioEngineOptions) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
+  const [isAudioLoaded, setIsAudioLoaded] = useState(false);
   const audioContextRef = useRef<AudioContext | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const soundsRef = useRef<Record<string, AudioBuffer>>({});
+  const audioLoadedRef = useRef<boolean>(false);
 
-  // Initialize audio context
+  // Initialize audio context and preload samples
   const initializeAudio = useCallback(async () => {
     if (!audioContextRef.current) {
       audioContextRef.current = new (window.AudioContext ||
         (window as any).webkitAudioContext)();
-
-      // Load actual audio samples
-      await loadAudioSamples();
     }
 
     if (audioContextRef.current.state === "suspended") {
       await audioContextRef.current.resume();
+    }
+
+    // Load audio samples if not already loaded
+    if (!audioLoadedRef.current) {
+      setIsAudioLoaded(false);
+      await loadAudioSamples();
+      audioLoadedRef.current = true;
+      setIsAudioLoaded(true);
     }
   }, []);
 
@@ -306,8 +313,11 @@ export function useAudioEngine({
   // Start playback
   const play = useCallback(async () => {
     await initializeAudio();
-    setIsPlaying(true);
-  }, [initializeAudio]);
+    // Only start playing if audio is loaded
+    if (isAudioLoaded) {
+      setIsPlaying(true);
+    }
+  }, [initializeAudio, isAudioLoaded]);
 
   // Pause playback
   const pause = useCallback(() => {
@@ -354,6 +364,11 @@ export function useAudioEngine({
     onStepChange(0);
   }, [patternName, onStepChange]);
 
+  // Preload audio when tune changes
+  useEffect(() => {
+    initializeAudio();
+  }, [tune, initializeAudio]);
+
   // Cleanup
   useEffect(() => {
     return () => {
@@ -366,6 +381,7 @@ export function useAudioEngine({
   return {
     isPlaying,
     currentStep,
+    isAudioLoaded,
     play,
     pause,
     stop,
