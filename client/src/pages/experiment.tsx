@@ -226,44 +226,38 @@ export default function Experiment() {
           {/* Pattern grid with 8 beats per row */}
           <div className="space-y-2">
             {rows.map((row, rowIndex) => (
-              <div key={rowIndex} className="flex items-center justify-center gap-1 sm:gap-2 overflow-x-auto">
+              <div key={rowIndex} className="flex items-center justify-between overflow-x-auto px-2 sm:px-4">
                 {row.map((beatIndex) => {
-                  const shouldShowSeparator = beatIndex % 4 === 0 && beatIndex > 0 && beatIndex % 8 !== 0;
                   return (
-                    <div key={beatIndex} className="flex items-center">
-                      {shouldShowSeparator && (
-                        <div className="w-0.5 h-6 bg-yellow-400 mx-1 shadow-lg shadow-yellow-400/50"></div>
-                      )}
-                      <div className="flex flex-col items-center">
-                        <div className="text-xs text-gray-500 mb-1">{beatIndex + 1}</div>
-                        <button
-                          className={`w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 border rounded-full text-xs font-bold transition-all duration-200 ${
-                            pattern[beatIndex] === ' '
-                              ? 'border-gray-600 bg-gray-800 hover:bg-gray-700 text-gray-400'
-                              : 'border-green-400 bg-green-500 text-white shadow-lg shadow-green-500/30'
-                          } focus:ring-2 focus:ring-white focus:outline-none`}
-                          onClick={() => {
-                            const currentChar = pattern[beatIndex];
-                            let nextChar = ' ';
-                            
-                            if (instrument.key === 'ag') {
-                              if (currentChar === ' ') nextChar = 'a';
-                              else if (currentChar === 'a') nextChar = 'o';
-                              else nextChar = ' ';
-                            } else if (instrument.key === 'sn') {
-                              if (currentChar === ' ') nextChar = '.';
-                              else if (currentChar === '.') nextChar = 'X';
-                              else nextChar = ' ';
-                            } else {
-                              nextChar = currentChar === 'X' ? ' ' : 'X';
-                            }
-                            
-                            updatePattern(instrument.key, beatIndex, nextChar);
-                          }}
-                        >
-                          {pattern[beatIndex] === ' ' ? '·' : pattern[beatIndex]}
-                        </button>
-                      </div>
+                    <div key={beatIndex} className="flex flex-col items-center">
+                      <div className="text-xs text-gray-500 mb-1">{beatIndex + 1}</div>
+                      <button
+                        className={`w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 border rounded-full text-xs font-bold transition-all duration-200 ${
+                          pattern[beatIndex] === ' '
+                            ? 'border-gray-600 bg-gray-800 hover:bg-gray-700 text-gray-400'
+                            : 'border-green-400 bg-green-500 text-white shadow-lg shadow-green-500/30'
+                        } focus:ring-2 focus:ring-white focus:outline-none`}
+                        onClick={() => {
+                          const currentChar = pattern[beatIndex];
+                          let nextChar = ' ';
+                          
+                          if (instrument.key === 'ag') {
+                            if (currentChar === ' ') nextChar = 'a';
+                            else if (currentChar === 'a') nextChar = 'o';
+                            else nextChar = ' ';
+                          } else if (instrument.key === 'sn') {
+                            if (currentChar === ' ') nextChar = '.';
+                            else if (currentChar === '.') nextChar = 'X';
+                            else nextChar = ' ';
+                          } else {
+                            nextChar = currentChar === 'X' ? ' ' : 'X';
+                          }
+                          
+                          updatePattern(instrument.key, beatIndex, nextChar);
+                        }}
+                      >
+                        {pattern[beatIndex] === ' ' ? '·' : pattern[beatIndex]}
+                      </button>
                     </div>
                   );
                 })}
