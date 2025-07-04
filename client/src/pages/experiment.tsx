@@ -1,18 +1,17 @@
-import { useState, useCallback, useMemo, useRef } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import BeatboxPlayer from "@/components/beatbox-player";
 import { renderAuthenticAudio } from "@/lib/audio-engine";
-import { Play, RotateCcw, Save, Download, Pin, PinOff } from "lucide-react";
+import { RotateCcw, Download } from "lucide-react";
 
 export default function Experiment() {
   const [tuneName, setTuneName] = useState("My Custom Beat");
   const [tempo, setTempo] = useState(120);
-  const [isPinned, setIsPinned] = useState(false);
-  const playerRef = useRef<any>(null);
+  const [patternLength, setPatternLength] = useState(16);
   const [patterns, setPatterns] = useState({
     ls: "X   X   X   X   ", // Low Surdo
     ms: "  X   X   X   X ", // Mid Surdo
@@ -50,24 +49,43 @@ export default function Experiment() {
       const key = instrument as keyof typeof patterns;
       return {
         ...prev,
-        [key]: "                " // 16 spaces
+        [key]: " ".repeat(patternLength)
       };
     });
-  }, []);
+  }, [patternLength]);
 
   const resetAll = useCallback(() => {
+    const basePattern = " ".repeat(patternLength);
     setPatterns({
-      ls: "X   X   X   X   ",
-      ms: "  X   X   X   X ",
-      hs: "    X       X   ",
-      re: "  X   X   X   X ",
-      sn: ". X . X . X . X ",
-      ta: "X X X X X X X X ",
-      ag: "a   o   a   o   ",
-      sh: ". . . . . . . . "
+      ls: basePattern,
+      ms: basePattern,
+      hs: basePattern,
+      re: basePattern,
+      sn: basePattern,
+      ta: basePattern,
+      ag: basePattern,
+      sh: basePattern
     });
     setTempo(120);
     setTuneName("My Custom Beat");
+  }, [patternLength]);
+
+  const updatePatternLength = useCallback((newLength: number) => {
+    setPatternLength(newLength);
+    setPatterns(prev => {
+      const result: any = {};
+      Object.keys(prev).forEach(key => {
+        const currentPattern = prev[key as keyof typeof prev];
+        if (newLength > currentPattern.length) {
+          // Extend pattern with spaces
+          result[key] = currentPattern + " ".repeat(newLength - currentPattern.length);
+        } else {
+          // Truncate pattern
+          result[key] = currentPattern.substring(0, newLength);
+        }
+      });
+      return result;
+    });
   }, []);
 
   // Convert experiment to tune format for the player
@@ -180,6 +198,12 @@ export default function Experiment() {
   const PatternEditor = ({ instrument }: { instrument: any }) => {
     const pattern = patterns[instrument.key as keyof typeof patterns];
     
+    // Create rows of 8 beats each
+    const rows = [];
+    for (let i = 0; i < patternLength; i += 8) {
+      rows.push(Array.from({ length: Math.min(8, patternLength - i) }, (_, j) => i + j));
+    }
+    
     return (
       <Card className="bg-gray-800 border-gray-700">
         <CardHeader className="pb-3">
@@ -199,180 +223,52 @@ export default function Experiment() {
           </div>
         </CardHeader>
         <CardContent>
-          {/* Beat groupings with separators - mobile friendly */}
-          <div className="flex flex-wrap items-center gap-1 mb-2">
-            {/* Group 1 (beats 1-4) */}
-            <div className="flex gap-1">
-              {Array.from({ length: 4 }, (_, i) => (
-                <div key={i} className="flex flex-col items-center">
-                  <div className="text-xs text-gray-500 mb-1">{i + 1}</div>
-                  <button
-                    className={`w-6 h-6 md:w-8 md:h-8 border rounded-full text-xs font-bold transition-all duration-200 ${
-                      pattern[i] === ' '
-                        ? 'border-gray-600 bg-gray-800 hover:bg-gray-700 text-gray-400'
-                        : 'border-green-400 bg-green-500 text-white shadow-lg shadow-green-500/30'
-                    } focus:ring-2 focus:ring-white focus:outline-none`}
-                    onClick={() => {
-                      const currentChar = pattern[i];
-                      let nextChar = ' ';
-                      
-                      if (instrument.key === 'ag') {
-                        if (currentChar === ' ') nextChar = 'a';
-                        else if (currentChar === 'a') nextChar = 'o';
-                        else nextChar = ' ';
-                      } else if (instrument.key === 'sn') {
-                        if (currentChar === ' ') nextChar = '.';
-                        else if (currentChar === '.') nextChar = 'X';
-                        else nextChar = ' ';
-                      } else {
-                        nextChar = currentChar === 'X' ? ' ' : 'X';
-                      }
-                      
-                      updatePattern(instrument.key, i, nextChar);
-                    }}
-                  >
-                    {pattern[i] === ' ' ? '·' : pattern[i]}
-                  </button>
-                </div>
-              ))}
-            </div>
-            
-            {/* Vertical separator */}
-            <div className="w-0.5 h-8 bg-yellow-400 mx-1 shadow-lg shadow-yellow-400/50"></div>
-            
-            {/* Group 2 (beats 5-8) */}
-            <div className="flex gap-1">
-              {Array.from({ length: 4 }, (_, i) => {
-                const index = i + 4;
-                return (
-                  <div key={index} className="flex flex-col items-center">
-                    <div className="text-xs text-gray-500 mb-1">{index + 1}</div>
-                    <button
-                      className={`w-6 h-6 md:w-8 md:h-8 border rounded-full text-xs font-bold transition-all duration-200 ${
-                        pattern[index] === ' '
-                          ? 'border-gray-600 bg-gray-800 hover:bg-gray-700 text-gray-400'
-                          : 'border-green-400 bg-green-500 text-white shadow-lg shadow-green-500/30'
-                      } focus:ring-2 focus:ring-white focus:outline-none`}
-                      onClick={() => {
-                        const currentChar = pattern[index];
-                        let nextChar = ' ';
-                        
-                        if (instrument.key === 'ag') {
-                          if (currentChar === ' ') nextChar = 'a';
-                          else if (currentChar === 'a') nextChar = 'o';
-                          else nextChar = ' ';
-                        } else if (instrument.key === 'sn') {
-                          if (currentChar === ' ') nextChar = '.';
-                          else if (currentChar === '.') nextChar = 'X';
-                          else nextChar = ' ';
-                        } else {
-                          nextChar = currentChar === 'X' ? ' ' : 'X';
-                        }
-                        
-                        updatePattern(instrument.key, index, nextChar);
-                      }}
-                    >
-                      {pattern[index] === ' ' ? '·' : pattern[index]}
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-            
-            {/* Vertical separator */}
-            <div className="w-0.5 h-8 bg-yellow-400 mx-1 shadow-lg shadow-yellow-400/50"></div>
-            
-            {/* Group 3 (beats 9-12) */}
-            <div className="flex gap-1">
-              {Array.from({ length: 4 }, (_, i) => {
-                const index = i + 8;
-                return (
-                  <div key={index} className="flex flex-col items-center">
-                    <div className="text-xs text-gray-500 mb-1">{index + 1}</div>
-                    <button
-                      className={`w-6 h-6 md:w-8 md:h-8 border rounded-full text-xs font-bold transition-all duration-200 ${
-                        pattern[index] === ' '
-                          ? 'border-gray-600 bg-gray-800 hover:bg-gray-700 text-gray-400'
-                          : 'border-green-400 bg-green-500 text-white shadow-lg shadow-green-500/30'
-                      } focus:ring-2 focus:ring-white focus:outline-none`}
-                      onClick={() => {
-                        const currentChar = pattern[index];
-                        let nextChar = ' ';
-                        
-                        if (instrument.key === 'ag') {
-                          if (currentChar === ' ') nextChar = 'a';
-                          else if (currentChar === 'a') nextChar = 'o';
-                          else nextChar = ' ';
-                        } else if (instrument.key === 'sn') {
-                          if (currentChar === ' ') nextChar = '.';
-                          else if (currentChar === '.') nextChar = 'X';
-                          else nextChar = ' ';
-                        } else {
-                          nextChar = currentChar === 'X' ? ' ' : 'X';
-                        }
-                        
-                        updatePattern(instrument.key, index, nextChar);
-                      }}
-                    >
-                      {pattern[index] === ' ' ? '·' : pattern[index]}
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-            
-            {/* Vertical separator */}
-            <div className="w-0.5 h-8 bg-yellow-400 mx-1 shadow-lg shadow-yellow-400/50"></div>
-            
-            {/* Group 4 (beats 13-16) */}
-            <div className="flex gap-1">
-              {Array.from({ length: 4 }, (_, i) => {
-                const index = i + 12;
-                return (
-                  <div key={index} className="flex flex-col items-center">
-                    <div className="text-xs text-gray-500 mb-1">{index + 1}</div>
-                    <button
-                      className={`w-6 h-6 md:w-8 md:h-8 border rounded-full text-xs font-bold transition-all duration-200 ${
-                        pattern[index] === ' '
-                          ? 'border-gray-600 bg-gray-800 hover:bg-gray-700 text-gray-400'
-                          : 'border-green-400 bg-green-500 text-white shadow-lg shadow-green-500/30'
-                      } focus:ring-2 focus:ring-white focus:outline-none`}
-                      onClick={() => {
-                        const currentChar = pattern[index];
-                        let nextChar = ' ';
-                        
-                        if (instrument.key === 'ag') {
-                          if (currentChar === ' ') nextChar = 'a';
-                          else if (currentChar === 'a') nextChar = 'o';
-                          else nextChar = ' ';
-                        } else if (instrument.key === 'sn') {
-                          if (currentChar === ' ') nextChar = '.';
-                          else if (currentChar === '.') nextChar = 'X';
-                          else nextChar = ' ';
-                        } else {
-                          nextChar = currentChar === 'X' ? ' ' : 'X';
-                        }
-                        
-                        updatePattern(instrument.key, index, nextChar);
-                      }}
-                    >
-                      {pattern[index] === ' ' ? '·' : pattern[index]}
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          
-          {/* Beat counter labels */}
-          <div className="flex items-center gap-1 text-xs text-yellow-400 font-semibold mt-2">
-            <div className="text-center" style={{ width: '100px' }}>1-2-3-4</div>
-            <div className="w-0.5 mx-1"></div>
-            <div className="text-center" style={{ width: '100px' }}>1-2-3-4</div>
-            <div className="w-0.5 mx-1"></div>
-            <div className="text-center" style={{ width: '100px' }}>1-2-3-4</div>
-            <div className="w-0.5 mx-1"></div>
-            <div className="text-center" style={{ width: '100px' }}>1-2-3-4</div>
+          {/* Pattern grid with 8 beats per row */}
+          <div className="space-y-3">
+            {rows.map((row, rowIndex) => (
+              <div key={rowIndex} className="flex items-center justify-center gap-0.5 md:gap-1 overflow-x-auto">
+                {row.map((beatIndex) => {
+                  const shouldShowSeparator = beatIndex % 4 === 0 && beatIndex > 0 && beatIndex % 8 !== 0;
+                  return (
+                    <div key={beatIndex} className="flex items-center">
+                      {shouldShowSeparator && (
+                        <div className="w-0.5 h-4 bg-yellow-400 mx-0.5 shadow-lg shadow-yellow-400/50"></div>
+                      )}
+                      <div className="flex flex-col items-center">
+                        <div className="text-xs text-gray-500 mb-1">{beatIndex + 1}</div>
+                        <button
+                          className={`w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 border rounded-full text-xs font-bold transition-all duration-200 ${
+                            pattern[beatIndex] === ' '
+                              ? 'border-gray-600 bg-gray-800 hover:bg-gray-700 text-gray-400'
+                              : 'border-green-400 bg-green-500 text-white shadow-lg shadow-green-500/30'
+                          } focus:ring-2 focus:ring-white focus:outline-none`}
+                          onClick={() => {
+                            const currentChar = pattern[beatIndex];
+                            let nextChar = ' ';
+                            
+                            if (instrument.key === 'ag') {
+                              if (currentChar === ' ') nextChar = 'a';
+                              else if (currentChar === 'a') nextChar = 'o';
+                              else nextChar = ' ';
+                            } else if (instrument.key === 'sn') {
+                              if (currentChar === ' ') nextChar = '.';
+                              else if (currentChar === '.') nextChar = 'X';
+                              else nextChar = ' ';
+                            } else {
+                              nextChar = currentChar === 'X' ? ' ' : 'X';
+                            }
+                            
+                            updatePattern(instrument.key, beatIndex, nextChar);
+                          }}
+                        >
+                          {pattern[beatIndex] === ' ' ? '·' : pattern[beatIndex]}
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
           </div>
           
           <div className="mt-3 text-xs text-gray-500 text-center">
@@ -386,76 +282,78 @@ export default function Experiment() {
   };
 
   return (
-    <div className="min-h-screen bg-black">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="text-center mb-12">
-          <h1 className="street-text font-bold text-4xl md:text-5xl mb-4">Create Your Own</h1>
-          <p className="text-xl text-gray-300">Experiment with patterns and create custom rhythms</p>
+    <div className="min-h-screen bg-black overflow-x-hidden">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-8 sm:py-16">
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="street-text font-bold text-3xl sm:text-4xl md:text-5xl mb-4">Create Your Own Beat</h1>
+          <p className="text-lg sm:text-xl text-gray-300">Design custom rhythms for Palestinian solidarity</p>
         </div>
 
         {/* Controls */}
-        <Card className="bg-gray-800 border-gray-700 mb-8">
-          <CardHeader>
-            <CardTitle>Beat Settings</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div>
-                <Label htmlFor="tune-name">Beat Name</Label>
-                <Input
-                  id="tune-name"
-                  value={tuneName}
-                  onChange={(e) => setTuneName(e.target.value)}
-                  className="bg-black border-gray-600"
-                />
-              </div>
-              <div>
-                <Label htmlFor="tempo">Tempo: {tempo} BPM</Label>
-                <Slider
-                  id="tempo"
-                  min={40}
-                  max={200}
-                  step={5}
-                  value={[tempo]}
-                  onValueChange={(value) => setTempo(value[0])}
-                  className="mt-2"
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <Button 
-                    onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}
-                    className="bg-green-600 hover:bg-green-700"
-                  >
-                    <Play className="mr-2 h-4 w-4" />
-                    Go to Player
-                  </Button>
-                  <Button 
-                    onClick={downloadAsMP3}
-                    className="bg-blue-600 hover:bg-blue-700"
-                  >
-                    <Download className="mr-2 h-4 w-4" />
-                    Download
-                  </Button>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Button onClick={resetAll} variant="outline" className="flex-1">
-                    <RotateCcw className="mr-2 h-4 w-4" />
-                    Reset All
-                  </Button>
-                  <Button 
-                    onClick={() => setIsPinned(!isPinned)}
-                    variant="outline"
-                    className={isPinned ? "bg-yellow-600 hover:bg-yellow-700" : ""}
-                  >
-                    {isPinned ? <PinOff className="mr-2 h-4 w-4" /> : <Pin className="mr-2 h-4 w-4" />}
-                    {isPinned ? "Unpin" : "Pin"} Player
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <div>
+            <Label htmlFor="tune-name" className="text-white mb-2">Beat Name</Label>
+            <Input
+              id="tune-name"
+              value={tuneName}
+              onChange={(e) => setTuneName(e.target.value)}
+              className="bg-gray-800 border-gray-600 text-white"
+              placeholder="Enter beat name"
+            />
+          </div>
+          
+          <div>
+            <Label htmlFor="pattern-length" className="text-white mb-2">Pattern Length</Label>
+            <Select value={patternLength.toString()} onValueChange={(value) => updatePatternLength(parseInt(value))}>
+              <SelectTrigger className="bg-gray-800 border-gray-600 text-white">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="8">8 beats</SelectItem>
+                <SelectItem value="16">16 beats</SelectItem>
+                <SelectItem value="24">24 beats</SelectItem>
+                <SelectItem value="32">32 beats</SelectItem>
+                <SelectItem value="40">40 beats</SelectItem>
+                <SelectItem value="48">48 beats</SelectItem>
+                <SelectItem value="56">56 beats</SelectItem>
+                <SelectItem value="64">64 beats</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div>
+            <Label htmlFor="tempo" className="text-white mb-2">Tempo (BPM)</Label>
+            <Input
+              id="tempo"
+              type="number"
+              min="40"
+              max="200"
+              value={tempo}
+              onChange={(e) => setTempo(parseInt(e.target.value) || 120)}
+              className="bg-gray-800 border-gray-600 text-white"
+            />
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex flex-wrap gap-4 mb-8 justify-center">
+          <Button 
+            onClick={resetAll}
+            variant="outline" 
+            className="border-gray-600 text-gray-300 hover:bg-gray-700"
+          >
+            <RotateCcw className="mr-2 h-4 w-4" />
+            Reset All
+          </Button>
+          
+          <Button 
+            onClick={downloadAsMP3}
+            className="bg-green-600 hover:bg-green-700 text-white"
+          >
+            <Download className="mr-2 h-4 w-4" />
+            Download Audio
+          </Button>
+        </div>
 
         {/* Pattern Editors */}
         <div className="space-y-6 mb-8">
@@ -464,55 +362,24 @@ export default function Experiment() {
           ))}
         </div>
 
-        {/* Player */}
-        <div className={isPinned ? "fixed bottom-0 left-0 right-0 z-50 shadow-2xl" : ""}>
-          <Card className={`bg-gray-800 border-gray-700 ${isPinned ? "rounded-none border-t" : ""}`}>
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Play className="h-5 w-5" />
-                  Test Your Beat
-                </div>
-                {isPinned && (
-                  <Button 
-                    onClick={() => setIsPinned(false)}
-                    variant="outline"
-                    size="sm"
-                  >
-                    <PinOff className="h-4 w-4" />
-                  </Button>
-                )}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <BeatboxPlayer 
-                tune={experimentTune} 
-              />
-            </CardContent>
-          </Card>
+        {/* Beatbox Player */}
+        <div className="bg-gray-800 border border-gray-700 rounded-xl p-4 sm:p-6">
+          <h2 className="street-text text-2xl sm:text-3xl font-bold mb-4 text-center">Play Your Beat</h2>
+          <BeatboxPlayer tune={experimentTune} />
         </div>
 
         {/* Instructions */}
-        <Card className={`bg-gray-800 border-gray-700 mt-8 ${isPinned ? "mb-32" : ""}`}>
-          <CardHeader>
-            <CardTitle>How to Use</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4 text-gray-300">
-              <p><strong>Pattern Grid:</strong> Each row represents an instrument, and each column represents a beat (1-16).</p>
-              <p><strong>Clicking Boxes:</strong> Click on any box to cycle through available sounds for that instrument.</p>
-              <p><strong>Symbols:</strong></p>
-              <ul className="list-disc list-inside ml-4 space-y-1">
-                <li><strong>X</strong> = Hit/Strike</li>
-                <li><strong>.</strong> = Ghost note (soft hit - for snare)</li>
-                <li><strong>a</strong> = Low bell (agogo)</li>
-                <li><strong>o</strong> = High bell (agogo)</li>
-                <li><strong>·</strong> = Silence</li>
-              </ul>
-              <p><strong>Tips:</strong> Start with simple patterns and build complexity. Try syncopated rhythms by offsetting different instruments.</p>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="mt-12 bg-gray-800 border border-gray-700 rounded-xl p-6">
+          <h3 className="street-text text-xl font-bold mb-4">How to Use</h3>
+          <div className="space-y-4 text-gray-300">
+            <p><strong>Pattern Length:</strong> Choose how many beats your pattern should have (8, 16, 24, 32, 40, 48, 56, or 64).</p>
+            <p><strong>Pattern Grid:</strong> Each row represents an instrument, and each column represents a beat. Click circles to toggle beats on/off.</p>
+            <p><strong>Agogo:</strong> Has two sounds - 'a' for low bell and 'o' for high bell.</p>
+            <p><strong>Snare:</strong> Has two sounds - '.' for ghost notes and 'X' for accent hits.</p>
+            <p><strong>Other Instruments:</strong> Click to toggle between hit (X) and rest (•).</p>
+            <p><strong>Download:</strong> Save your beat as an audio file to share with others.</p>
+          </div>
+        </div>
       </div>
     </div>
   );
