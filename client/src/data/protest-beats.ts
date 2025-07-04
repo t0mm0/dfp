@@ -44,14 +44,25 @@ export const protestBeats: ProtestBeat[] = [
     imageUrl: "",
   },
   {
+    id: "level-4",
+    name: "Level 4",
+    description: "Continuous hi-hat pulse on every count",
+    fullDescription:
+      "Continuous hi-hat pulse on every count. Maximum energy and drive.",
+    pattern: "XXXXXXXXXXXXXXXXX   X   X XXX   ",
+    difficulty: "Medium",
+    tempo: 130,
+    imageUrl: "",
+  },
+  {
     id: "level-5",
     name: "Level 5",
     description: "Continuous hi-hat pulse on every count",
     fullDescription:
       "Continuous hi-hat pulse on every count. Maximum energy and drive.",
-    pattern: "X X X X X X X X X X X X X X X X ",
+    pattern: "X XX X X XX X X",
     difficulty: "Medium",
-    tempo: 130,
+    tempo: 110,
     imageUrl: "",
   },
   {
@@ -60,7 +71,7 @@ export const protestBeats: ProtestBeat[] = [
     description: "A steady hit every count",
     fullDescription:
       "Basic steady rhythm - one hit per count. Foundation for all other patterns.",
-    pattern: "X   X   X   X   ",
+    pattern: "X               ",
     difficulty: "Easy",
     tempo: 120,
     imageUrl: "",
