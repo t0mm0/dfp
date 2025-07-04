@@ -387,3 +387,129 @@ export function useAudioEngine({
     stop,
   };
 }
+
+// Export function to render authentic audio for download
+export async function renderAuthenticAudio(
+  tune: any,
+  patternName: string,
+  tempo: number,
+  instrumentStates: Record<string, { enabled: boolean; volume: number }>,
+  durationSeconds: number = 8
+): Promise<AudioBuffer> {
+  // Create audio context for rendering
+  const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+  
+  // Load the same audio samples as the player
+  const loadAudioFile = async (url: string): Promise<AudioBuffer | null> => {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) return null;
+      const arrayBuffer = await response.arrayBuffer();
+      if (arrayBuffer.byteLength === 0) return null;
+      return await audioContext.decodeAudioData(arrayBuffer);
+    } catch (error) {
+      return null;
+    }
+  };
+
+  // Same audio files mapping as in the player
+  const audioFiles = {
+    ls_73: "/audio/ls_73.mp3",
+    hs_74: "/audio/hs_74.mp3", 
+    sn_2e: "/audio/sn_2e.mp3", // Ghost note
+    sn_58: "/audio/sn_58.mp3", // Accent
+    re_58: "/audio/re_58.mp3",
+    ag_61: "/audio/ag_61.mp3", // Low bell
+    ag_6f: "/audio/ag_6f.mp3", // High bell
+    ta_58: "/audio/ta_58.mp3",
+    sh_2e: "/audio/sh_2e.mp3",
+  };
+
+  // Load all audio samples
+  const audioBuffers: Record<string, AudioBuffer | null> = {};
+  for (const [key, url] of Object.entries(audioFiles)) {
+    audioBuffers[key] = await loadAudioFile(url);
+  }
+
+  // Map to instruments
+  const sounds: Record<string, AudioBuffer | null> = {
+    ls: audioBuffers.ls_73,
+    ms: audioBuffers.ls_73, // Use same as low surdo
+    hs: audioBuffers.hs_74,
+    re: audioBuffers.re_58,
+    sn: audioBuffers.sn_58,
+    sn_accent: audioBuffers.sn_58,
+    sn_ghost: audioBuffers.sn_2e,
+    ta: audioBuffers.ta_58,
+    ag: audioBuffers.ag_61,
+    ag_low: audioBuffers.ag_61,
+    ag_high: audioBuffers.ag_6f,
+    sh: audioBuffers.sh_2e,
+  };
+
+  // Create offline context for rendering
+  const offlineContext = new OfflineAudioContext(1, audioContext.sampleRate * durationSeconds, audioContext.sampleRate);
+  
+  const pattern = tune.patterns[patternName];
+  if (!pattern) {
+    audioContext.close();
+    throw new Error('Pattern not found');
+  }
+
+  const stepDuration = (60 / tempo) / 4; // 16th note duration
+  const patternLength = 16;
+
+  // Render the pattern
+  for (let loop = 0; loop < Math.floor(durationSeconds / (stepDuration * patternLength)); loop++) {
+    for (let step = 0; step < patternLength; step++) {
+      const time = (loop * patternLength + step) * stepDuration;
+      
+      // Check each instrument at this step
+      Object.keys(instrumentStates).forEach(instrument => {
+        if (!instrumentStates[instrument].enabled) return;
+        
+        const instrumentPattern = pattern[instrument];
+        if (!instrumentPattern || step >= instrumentPattern.length) return;
+        
+        const char = instrumentPattern[step];
+        if (!char || char === ' ') return;
+        
+        // Get the appropriate sound buffer
+        let soundBuffer: AudioBuffer | null = null;
+        
+        if (instrument === "ag") {
+          if (char === "a") soundBuffer = sounds.ag_low;
+          else if (char === "o") soundBuffer = sounds.ag_high;
+          else soundBuffer = sounds.ag;
+        } else if (instrument === "sn") {
+          if (char === "X") soundBuffer = sounds.sn_accent;
+          else if (char === ".") soundBuffer = sounds.sn_ghost;
+          else soundBuffer = sounds.sn;
+        } else {
+          soundBuffer = sounds[instrument];
+        }
+        
+        if (!soundBuffer) return;
+        
+        // Create audio source
+        const source = offlineContext.createBufferSource();
+        const gainNode = offlineContext.createGain();
+        
+        source.buffer = soundBuffer;
+        source.connect(gainNode);
+        gainNode.connect(offlineContext.destination);
+        
+        // Apply volume
+        const instrumentVolume = instrumentStates[instrument]?.volume || 70;
+        gainNode.gain.value = (instrumentVolume / 100) * 0.7; // Master volume
+        
+        source.start(time);
+      });
+    }
+  }
+  
+  // Render and return the buffer
+  const renderedBuffer = await offlineContext.startRendering();
+  audioContext.close();
+  return renderedBuffer;
+}

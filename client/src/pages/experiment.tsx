@@ -1,10 +1,11 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import BeatboxPlayer from "@/components/beatbox-player";
+import { renderAuthenticAudio } from "@/lib/audio-engine";
 import { Play, RotateCcw, Save, Download } from "lucide-react";
 
 export default function Experiment() {
@@ -67,68 +68,47 @@ export default function Experiment() {
     setTuneName("My Custom Beat");
   }, []);
 
+  // Convert experiment to tune format for the player
+  const experimentTune = useMemo(() => ({
+    name: "experiment",
+    displayName: tuneName,
+    categories: ["custom"],
+    speed: tempo,
+    time: 4,
+    description: "Your custom experimental beat",
+    patterns: {
+      Custom: {
+        loop: true,
+        ...patterns,
+        mnemonics: {}
+      }
+    }
+  }), [tuneName, tempo, patterns]);
+
   const downloadAsMP3 = useCallback(async () => {
     try {
-      // Create audio context
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const sampleRate = audioContext.sampleRate;
-      const durationSeconds = 8; // 8 seconds (2 loops)
-      const stepDuration = (60 / tempo) / 4; // 16th note duration
+      // Create instrument states for the authentic audio renderer
+      const instrumentStates = {
+        ls: { enabled: true, volume: 80 },
+        ms: { enabled: true, volume: 75 },
+        hs: { enabled: true, volume: 70 },
+        re: { enabled: true, volume: 85 },
+        sn: { enabled: true, volume: 90 },
+        ta: { enabled: true, volume: 75 },
+        ag: { enabled: true, volume: 25 }, // Low agogo volume
+        sh: { enabled: true, volume: 60 }
+      };
       
-      // Create offline context for rendering
-      const offlineContext = new OfflineAudioContext(1, sampleRate * durationSeconds, sampleRate);
+      // Use the same authentic audio rendering as the play button
+      const renderedBuffer = await renderAuthenticAudio(
+        experimentTune,
+        'Custom',
+        tempo,
+        instrumentStates,
+        8 // 8 seconds duration
+      );
       
-      // Generate audio based on the pattern
-      for (let loop = 0; loop < 2; loop++) {
-        for (let step = 0; step < 16; step++) {
-          const startTime = (loop * 16 + step) * stepDuration;
-          
-          // Check each instrument for hits at this step
-          Object.entries(patterns).forEach(([instrument, pattern]) => {
-            const char = pattern[step];
-            if (char && char !== ' ') {
-              let frequency = 440; // Default frequency
-              let amplitude = 0.1;
-              
-              // Set different frequencies for different instruments
-              switch (instrument) {
-                case 'ls': frequency = 60; amplitude = 0.2; break;   // Low Surdo
-                case 'ms': frequency = 80; amplitude = 0.18; break;   // Mid Surdo  
-                case 'hs': frequency = 100; amplitude = 0.16; break;  // High Surdo
-                case 're': frequency = 200; amplitude = 0.14; break;  // Repi
-                case 'sn': frequency = char === 'X' ? 300 : 200; amplitude = char === 'X' ? 0.12 : 0.08; break; // Snare
-                case 'ta': frequency = 800; amplitude = 0.1; break;  // Tamborim
-                case 'ag': frequency = char === 'a' ? 1000 : 1200; amplitude = 0.04; break; // Agogo (very low)
-                case 'sh': frequency = 5000; amplitude = 0.06; break; // Shaker
-              }
-              
-              // Create oscillator and gain for this hit
-              const oscillator = offlineContext.createOscillator();
-              const gainNode = offlineContext.createGain();
-              
-              oscillator.frequency.setValueAtTime(frequency, startTime);
-              oscillator.connect(gainNode);
-              gainNode.connect(offlineContext.destination);
-              
-              // Set envelope
-              const attackDuration = 0.01;
-              const decayDuration = 0.15;
-              
-              gainNode.gain.setValueAtTime(0, startTime);
-              gainNode.gain.linearRampToValueAtTime(amplitude, startTime + attackDuration);
-              gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + attackDuration + decayDuration);
-              
-              oscillator.start(startTime);
-              oscillator.stop(startTime + attackDuration + decayDuration);
-            }
-          });
-        }
-      }
-      
-      // Render the audio
-      const renderedBuffer = await offlineContext.startRendering();
-      
-      // Convert to WAV format (simpler than MP3)
+      // Convert to WAV format
       const wavData = audioBufferToWav(renderedBuffer);
       const blob = new Blob([wavData], { type: 'audio/wav' });
       const url = URL.createObjectURL(blob);
@@ -141,13 +121,11 @@ export default function Experiment() {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
       
-      audioContext.close();
-      
     } catch (error) {
       console.error('Error generating audio:', error);
       alert('Error generating audio file. Please try again.');
     }
-  }, [tuneName, patterns, tempo]);
+  }, [tuneName, tempo, experimentTune]);
 
   // Helper function to convert AudioBuffer to WAV
   const audioBufferToWav = (buffer: AudioBuffer): ArrayBuffer => {
@@ -195,23 +173,6 @@ export default function Experiment() {
     }
     
     return arrayBuffer;
-  };
-
-  // Convert experiment to tune format for the player
-  const experimentTune = {
-    name: "experiment",
-    displayName: tuneName,
-    categories: ["custom"],
-    speed: tempo,
-    time: 4,
-    description: "Your custom experimental beat",
-    patterns: {
-      Custom: {
-        loop: true,
-        ...patterns,
-        mnemonics: {}
-      }
-    }
   };
 
   const PatternEditor = ({ instrument }: { instrument: any }) => {
