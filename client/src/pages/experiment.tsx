@@ -5,13 +5,24 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import BeatboxPlayer from "@/components/beatbox-player";
-import { renderAuthenticAudio } from "@/lib/audio-engine";
-import { RotateCcw, Download } from "lucide-react";
+import { renderAuthenticAudio, useAudioEngine } from "@/lib/audio-engine";
+import { RotateCcw, Download, Play, Pause } from "lucide-react";
 
 export default function Experiment() {
   const [tuneName, setTuneName] = useState("My Custom Beat");
   const [tempo, setTempo] = useState(120);
   const [patternLength, setPatternLength] = useState(16);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [instrumentStates, setInstrumentStates] = useState({
+    ls: { enabled: true, volume: 80 },
+    ms: { enabled: true, volume: 75 },
+    hs: { enabled: true, volume: 70 },
+    re: { enabled: true, volume: 85 },
+    sn: { enabled: true, volume: 90 },
+    ta: { enabled: true, volume: 75 },
+    ag: { enabled: true, volume: 25 },
+    sh: { enabled: true, volume: 60 }
+  });
   const [patterns, setPatterns] = useState({
     ls: "X   X   X   X   ", // Low Surdo
     ms: "  X   X   X   X ", // Mid Surdo
@@ -104,6 +115,16 @@ export default function Experiment() {
       }
     }
   }), [tuneName, tempo, patterns]);
+
+  // Audio engine for play functionality
+  const { play, stop, isPlaying, isAudioLoaded } = useAudioEngine({
+    tune: experimentTune,
+    pattern: 'Custom',
+    tempo: tempo,
+    volume: 100,
+    instrumentStates: instrumentStates,
+    onStepChange: setCurrentStep
+  });
 
   const downloadAsMP3 = useCallback(async () => {
     try {
@@ -331,6 +352,26 @@ export default function Experiment() {
 
         {/* Action Buttons */}
         <div className="flex flex-wrap gap-4 mb-8 justify-center">
+          <Button 
+            onClick={isPlaying ? stop : play}
+            disabled={!isAudioLoaded}
+            className="bg-red-600 hover:bg-red-700 text-white disabled:bg-gray-600"
+          >
+            {!isAudioLoaded ? (
+              <>Loading...</>
+            ) : isPlaying ? (
+              <>
+                <Pause className="mr-2 h-4 w-4" />
+                Stop
+              </>
+            ) : (
+              <>
+                <Play className="mr-2 h-4 w-4" />
+                Play
+              </>
+            )}
+          </Button>
+          
           <Button 
             onClick={resetAll}
             variant="outline" 
