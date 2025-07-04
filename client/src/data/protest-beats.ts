@@ -142,15 +142,4 @@ export const protestBeats: ProtestBeat[] = [
     tempo: 100,
     imageUrl: "",
   },
-  {
-    id: "tri-hit",
-    name: "1 Tri-Hitttttt",
-    description: "Three rapid hits on count 1",
-    fullDescription:
-      "Three rapid hits creating dramatic emphasis. Great for highlighting chants or calls.",
-    pattern: "XXX             ",
-    difficulty: "Medium",
-    tempo: 100,
-    imageUrl: "",
-  },
 ];

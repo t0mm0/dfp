@@ -166,6 +166,10 @@ The application follows a modern full-stack architecture with clear separation b
 - July 04, 2025. Redesigned protest beats page with single player interface and selectable beat list instead of multiple individual players
 - July 04, 2025. Added "Go to Player" button and pin/unpin functionality to experiment page - players can be pinned to bottom of screen for easier access while editing patterns
 - July 04, 2025. Enhanced mobile navigation with ultra sleek gradients, staggered animations, and improved responsive design throughout
+- July 04, 2025. Created new "Regional Groups" Instagram page featuring embeds from four UK Drummers for Palestine accounts (Manchester, Yorkshire, Blackburn, Liverpool)
+- July 04, 2025. Fixed pattern visualizer beat labels to show individual numbers (1-2-3-4) instead of grouped text for better musical understanding
+- July 04, 2025. Fixed duplicate key error in protest beats data by removing duplicate "tri-hit" entry
+- July 04, 2025. Added Instagram embed functionality with proper loading script and responsive design for social media integration
 
 ## User Preferences
 

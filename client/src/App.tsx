@@ -9,6 +9,7 @@ import Tunes from "@/pages/tunes";
 import ProtestBeats from "@/pages/protest-beats";
 import Experiment from "@/pages/experiment";
 import About from "@/pages/about";
+import InstagramPage from "@/pages/instagram";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -17,10 +18,11 @@ function Router() {
       <Navigation />
       <Switch>
         <Route path="/" component={Home} />
+        <Route path="/about" component={About} />
+        <Route path="/instagram" component={InstagramPage} />
         <Route path="/protest-beats" component={ProtestBeats} />
         <Route path="/tunes" component={Tunes} />
         <Route path="/experiment" component={Experiment} />
-        <Route path="/about" component={About} />
         <Route component={NotFound} />
       </Switch>
     </>

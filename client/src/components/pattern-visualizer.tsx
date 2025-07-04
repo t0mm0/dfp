@@ -125,13 +125,37 @@ export default function PatternVisualizer({ pattern, currentStep, instrumentStat
           
           {/* Beat counter labels */}
           <div className="flex items-center gap-1 text-xs text-yellow-400 font-semibold">
-            <div className="text-center" style={{ width: '120px' }}>1-2-3-4</div>
+            {/* Group 1 labels */}
+            <div className="flex gap-0.5 md:gap-1" style={{ width: '120px' }}>
+              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">1</div>
+              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">2</div>
+              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">3</div>
+              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">4</div>
+            </div>
             <div className="w-0.5 mx-1"></div>
-            <div className="text-center" style={{ width: '120px' }}>1-2-3-4</div>
+            {/* Group 2 labels */}
+            <div className="flex gap-0.5 md:gap-1" style={{ width: '120px' }}>
+              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">1</div>
+              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">2</div>
+              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">3</div>
+              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">4</div>
+            </div>
             <div className="w-0.5 mx-1"></div>
-            <div className="text-center" style={{ width: '120px' }}>1-2-3-4</div>
+            {/* Group 3 labels */}
+            <div className="flex gap-0.5 md:gap-1" style={{ width: '120px' }}>
+              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">1</div>
+              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">2</div>
+              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">3</div>
+              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">4</div>
+            </div>
             <div className="w-0.5 mx-1"></div>
-            <div className="text-center" style={{ width: '120px' }}>1-2-3-4</div>
+            {/* Group 4 labels */}
+            <div className="flex gap-0.5 md:gap-1" style={{ width: '120px' }}>
+              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">1</div>
+              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">2</div>
+              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">3</div>
+              <div className="w-5 h-3 sm:w-6 md:w-8 text-center">4</div>
+            </div>
           </div>
         </div>
       ))}
