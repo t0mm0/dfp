@@ -16,7 +16,7 @@ export function useAudioEngine({
   tempo,
   volume,
   instrumentStates,
-  onStepChange
+  onStepChange,
 }: AudioEngineOptions) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
@@ -27,13 +27,14 @@ export function useAudioEngine({
   // Initialize audio context
   const initializeAudio = useCallback(async () => {
     if (!audioContextRef.current) {
-      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-      
+      audioContextRef.current = new (window.AudioContext ||
+        (window as any).webkitAudioContext)();
+
       // Load actual audio samples
       await loadAudioSamples();
     }
-    
-    if (audioContextRef.current.state === 'suspended') {
+
+    if (audioContextRef.current.state === "suspended") {
       await audioContextRef.current.resume();
     }
   }, []);
@@ -44,7 +45,9 @@ export function useAudioEngine({
 
     const loadAudioFile = async (url: string): Promise<AudioBuffer | null> => {
       try {
+        console.log(`fetching ${url}`)
         const response = await fetch(url);
+        console.log(`response for ${url}: ${response}`)
         const arrayBuffer = await response.arrayBuffer();
         return await audioContextRef.current!.decodeAudioData(arrayBuffer);
       } catch (error) {
@@ -55,52 +58,65 @@ export function useAudioEngine({
 
     // Audio files should be in public directory for proper access
     const audioFiles = {
-      ls_73: '/audio/ls_73.mp3',      // Low surdo slap
-      hs_74: '/audio/hs_74.mp3',      // High surdo 
-      sn_2e: '/audio/sn_2e.mp3',      // Snare ghost note
-      sn_58: '/audio/sn_58.mp3',      // Snare accent
-      re_58: '/audio/re_58.mp3',      // Repi hit
-      ag_61: '/audio/ag_61.mp3',      // Agogo low bell
-      ag_6f: '/audio/ag_6f.mp3',      // Agogo high bell
+      ls_73: "/audio/ls_73.mp3", // Low surdo slap
+      hs_74: "/audio/hs_74.mp3", // High surdo
+      sn_2e: "/audio/sn_2e.mp3", // Snare ghost note
+      sn_58: "/audio/sn_58.mp3", // Snare accent
+      re_58: "/audio/re_58.mp3", // Repi hit
+      ag_61: "/audio/ag_61.mp3", // Agogo low bell
+      ag_6f: "/audio/ag_6f.mp3", // Agogo high bell
     };
 
     const audioBuffers: Record<string, AudioBuffer | null> = {};
-    
+
     for (const [key, url] of Object.entries(audioFiles)) {
       audioBuffers[key] = await loadAudioFile(url);
     }
 
     // Map to instruments with fallback to synthetic sounds if files don't load
-    const getFallbackSound = (audioBuffer: AudioBuffer | null, freq: number, dur: number, type: 'kick' | 'snare' | 'hihat' | 'bell'): AudioBuffer => {
+    const getFallbackSound = (
+      audioBuffer: AudioBuffer | null,
+      freq: number,
+      dur: number,
+      type: "kick" | "snare" | "hihat" | "bell",
+    ): AudioBuffer => {
       return audioBuffer || createFallbackSound(freq, dur, type)!;
     };
 
     soundsRef.current = {
-      ls: getFallbackSound(audioBuffers.ls_73, 60, 0.5, 'kick'),
-      ms: getFallbackSound(audioBuffers.ls_73, 80, 0.4, 'kick'), // Use same as ls for now
-      hs: getFallbackSound(audioBuffers.hs_74, 100, 0.3, 'kick'),
-      re: getFallbackSound(audioBuffers.re_58, 200, 0.2, 'snare'),
-      sn: getFallbackSound(audioBuffers.sn_58, 150, 0.2, 'snare'),
-      ta: createFallbackSound(300, 0.1, 'hihat')!, // Keep synthetic for tamborim
-      ag: getFallbackSound(audioBuffers.ag_61, 800, 0.3, 'bell'), // Will handle both a/o sounds
-      sh: createFallbackSound(5000, 0.1, 'hihat')! // Keep synthetic for shaker
+      ls: getFallbackSound(audioBuffers.ls_73, 60, 0.5, "kick"),
+      ms: getFallbackSound(audioBuffers.ls_73, 80, 0.4, "kick"), // Use same as ls for now
+      hs: getFallbackSound(audioBuffers.hs_74, 100, 0.3, "kick"),
+      re: getFallbackSound(audioBuffers.re_58, 200, 0.2, "snare"),
+      sn: getFallbackSound(audioBuffers.sn_58, 150, 0.2, "snare"),
+      ta: createFallbackSound(300, 0.1, "hihat")!, // Keep synthetic for tamborim
+      ag: getFallbackSound(audioBuffers.ag_61, 800, 0.3, "bell"), // Will handle both a/o sounds
+      sh: createFallbackSound(5000, 0.1, "hihat")!, // Keep synthetic for shaker
     };
 
     // Store individual agogo sounds for pattern-specific playback
     soundsRef.current.ag_low = audioBuffers.ag_61 || soundsRef.current.ag;
     soundsRef.current.ag_high = audioBuffers.ag_6f || soundsRef.current.ag;
-    
+
     // Store individual snare sounds for pattern-specific playback
     soundsRef.current.sn_accent = audioBuffers.sn_58 || soundsRef.current.sn; // X = accent (sn_58)
-    soundsRef.current.sn_ghost = audioBuffers.sn_2e || soundsRef.current.sn;  // . = ghost (sn_2e)
+    soundsRef.current.sn_ghost = audioBuffers.sn_2e || soundsRef.current.sn; // . = ghost (sn_2e)
   }, []);
 
   // Fallback synthetic sound creation
-  const createFallbackSound = (frequency: number, duration: number, type: 'kick' | 'snare' | 'hihat' | 'bell') => {
+  const createFallbackSound = (
+    frequency: number,
+    duration: number,
+    type: "kick" | "snare" | "hihat" | "bell",
+  ) => {
     if (!audioContextRef.current) return null;
-    
+
     const sampleRate = audioContextRef.current.sampleRate;
-    const buffer = audioContextRef.current.createBuffer(1, duration * sampleRate, sampleRate);
+    const buffer = audioContextRef.current.createBuffer(
+      1,
+      duration * sampleRate,
+      sampleRate,
+    );
     const data = buffer.getChannelData(0);
 
     for (let i = 0; i < buffer.length; i++) {
@@ -108,68 +124,73 @@ export function useAudioEngine({
       let value = 0;
 
       switch (type) {
-        case 'kick':
-          value = Math.sin(2 * Math.PI * frequency * t) * Math.exp(-t * 30) * 0.5;
+        case "kick":
+          value =
+            Math.sin(2 * Math.PI * frequency * t) * Math.exp(-t * 30) * 0.5;
           break;
-        case 'snare':
+        case "snare":
           value = (Math.random() * 2 - 1) * Math.exp(-t * 40) * 0.3;
           break;
-        case 'hihat':
+        case "hihat":
           value = (Math.random() * 2 - 1) * Math.exp(-t * 100) * 0.2;
           break;
-        case 'bell':
-          value = Math.sin(2 * Math.PI * frequency * t) * Math.exp(-t * 5) * 0.3;
+        case "bell":
+          value =
+            Math.sin(2 * Math.PI * frequency * t) * Math.exp(-t * 5) * 0.3;
           break;
       }
-      
+
       data[i] = value;
     }
     return buffer;
   };
 
   // Play a sound with specific character handling
-  const playSound = useCallback((instrument: string, char?: string) => {
-    if (!audioContextRef.current) return;
-    
-    let soundBuffer: AudioBuffer | undefined;
-    
-    // Handle agogo-specific character mappings
-    if (instrument === 'ag' && char) {
-      if (char === 'a' && soundsRef.current.ag_low) {
-        soundBuffer = soundsRef.current.ag_low;
-      } else if (char === 'o' && soundsRef.current.ag_high) {
-        soundBuffer = soundsRef.current.ag_high;
-      } else {
-        soundBuffer = soundsRef.current[instrument];
-      }
-    } 
-    // Handle snare-specific character mappings
-    else if (instrument === 'sn' && char) {
-      if (char === 'X' && soundsRef.current.sn_accent) {
-        soundBuffer = soundsRef.current.sn_accent;
-      } else if (char === '.' && soundsRef.current.sn_ghost) {
-        soundBuffer = soundsRef.current.sn_ghost;
-      } else {
-        soundBuffer = soundsRef.current[instrument];
-      }
-    } else {
-      soundBuffer = soundsRef.current[instrument];
-    }
-    
-    if (!soundBuffer) return;
+  const playSound = useCallback(
+    (instrument: string, char?: string) => {
+      if (!audioContextRef.current) return;
 
-    const source = audioContextRef.current.createBufferSource();
-    const gainNode = audioContextRef.current.createGain();
-    
-    source.buffer = soundBuffer;
-    source.connect(gainNode);
-    gainNode.connect(audioContextRef.current.destination);
-    
-    const instrumentVolume = instrumentStates[instrument]?.volume || 70;
-    gainNode.gain.value = (volume / 100) * (instrumentVolume / 100);
-    
-    source.start();
-  }, [volume, instrumentStates]);
+      let soundBuffer: AudioBuffer | undefined;
+
+      // Handle agogo-specific character mappings
+      if (instrument === "ag" && char) {
+        if (char === "a" && soundsRef.current.ag_low) {
+          soundBuffer = soundsRef.current.ag_low;
+        } else if (char === "o" && soundsRef.current.ag_high) {
+          soundBuffer = soundsRef.current.ag_high;
+        } else {
+          soundBuffer = soundsRef.current[instrument];
+        }
+      }
+      // Handle snare-specific character mappings
+      else if (instrument === "sn" && char) {
+        if (char === "X" && soundsRef.current.sn_accent) {
+          soundBuffer = soundsRef.current.sn_accent;
+        } else if (char === "." && soundsRef.current.sn_ghost) {
+          soundBuffer = soundsRef.current.sn_ghost;
+        } else {
+          soundBuffer = soundsRef.current[instrument];
+        }
+      } else {
+        soundBuffer = soundsRef.current[instrument];
+      }
+
+      if (!soundBuffer) return;
+
+      const source = audioContextRef.current.createBufferSource();
+      const gainNode = audioContextRef.current.createGain();
+
+      source.buffer = soundBuffer;
+      source.connect(gainNode);
+      gainNode.connect(audioContextRef.current.destination);
+
+      const instrumentVolume = instrumentStates[instrument]?.volume || 70;
+      gainNode.gain.value = (volume / 100) * (instrumentVolume / 100);
+
+      source.start();
+    },
+    [volume, instrumentStates],
+  );
 
   // Main playback loop
   const playPattern = useCallback(() => {
@@ -177,12 +198,12 @@ export function useAudioEngine({
     if (!pattern) return;
 
     const patternLength = pattern.ls ? pattern.ls.length : 16;
-    
+
     // Play sounds for current step
-    Object.keys(instrumentStates).forEach(instrument => {
+    Object.keys(instrumentStates).forEach((instrument) => {
       if (instrumentStates[instrument].enabled && pattern[instrument]) {
         const char = pattern[instrument][currentStep];
-        if (char && char !== ' ') {
+        if (char && char !== " ") {
           playSound(instrument, char);
         }
       }
@@ -192,7 +213,14 @@ export function useAudioEngine({
     const nextStep = (currentStep + 1) % patternLength;
     setCurrentStep(nextStep);
     onStepChange(nextStep);
-  }, [tune, patternName, currentStep, instrumentStates, playSound, onStepChange]);
+  }, [
+    tune,
+    patternName,
+    currentStep,
+    instrumentStates,
+    playSound,
+    onStepChange,
+  ]);
 
   // Start playback
   const play = useCallback(async () => {
@@ -223,14 +251,14 @@ export function useAudioEngine({
   // Handle tempo changes and playback timing
   useEffect(() => {
     if (isPlaying) {
-      const stepInterval = (60 / tempo) * 1000 / 4; // 16th notes
-      
+      const stepInterval = ((60 / tempo) * 1000) / 4; // 16th notes
+
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
-      
+
       intervalRef.current = setInterval(playPattern, stepInterval);
-      
+
       return () => {
         if (intervalRef.current) {
           clearInterval(intervalRef.current);
@@ -259,6 +287,6 @@ export function useAudioEngine({
     currentStep,
     play,
     pause,
-    stop
+    stop,
   };
 }
