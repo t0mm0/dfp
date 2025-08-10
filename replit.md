@@ -33,7 +33,7 @@ The application employs a modern full-stack architecture with distinct frontend 
 - **UI Components**: Key components include the interactive BeatboxPlayer, real-time PatternVisualizer, InstrumentToggle for individual controls, and responsive navigation.
 - **Experiment Page**: Allows users to design custom beats using a 16-step grid interface, supporting dynamic pattern length adjustment and MP3 download functionality of custom beats.
 - **Social Media Integration**: Features an Instagram page with embeds from UK Drummers for Palestine accounts.
-- **Shop Page**: Embedded Canva catalogue iframe displaying D4P merchandise and solidarity products with responsive design and external link integration.
+- **Shop Page**: Embedded Canva catalogue iframe displaying D4P merchandise and solidarity products with responsive design and external link integration. Includes comprehensive order form with customer details, multiple item support, size/color/logo dropdowns, quantity controls, and automatic email generation to drummers4palestine@gmail.com with all order details and payment information.
 
 ## External Dependencies
 
