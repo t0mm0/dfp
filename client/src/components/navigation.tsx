@@ -15,6 +15,7 @@ export default function Navigation() {
     { path: "/protest-beats", label: "Protest Beats" },
     { path: "/tunes", label: "Tunes" },
     { path: "/experiment", label: "Create Your Own" },
+    { path: "/shop", label: "Shop" },
   ];
 
   const isActive = (path: string) => {

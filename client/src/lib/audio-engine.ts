@@ -57,7 +57,7 @@ export function useAudioEngine({
       if (pattern.ls && pattern.ls.replace(/\s/g, ""))
         requiredFiles.add("ls_73");
       if (pattern.ms && pattern.ms.replace(/\s/g, ""))
-        requiredFiles.add("ms_73"); // MS uses ms_73
+        requiredFiles.add("ls_73"); // MS uses same as LS
       if (pattern.hs && pattern.hs.replace(/\s/g, ""))
         requiredFiles.add("hs_74");
       if (pattern.re && pattern.re.replace(/\s/g, ""))
