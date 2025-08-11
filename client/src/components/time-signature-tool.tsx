@@ -139,19 +139,26 @@ export default function TimeSignatureTool({}: TimeSignatureToolProps) {
     setBeatsPerBar(4);
   }, [stopPlaying]);
 
-  // Handle mouse down on slider
-  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+  // Handle mouse/touch start on slider
+  const handlePointerDown = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault(); // Prevent default behavior
+    e.stopPropagation(); // Prevent event bubbling
+    
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
     setIsDragging(true);
-    setDragStartX(e.clientX);
+    setDragStartX(clientX);
     setDragStartBeats(beatsPerBar);
     stopPlaying(); // Stop playback when starting drag
   }, [beatsPerBar, stopPlaying]);
 
-  // Handle drag
-  const handleMouseMove = useCallback((e: MouseEvent) => {
+  // Handle drag (mouse and touch)
+  const handlePointerMove = useCallback((e: MouseEvent | TouchEvent) => {
     if (!isDragging || !sliderRef.current) return;
     
-    const deltaX = e.clientX - dragStartX;
+    e.preventDefault(); // Prevent scrolling during drag
+    
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const deltaX = clientX - dragStartX;
     const sliderWidth = sliderRef.current.offsetWidth - 40; // Account for thumb width
     const deltaBeats = Math.round((deltaX / sliderWidth) * 9); // 9 = max - min
     
@@ -159,23 +166,27 @@ export default function TimeSignatureTool({}: TimeSignatureToolProps) {
     setBeatsPerBar(newBeats);
   }, [isDragging, dragStartX, dragStartBeats]);
 
-  // Handle mouse up
-  const handleMouseUp = useCallback(() => {
+  // Handle pointer up (mouse and touch)
+  const handlePointerUp = useCallback(() => {
     setIsDragging(false);
   }, []);
 
-  // Add global mouse event listeners
+  // Add global pointer event listeners (mouse and touch)
   useEffect(() => {
     if (isDragging) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('mousemove', handlePointerMove as EventListener);
+      document.addEventListener('mouseup', handlePointerUp);
+      document.addEventListener('touchmove', handlePointerMove as EventListener, { passive: false });
+      document.addEventListener('touchend', handlePointerUp);
       
       return () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
+        document.removeEventListener('mousemove', handlePointerMove as EventListener);
+        document.removeEventListener('mouseup', handlePointerUp);
+        document.removeEventListener('touchmove', handlePointerMove as EventListener);
+        document.removeEventListener('touchend', handlePointerUp);
       };
     }
-  }, [isDragging, handleMouseMove, handleMouseUp]);
+  }, [isDragging, handlePointerMove, handlePointerUp]);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -212,10 +223,10 @@ export default function TimeSignatureTool({}: TimeSignatureToolProps) {
         <p className="text-gray-400 text-sm">Drag to adjust beats per bar (1-10) and hear different time signatures</p>
       </CardHeader>
       <CardContent>
-        <div className="space-y-6">
+        <div className="space-y-6 overflow-x-hidden">
           
           {/* Slider Control */}
-          <div className="space-y-4">
+          <div className="space-y-4 w-full max-w-full">
             <div className="flex items-center justify-between text-sm text-gray-400">
               <span>1 beat</span>
               <span className="text-white font-bold">{beatsPerBar}/4 Time Signature</span>
@@ -225,8 +236,9 @@ export default function TimeSignatureTool({}: TimeSignatureToolProps) {
             {/* Custom Slider */}
             <div 
               ref={sliderRef}
-              className="relative h-8 bg-gray-700 rounded-full cursor-pointer"
-              onMouseDown={handleMouseDown}
+              className="relative h-8 bg-gray-700 rounded-full cursor-pointer touch-none"
+              onMouseDown={handlePointerDown}
+              onTouchStart={handlePointerDown}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-red-600 to-green-600 rounded-full opacity-30"></div>
               <div 

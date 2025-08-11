@@ -4,7 +4,7 @@ import TimeSignatureTool from "@/components/time-signature-tool";
 
 export default function Theory() {
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black overflow-x-hidden">
       <div className="max-w-6xl mx-auto px-2 sm:px-3 lg:px-4 py-8 sm:py-16">
         <div className="text-center mb-8 sm:mb-12">
           <h1 className="street-text font-bold text-3xl sm:text-4xl md:text-5xl mb-4">Theory</h1>
