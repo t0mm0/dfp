@@ -1,0 +1,302 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Drum, Music, Volume2, Zap } from "lucide-react";
+
+export default function Instruments() {
+  return (
+    <div className="min-h-screen bg-black">
+      <div className="max-w-6xl mx-auto px-2 sm:px-3 lg:px-4 py-8 sm:py-16">
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="street-text font-bold text-3xl sm:text-4xl md:text-5xl mb-4">Instruments</h1>
+          <p className="text-lg sm:text-xl text-gray-300">Master the tools of resistance rhythms</p>
+        </div>
+
+        {/* Samba Instruments Section */}
+        <section className="mb-12">
+          <h2 className="street-text text-2xl sm:text-3xl font-bold mb-8 text-red-500">Samba Instruments</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            {/* Surdo */}
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-xl">
+                  <Drum className="h-6 w-6 text-red-500" />
+                  Surdo
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <p className="text-gray-300 text-sm">
+                    <strong>Function:</strong> The heartbeat of the ensemble. Provides the foundational bass rhythm.
+                  </p>
+                  <p className="text-gray-300 text-sm">
+                    <strong>How to Play:</strong> Use a padded mallet. Strike the center for deep bass, edge for sharper tone. 
+                    Low Surdo plays on beat 1, High Surdo on beat 2.
+                  </p>
+                  <p className="text-yellow-400 text-sm">
+                    <strong>Protest Role:</strong> Anchors the crowd, gives power to chants
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Repinique */}
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-xl">
+                  <Volume2 className="h-6 w-6 text-red-500" />
+                  Repinique
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <p className="text-gray-300 text-sm">
+                    <strong>Function:</strong> High-pitched metal drum that cuts through noise. Often leads breaks and calls.
+                  </p>
+                  <p className="text-gray-300 text-sm">
+                    <strong>How to Play:</strong> Use one stick and one hand. Stick for sharp accents, hand for controlled tones.
+                    Can play rim shots for extra punch.
+                  </p>
+                  <p className="text-yellow-400 text-sm">
+                    <strong>Protest Role:</strong> Commands attention, signals crowd movements
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Snare */}
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-xl">
+                  <Zap className="h-6 w-6 text-red-500" />
+                  Snare Drum
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <p className="text-gray-300 text-sm">
+                    <strong>Function:</strong> Provides rhythmic complexity and drive. Essential for pattern variations.
+                  </p>
+                  <p className="text-gray-300 text-sm">
+                    <strong>How to Play:</strong> Use matched grip with drumsticks. Focus on clean, consistent strokes.
+                    Master basic rudiments for advanced patterns.
+                  </p>
+                  <p className="text-yellow-400 text-sm">
+                    <strong>Protest Role:</strong> Adds intensity, builds crowd energy
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Tamborim */}
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-xl">
+                  <Music className="h-6 w-6 text-red-500" />
+                  Tamborim
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <p className="text-gray-300 text-sm">
+                    <strong>Function:</strong> Small frame drum creating intricate patterns and flourishes.
+                  </p>
+                  <p className="text-gray-300 text-sm">
+                    <strong>How to Play:</strong> Hold with non-dominant hand, play with flexible plastic stick.
+                    Use wrist motion for rapid-fire patterns.
+                  </p>
+                  <p className="text-yellow-400 text-sm">
+                    <strong>Protest Role:</strong> Adds texture, maintains energy between chants
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Agogô */}
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-xl">
+                  <Volume2 className="h-6 w-6 text-red-500" />
+                  Agogô
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <p className="text-gray-300 text-sm">
+                    <strong>Function:</strong> Double cowbell providing melodic rhythm and tempo reference.
+                  </p>
+                  <p className="text-gray-300 text-sm">
+                    <strong>How to Play:</strong> Strike with wooden stick. High bell for accents, low bell for steady pulse.
+                    Creates interlocking patterns with other instruments.
+                  </p>
+                  <p className="text-yellow-400 text-sm">
+                    <strong>Protest Role:</strong> Maintains tempo, provides melodic element
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Shaker */}
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-xl">
+                  <Music className="h-6 w-6 text-red-500" />
+                  Shaker
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <p className="text-gray-300 text-sm">
+                    <strong>Function:</strong> Fills rhythmic space with continuous texture and drive.
+                  </p>
+                  <p className="text-gray-300 text-sm">
+                    <strong>How to Play:</strong> Shake in steady 16th note patterns. Vary intensity for dynamics.
+                    Can play accents on strong beats.
+                  </p>
+                  <p className="text-yellow-400 text-sm">
+                    <strong>Protest Role:</strong> Unifies the group, easy entry point for beginners
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        {/* Snare Rudiments Section */}
+        <section>
+          <h2 className="street-text text-2xl sm:text-3xl font-bold mb-8 text-red-500">Snare Rudiments</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="text-xl">Single Stroke Roll</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <p className="text-gray-300 text-sm">
+                    <strong>Pattern:</strong> R L R L R L R L (alternating hands)
+                  </p>
+                  <p className="text-gray-300 text-sm">
+                    <strong>Purpose:</strong> Foundation for all other rudiments. Builds hand coordination and even spacing.
+                  </p>
+                  <p className="text-yellow-400 text-sm">
+                    <strong>Protest Use:</strong> Creates sustained intensity during peak chant moments
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="text-xl">Double Stroke Roll</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <p className="text-gray-300 text-sm">
+                    <strong>Pattern:</strong> RR LL RR LL (two hits per hand)
+                  </p>
+                  <p className="text-gray-300 text-sm">
+                    <strong>Purpose:</strong> Develops wrist control and produces fuller sound. Essential for roll effects.
+                  </p>
+                  <p className="text-yellow-400 text-sm">
+                    <strong>Protest Use:</strong> Builds dramatic tension before call-and-response sections
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="text-xl">Paradiddle</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <p className="text-gray-300 text-sm">
+                    <strong>Pattern:</strong> R L R R, L R L L (accent on first stroke)
+                  </p>
+                  <p className="text-gray-300 text-sm">
+                    <strong>Purpose:</strong> Combines single and double strokes. Creates natural accent patterns.
+                  </p>
+                  <p className="text-yellow-400 text-sm">
+                    <strong>Protest Use:</strong> Matches natural speech patterns of Palestinian chants
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="text-xl">Flam</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <p className="text-gray-300 text-sm">
+                    <strong>Pattern:</strong> lR (grace note + main stroke, almost simultaneous)
+                  </p>
+                  <p className="text-gray-300 text-sm">
+                    <strong>Purpose:</strong> Creates fuller, more powerful accents. Adds color to basic patterns.
+                  </p>
+                  <p className="text-yellow-400 text-sm">
+                    <strong>Protest Use:</strong> Emphasizes key words in solidarity chants
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="text-xl">Drag (Ruff)</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <p className="text-gray-300 text-sm">
+                    <strong>Pattern:</strong> ll R (two grace notes + main stroke)
+                  </p>
+                  <p className="text-gray-300 text-sm">
+                    <strong>Purpose:</strong> Creates dramatic build-up effects. Adds textural variation.
+                  </p>
+                  <p className="text-yellow-400 text-sm">
+                    <strong>Protest Use:</strong> Signals important moments, transitions between sections
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="text-xl">Rim Shot</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <p className="text-gray-300 text-sm">
+                    <strong>Technique:</strong> Strike rim and head simultaneously for sharp crack
+                  </p>
+                  <p className="text-gray-300 text-sm">
+                    <strong>Purpose:</strong> Maximum volume and attention-getting power. Cuts through crowd noise.
+                  </p>
+                  <p className="text-yellow-400 text-sm">
+                    <strong>Protest Use:</strong> Demands attention, signals start/stop of demonstrations
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card className="bg-gray-900 border-red-500 mt-8">
+            <CardHeader>
+              <CardTitle className="text-red-400">Practice Tips for Protest Drumming</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3 text-gray-300 text-sm">
+                <p>• <strong>Start Slow:</strong> Master the motion before increasing speed</p>
+                <p>• <strong>Use a Metronome:</strong> Consistent timing is crucial for group synchronization</p>
+                <p>• <strong>Practice with Chants:</strong> Play along with Palestinian solidarity chants to develop musical connection</p>
+                <p>• <strong>Build Endurance:</strong> Protests can last hours - develop stamina gradually</p>
+                <p>• <strong>Listen and Adapt:</strong> Watch for conductor signals and crowd energy changes</p>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+      </div>
+    </div>
+  );
+}
