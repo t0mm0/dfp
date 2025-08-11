@@ -20,20 +20,47 @@ export default function Instruments() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-xl">
                   <Drum className="h-6 w-6 text-red-500" />
-                  Surdo
+                  Surdo (Bass Drums)
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
+                <div className="space-y-4">
                   <p className="text-gray-300 text-sm">
                     <strong>Function:</strong> The heartbeat of the ensemble. Provides the foundational bass rhythm that locks in the groove.
                   </p>
+                  
+                  <div className="space-y-3">
+                    <div className="bg-gray-900 p-3 rounded border border-gray-600">
+                      <p className="text-red-400 font-bold text-sm mb-1">Low Surdo (Primeira/1st)</p>
+                      <p className="text-gray-300 text-xs">
+                        Largest drum, deepest tone. Plays on beat 1 and 3, providing the main pulse. 
+                        Essential for keeping the whole group together.
+                      </p>
+                    </div>
+                    
+                    <div className="bg-gray-900 p-3 rounded border border-gray-600">
+                      <p className="text-yellow-400 font-bold text-sm mb-1">Medium Surdo (Segunda/2nd)</p>
+                      <p className="text-gray-300 text-xs">
+                        Mid-range tone. Plays on beats 2 and 4, creating the counter-rhythm. 
+                        Works with Low Surdo to create the fundamental samba groove.
+                      </p>
+                    </div>
+                    
+                    <div className="bg-gray-900 p-3 rounded border border-gray-600">
+                      <p className="text-blue-400 font-bold text-sm mb-1">High Surdo (Terceira/3rd)</p>
+                      <p className="text-gray-300 text-xs">
+                        Smallest surdo, brightest tone. Adds rhythmic variation and fills. 
+                        Often plays syncopated patterns that dance around the main beats.
+                      </p>
+                    </div>
+                  </div>
+
                   <p className="text-gray-300 text-sm">
                     <strong>How to Play:</strong> Use a padded mallet. Strike the center for deep bass, edge for sharper tone. 
-                    Low Surdo typically plays on beat 1, High Surdo on beat 2.
+                    Each surdo has its specific role in the rhythmic foundation.
                   </p>
                   <p className="text-yellow-400 text-sm">
-                    <strong>Drumming Role:</strong> Foundation that holds the rhythm section together
+                    <strong>Protest Role:</strong> Creates the powerful foundation that carries chants and unifies the crowd
                   </p>
                 </div>
               </CardContent>
