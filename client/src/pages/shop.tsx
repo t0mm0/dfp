@@ -14,6 +14,7 @@ interface OrderItem {
   color: string;
   size: string;
   logoType: string;
+  appliedMethod: string;
   quantity: number;
 }
 
@@ -22,13 +23,14 @@ export default function Shop() {
   const [customerEmail, setCustomerEmail] = useState("");
   const [customerNotes, setCustomerNotes] = useState("");
   const [items, setItems] = useState<OrderItem[]>([
-    { id: "1", itemName: "", color: "", size: "", logoType: "MD4P", quantity: 1 }
+    { id: "1", itemName: "", color: "", size: "", logoType: "MD4P", appliedMethod: "Not Applicable", quantity: 1 }
   ]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
   const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
   const logoTypes = ["MD4P", "LD4P", "YD4P", "BD4P"];
+  const appliedMethods = ["Embroidered", "Vinyl", "Not Applicable"];
 
   const addItem = () => {
     const newItem: OrderItem = {
@@ -37,6 +39,7 @@ export default function Shop() {
       color: "",
       size: "",
       logoType: "MD4P",
+      appliedMethod: "Not Applicable",
       quantity: 1
     };
     setItems([...items, newItem]);
@@ -57,32 +60,48 @@ export default function Shop() {
   const generateOrderEmail = () => {
     const itemsText = items.map((item, index) => 
       `Item ${index + 1}:
-- Product: ${item.itemName}
-- Color: ${item.color}
-- Size: ${item.size}
-- Logo Type: ${item.logoType}
-- Quantity: ${item.quantity}`
+   • Product: ${item.itemName}
+   • Color: ${item.color}
+   • Size: ${item.size}
+   • Logo Type: ${item.logoType}
+   • Applied Method: ${item.appliedMethod}
+   • Quantity: ${item.quantity}
+   
+   ────────────────────────────────────────────────────────`
     ).join('\n\n');
 
-    const emailBody = `New D4P Merchandise Order
+    const emailBody = `════════════════════════════════════════════════════════
+                    NEW D4P MERCHANDISE ORDER
+════════════════════════════════════════════════════════
 
-Customer Details:
-Name: ${customerName}
-Email: ${customerEmail}
+CUSTOMER DETAILS:
+────────────────────────────────────────────────────────
+• Name: ${customerName}
+• Email: ${customerEmail}
 
-Order Details:
+ORDER DETAILS:
+────────────────────────────────────────────────────────
 ${itemsText}
 
-${customerNotes.trim() ? `Customer Notes:
+${customerNotes.trim() ? `CUSTOMER NOTES:
+────────────────────────────────────────────────────────
 ${customerNotes}
 
-` : ''}Additional Information:
-- Please confirm total order cost and provide payment arrangement details
-- Customer understands personalised items are non-returnable/non-refundable
-- Estimated delivery: 2 weeks (shipping included)
-- For direct home shipping add £3.99 extra
+` : ''}IMPORTANT INFORMATION:
+────────────────────────────────────────────────────────
+• Please confirm total order cost and provide payment arrangement details
+• Customer understands personalised items are non-returnable/non-refundable
+• Estimated delivery: 2 weeks (shipping included)
+• For direct home shipping add £3.99 extra
 
-This order was submitted through the D4P website.`;
+PRICING NOTES:
+────────────────────────────────────────────────────────
+• Logo Colors: Black or White come free. Other colors cost £1 extra
+• Palestine Flag Design: Red/Black/White/Green is £1 extra
+• Direct Home Shipping: Add £3.99 for direct delivery
+
+This order was submitted through the D4P website.
+════════════════════════════════════════════════════════`;
 
     return emailBody;
   };
@@ -130,7 +149,7 @@ This order was submitted through the D4P website.`;
       setCustomerName("");
       setCustomerEmail("");
       setCustomerNotes("");
-      setItems([{ id: Date.now().toString(), itemName: "", color: "", size: "", logoType: "MD4P", quantity: 1 }]);
+      setItems([{ id: Date.now().toString(), itemName: "", color: "", size: "", logoType: "MD4P", appliedMethod: "Not Applicable", quantity: 1 }]);
       
     } catch (error) {
       toast({
@@ -333,7 +352,23 @@ This order was submitted through the D4P website.`;
                             </Select>
                           </div>
 
-                          <div className="md:col-span-2">
+                          <div>
+                            <Label className="text-gray-400 text-xs">Applied Method</Label>
+                            <Select value={item.appliedMethod} onValueChange={(value) => updateItem(item.id, 'appliedMethod', value)}>
+                              <SelectTrigger className="bg-gray-800 border-gray-600 text-white text-sm">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent className="bg-gray-800 border-gray-600">
+                                {appliedMethods.map((method) => (
+                                  <SelectItem key={method} value={method} className="text-white hover:bg-gray-700">
+                                    {method}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+
+                          <div>
                             <Label className="text-gray-400 text-xs">Quantity</Label>
                             <Input
                               type="number"
