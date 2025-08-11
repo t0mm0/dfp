@@ -186,16 +186,7 @@ This order was submitted through the D4P website.`;
               </iframe>
             </div>
             
-            <div className="text-center mt-4">
-              <a 
-                href="https://www.canva.com/design/DAGvtyIMrBI/t7xtrv9ft83JLD2FAbcpXw/view?utm_content=DAGvtyIMrBI&utm_campaign=designshare&utm_medium=embeds&utm_source=link" 
-                target="_blank" 
-                rel="noopener"
-                className="text-red-500 hover:text-red-400 underline text-lg font-semibold"
-              >
-                D4P Catalogue
-              </a>
-            </div>
+            
           </div>
 
           {/* Order Form */}
