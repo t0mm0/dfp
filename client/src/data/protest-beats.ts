@@ -225,7 +225,7 @@ export const protestBeats: ProtestBeat[] = [
     description: "Karla break pattern",
     fullDescription:
       "A break used in the Karla tune — main low surdo line only.",
-    pattern: "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   X               ",
+    pattern: "XXXXXXXXXXXXXXXXX    X    X    X  XX X XX XXXXXS",
     difficulty: "Medium",
     tempo: 120,
     imageUrl: "",
