@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, forwardRef, useImperativeHandle } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
@@ -9,11 +9,20 @@ import InstrumentToggle from "./instrument-toggle";
 import { useAudioEngine } from "@/lib/audio-engine";
 import type { Tune } from "@/data/tunes";
 
-interface BeatboxPlayerProps {
+interface ProtestBeatPlayerProps {
   tune: Tune;
+  autoPlay?: boolean;
+  onPlayStateChange?: (isPlaying: boolean) => void;
 }
 
-export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
+export interface ProtestBeatPlayerRef {
+  play: () => void;
+  pause: () => void;
+  stop: () => void;
+  isPlaying: boolean;
+}
+
+const ProtestBeatPlayer = forwardRef<ProtestBeatPlayerRef, ProtestBeatPlayerProps>(({ tune, autoPlay = false, onPlayStateChange }, ref) => {
   // Automatically select the first available pattern
   const firstPatternName = Object.keys(tune.patterns)[0] || "Tune";
   const [selectedPattern, setSelectedPattern] = useState(firstPatternName);
@@ -49,6 +58,28 @@ export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
     onStepChange: setCurrentStep
   });
 
+  // Auto-play when requested and audio is loaded
+  useEffect(() => {
+    if (autoPlay && isAudioLoaded && !isPlaying) {
+      play();
+    }
+  }, [autoPlay, isAudioLoaded, isPlaying, play]);
+
+  // Notify parent of play state changes
+  useEffect(() => {
+    if (onPlayStateChange) {
+      onPlayStateChange(isPlaying);
+    }
+  }, [isPlaying, onPlayStateChange]);
+
+  // Expose methods to parent via ref
+  useImperativeHandle(ref, () => ({
+    play,
+    pause,
+    stop,
+    isPlaying
+  }));
+
   const handleInstrumentToggle = useCallback((instrument: string, enabled: boolean) => {
     setInstrumentStates(prev => ({
       ...prev,
@@ -71,37 +102,19 @@ export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
     }
   };
 
-  const pattern = tune.patterns[selectedPattern];
-  if (!pattern) return null;
+  const currentPattern = tune.patterns[selectedPattern];
+  if (!currentPattern) {
+    return <div>Pattern not found</div>;
+  }
 
   return (
     <Card className="bg-gray-800 border-gray-700">
       <CardHeader>
-        <CardTitle className="street-text text-2xl">D4P Player</CardTitle>
+        <CardTitle className="text-2xl font-bold text-white">{tune.displayName || tune.name}</CardTitle>
+        {tune.description && <p className="text-gray-300">{tune.description}</p>}
       </CardHeader>
-      <CardContent className="space-y-6 px-2 sm:px-4">
-        {/* Pattern Selection */}
-        <div>
-          <h3 className="street-text font-semibold text-lg mb-3">Pattern</h3>
-          <Select value={selectedPattern} onValueChange={setSelectedPattern}>
-            <SelectTrigger className="w-full md:w-64 bg-black border-gray-600 text-white">
-              <SelectValue placeholder="Select a pattern" />
-            </SelectTrigger>
-            <SelectContent className="bg-gray-800 border-gray-600">
-              {Object.keys(tune.patterns).map((patternName) => (
-                <SelectItem 
-                  key={patternName} 
-                  value={patternName}
-                  className="text-white hover:bg-gray-700"
-                >
-                  {patternName}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Player Controls */}
+      <CardContent className="space-y-6">
+        {/* Controls */}
         <div>
           <h3 className="street-text font-semibold text-lg mb-3">Controls</h3>
           <div className="flex flex-wrap gap-4 items-center">
@@ -164,30 +177,38 @@ export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
 
         {/* Pattern Visualization */}
         <div>
-          <h3 className="street-text font-semibold text-lg mb-3">Pattern Visualisation</h3>
-          <PatternVisualizer
-            pattern={pattern}
+          <h3 className="street-text font-semibold text-lg mb-3">Pattern</h3>
+          {Object.keys(tune.patterns).length > 1 && (
+            <div className="mb-4">
+              <Select value={selectedPattern} onValueChange={setSelectedPattern}>
+                <SelectTrigger className="w-48 bg-gray-700 border-gray-600">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.keys(tune.patterns).map((patternName) => (
+                    <SelectItem key={patternName} value={patternName}>
+                      {patternName}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+          <PatternVisualizer 
+            pattern={currentPattern} 
             currentStep={currentStep}
             instrumentStates={instrumentStates}
           />
-          <div className="mt-4 text-sm text-gray-400">
-            <div className="mb-2">
-              Current Pattern: <span className="text-white font-semibold">{tune.displayName || tune.name} - {selectedPattern}</span>
-            </div>
-            {pattern.mnemonics?.ls && (
-              <div className="italic">"{pattern.mnemonics.ls}"</div>
-            )}
-          </div>
         </div>
 
-        {/* Instrument Toggles */}
+        {/* Instruments */}
         <div>
           <h3 className="street-text font-semibold text-lg mb-3">Instruments</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <InstrumentToggle
               instrument="ls"
               label="Low Surdo"
-              description="Bass drum"
+              description="Bass foundation"
               enabled={instrumentStates.ls.enabled}
               volume={instrumentStates.ls.volume}
               onToggle={handleInstrumentToggle}
@@ -196,7 +217,7 @@ export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
             <InstrumentToggle
               instrument="ms"
               label="Mid Surdo"
-              description="Mid drum"
+              description="Rhythmic anchor"
               enabled={instrumentStates.ms.enabled}
               volume={instrumentStates.ms.volume}
               onToggle={handleInstrumentToggle}
@@ -205,7 +226,7 @@ export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
             <InstrumentToggle
               instrument="hs"
               label="High Surdo"
-              description="High drum"
+              description="Melody rhythm"
               enabled={instrumentStates.hs.enabled}
               volume={instrumentStates.hs.volume}
               onToggle={handleInstrumentToggle}
@@ -213,8 +234,8 @@ export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
             />
             <InstrumentToggle
               instrument="re"
-              label="Repi"
-              description="Repinique"
+              label="Repinique"
+              description="Lead drum"
               enabled={instrumentStates.re.enabled}
               volume={instrumentStates.re.volume}
               onToggle={handleInstrumentToggle}
@@ -223,7 +244,7 @@ export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
             <InstrumentToggle
               instrument="sn"
               label="Snare"
-              description="Caixa"
+              description="Sharp accent"
               enabled={instrumentStates.sn.enabled}
               volume={instrumentStates.sn.volume}
               onToggle={handleInstrumentToggle}
@@ -232,7 +253,7 @@ export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
             <InstrumentToggle
               instrument="ta"
               label="Tamborim"
-              description="Tam"
+              description="High percussion"
               enabled={instrumentStates.ta.enabled}
               volume={instrumentStates.ta.volume}
               onToggle={handleInstrumentToggle}
@@ -241,7 +262,7 @@ export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
             <InstrumentToggle
               instrument="ag"
               label="Agogô"
-              description="Bell"
+              description="Cowbell melody"
               enabled={instrumentStates.ag.enabled}
               volume={instrumentStates.ag.volume}
               onToggle={handleInstrumentToggle}
@@ -261,4 +282,8 @@ export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
       </CardContent>
     </Card>
   );
-}
+});
+
+ProtestBeatPlayer.displayName = "ProtestBeatPlayer";
+
+export default ProtestBeatPlayer;

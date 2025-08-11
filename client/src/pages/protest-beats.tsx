@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import BeatboxPlayer from "@/components/beatbox-player";
+import ProtestBeatPlayer, { ProtestBeatPlayerRef } from "@/components/protest-beat-player";
 import { protestBeats } from "@/data/protest-beats";
 
 export default function ProtestBeats() {
   const [selectedBeat, setSelectedBeat] = useState(protestBeats[0]);
+  const [playingBeat, setPlayingBeat] = useState<string | null>(null);
+  const beatboxPlayerRef = useRef<ProtestBeatPlayerRef>(null);
   
   // Convert protest beat to tune format for the player
   const convertBeatToTune = (beat: any) => ({
@@ -31,6 +33,29 @@ export default function ProtestBeats() {
     }
   });
 
+  // Handle beat selection and play/pause
+  const handleBeatClick = (beat: any) => {
+    if (playingBeat === beat.id) {
+      // If this beat is playing, stop it
+      setPlayingBeat(null);
+      if (beatboxPlayerRef.current) {
+        beatboxPlayerRef.current.pause();
+      }
+    } else {
+      // If different beat or not playing, start this beat
+      setSelectedBeat(beat);
+      setPlayingBeat(beat.id);
+      // The autoPlay prop will trigger play when the component updates
+    }
+  };
+
+  // Stop playing when beat changes
+  useEffect(() => {
+    if (playingBeat && playingBeat !== selectedBeat.id) {
+      setPlayingBeat(null);
+    }
+  }, [selectedBeat.id, playingBeat]);
+
   return (
     <div className="min-h-screen bg-black overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-2 sm:px-3 lg:px-4 py-8 sm:py-16">
@@ -48,11 +73,13 @@ export default function ProtestBeats() {
                   key={beat.id}
                   variant={selectedBeat.id === beat.id ? "default" : "outline"}
                   className={`w-full p-3 sm:p-4 h-auto text-left justify-start text-sm sm:text-base ${
-                    selectedBeat.id === beat.id
+                    playingBeat === beat.id
+                      ? "bg-green-600 hover:bg-green-700 text-white animate-pulse"
+                      : selectedBeat.id === beat.id
                       ? "bg-red-600 hover:bg-red-700 text-white"
                       : "bg-gray-800 hover:bg-gray-700 text-gray-300 border-gray-600"
                   }`}
-                  onClick={() => setSelectedBeat(beat)}
+                  onClick={() => handleBeatClick(beat)}
                 >
                   <div className="flex flex-col items-start w-full">
                     <div className="font-semibold">{beat.name}</div>
@@ -142,7 +169,16 @@ export default function ProtestBeats() {
                 </div>
               </div>
 
-              <BeatboxPlayer tune={convertBeatToTune(selectedBeat)} />
+              <ProtestBeatPlayer 
+                ref={beatboxPlayerRef}
+                tune={convertBeatToTune(selectedBeat)} 
+                autoPlay={playingBeat === selectedBeat.id}
+                onPlayStateChange={(isPlaying) => {
+                  if (!isPlaying && playingBeat === selectedBeat.id) {
+                    setPlayingBeat(null);
+                  }
+                }}
+              />
             </div>
           </div>
         </div>

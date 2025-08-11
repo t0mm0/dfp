@@ -8,11 +8,13 @@ interface PatternVisualizerProps {
 
 export default function PatternVisualizer({ pattern, currentStep, instrumentStates }: PatternVisualizerProps) {
   const patternLength = useMemo(() => {
+    if (!pattern) return 16;
     const lengths = Object.values(pattern).map((p: any) => (typeof p === 'string' ? p.length : 0));
     return Math.max(...lengths, 16);
   }, [pattern]);
 
   const getStepState = (step: number) => {
+    if (!pattern) return false;
     let hasHit = false;
     Object.keys(instrumentStates).forEach(instrument => {
       if (instrumentStates[instrument].enabled && pattern[instrument]) {
