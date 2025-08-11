@@ -13,6 +13,7 @@ export default function TimeSignatureTool({}: TimeSignatureToolProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartX, setDragStartX] = useState(0);
   const [dragStartBeats, setDragStartBeats] = useState(4);
+  const [metronomeVolume, setMetronomeVolume] = useState(0.3);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const backgroundIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -53,6 +54,33 @@ export default function TimeSignatureTool({}: TimeSignatureToolProps) {
     oscillator.stop(audioContext.currentTime + 0.2);
   }, [initAudioContext]);
 
+  // Play metronome click (subtle background count)
+  const playMetronomeClick = useCallback((beatNumber: number) => {
+    if (metronomeVolume === 0) return;
+    
+    const audioContext = initAudioContext();
+    if (audioContext.state === 'suspended') {
+      audioContext.resume();
+    }
+    
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    // Different pitch for beat 1 vs others
+    oscillator.frequency.value = beatNumber === 0 ? 1200 : 600;
+    oscillator.type = 'square';
+    
+    gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+    gainNode.gain.linearRampToValueAtTime(metronomeVolume * 0.15, audioContext.currentTime + 0.005);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.05);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.05);
+  }, [initAudioContext, metronomeVolume]);
+
   // Start playing the pattern
   const startPlaying = useCallback(() => {
     if (intervalRef.current || backgroundIntervalRef.current) return;
@@ -84,8 +112,11 @@ export default function TimeSignatureTool({}: TimeSignatureToolProps) {
     backgroundIntervalRef.current = setInterval(() => {
       backgroundBeatCount = (backgroundBeatCount + 1) % 4;
       setCurrentBackgroundBeat(backgroundBeatCount);
+      
+      // Play metronome click for background count
+      playMetronomeClick(backgroundBeatCount);
     }, backgroundInterval);
-  }, [beatsPerBar, playBeep]);
+  }, [beatsPerBar, playBeep, playMetronomeClick]);
 
   // Stop playing
   const stopPlaying = useCallback(() => {
@@ -243,6 +274,26 @@ export default function TimeSignatureTool({}: TimeSignatureToolProps) {
             </div>
           </div>
 
+          {/* Volume Control */}
+          <div className="bg-gray-800 p-4 rounded border border-gray-600">
+            <div className="flex items-center gap-4">
+              <label className="text-sm text-gray-300 min-w-[120px]">Metronome Volume:</label>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.1"
+                value={metronomeVolume}
+                onChange={(e) => setMetronomeVolume(parseFloat(e.target.value))}
+                className="flex-1 h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer slider"
+              />
+              <span className="text-sm text-gray-400 min-w-[30px] text-right">
+                {Math.round(metronomeVolume * 100)}%
+              </span>
+            </div>
+            <p className="text-xs text-gray-500 mt-2">Background count to help hear how the time signatures fit together</p>
+          </div>
+
           {/* Controls */}
           <div className="flex gap-3 justify-center">
             <Button 
@@ -280,6 +331,7 @@ export default function TimeSignatureTool({}: TimeSignatureToolProps) {
           <div className="text-center text-gray-400 text-sm">
             <p>Red circle = strong beat (1), others = weaker beats</p>
             <p>Higher pitch = beat 1, lower pitch = other beats</p>
+            <p>Metronome clicks help you hear how the patterns line up</p>
           </div>
         </div>
       </CardContent>
