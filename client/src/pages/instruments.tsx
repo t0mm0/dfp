@@ -26,14 +26,14 @@ export default function Instruments() {
               <CardContent>
                 <div className="space-y-3">
                   <p className="text-gray-300 text-sm">
-                    <strong>Function:</strong> The heartbeat of the ensemble. Provides the foundational bass rhythm.
+                    <strong>Function:</strong> The heartbeat of the ensemble. Provides the foundational bass rhythm that locks in the groove.
                   </p>
                   <p className="text-gray-300 text-sm">
                     <strong>How to Play:</strong> Use a padded mallet. Strike the center for deep bass, edge for sharper tone. 
-                    Low Surdo plays on beat 1, High Surdo on beat 2.
+                    Low Surdo typically plays on beat 1, High Surdo on beat 2.
                   </p>
                   <p className="text-yellow-400 text-sm">
-                    <strong>Protest Role:</strong> Anchors the crowd, gives power to chants
+                    <strong>Drumming Role:</strong> Foundation that holds the rhythm section together
                   </p>
                 </div>
               </CardContent>
@@ -50,14 +50,14 @@ export default function Instruments() {
               <CardContent>
                 <div className="space-y-3">
                   <p className="text-gray-300 text-sm">
-                    <strong>Function:</strong> High-pitched metal drum that cuts through noise. Often leads breaks and calls.
+                    <strong>Function:</strong> High-pitched metal drum that cuts through the mix. Often leads breaks and calls in samba arrangements.
                   </p>
                   <p className="text-gray-300 text-sm">
                     <strong>How to Play:</strong> Use one stick and one hand. Stick for sharp accents, hand for controlled tones.
                     Can play rim shots for extra punch.
                   </p>
                   <p className="text-yellow-400 text-sm">
-                    <strong>Protest Role:</strong> Commands attention, signals crowd movements
+                    <strong>Drumming Role:</strong> Commands attention and signals rhythm changes
                   </p>
                 </div>
               </CardContent>
@@ -74,14 +74,14 @@ export default function Instruments() {
               <CardContent>
                 <div className="space-y-3">
                   <p className="text-gray-300 text-sm">
-                    <strong>Function:</strong> Provides rhythmic complexity and drive. Essential for pattern variations.
+                    <strong>Function:</strong> Provides rhythmic complexity and drive. Essential for pattern variations and fills.
                   </p>
                   <p className="text-gray-300 text-sm">
                     <strong>How to Play:</strong> Use matched grip with drumsticks. Focus on clean, consistent strokes.
                     Master basic rudiments for advanced patterns.
                   </p>
                   <p className="text-yellow-400 text-sm">
-                    <strong>Protest Role:</strong> Adds intensity, builds crowd energy
+                    <strong>Drumming Role:</strong> Adds rhythmic texture and dynamic intensity
                   </p>
                 </div>
               </CardContent>
@@ -105,7 +105,7 @@ export default function Instruments() {
                     Use wrist motion for rapid-fire patterns.
                   </p>
                   <p className="text-yellow-400 text-sm">
-                    <strong>Protest Role:</strong> Adds texture, maintains energy between chants
+                    <strong>Drumming Role:</strong> Adds texture and maintains rhythmic continuity
                   </p>
                 </div>
               </CardContent>
@@ -129,7 +129,7 @@ export default function Instruments() {
                     Creates interlocking patterns with other instruments.
                   </p>
                   <p className="text-yellow-400 text-sm">
-                    <strong>Protest Role:</strong> Maintains tempo, provides melodic element
+                    <strong>Drumming Role:</strong> Keeps tempo and provides melodic rhythm reference
                   </p>
                 </div>
               </CardContent>
@@ -153,7 +153,7 @@ export default function Instruments() {
                     Can play accents on strong beats.
                   </p>
                   <p className="text-yellow-400 text-sm">
-                    <strong>Protest Role:</strong> Unifies the group, easy entry point for beginners
+                    <strong>Drumming Role:</strong> Unifies the ensemble, accessible for beginners
                   </p>
                 </div>
               </CardContent>
@@ -179,7 +179,7 @@ export default function Instruments() {
                     <strong>Purpose:</strong> Foundation for all other rudiments. Builds hand coordination and even spacing.
                   </p>
                   <p className="text-yellow-400 text-sm">
-                    <strong>Protest Use:</strong> Creates sustained intensity during peak chant moments
+                    <strong>Application:</strong> Creates sustained intensity and smooth roll effects
                   </p>
                 </div>
               </CardContent>
@@ -198,7 +198,7 @@ export default function Instruments() {
                     <strong>Purpose:</strong> Develops wrist control and produces fuller sound. Essential for roll effects.
                   </p>
                   <p className="text-yellow-400 text-sm">
-                    <strong>Protest Use:</strong> Builds dramatic tension before call-and-response sections
+                    <strong>Application:</strong> Builds dramatic tension and creates fuller sound textures
                   </p>
                 </div>
               </CardContent>
@@ -217,7 +217,7 @@ export default function Instruments() {
                     <strong>Purpose:</strong> Combines single and double strokes. Creates natural accent patterns.
                   </p>
                   <p className="text-yellow-400 text-sm">
-                    <strong>Protest Use:</strong> Matches natural speech patterns of Palestinian chants
+                    <strong>Application:</strong> Matches natural speech patterns and creates dynamic accents
                   </p>
                 </div>
               </CardContent>
@@ -236,7 +236,7 @@ export default function Instruments() {
                     <strong>Purpose:</strong> Creates fuller, more powerful accents. Adds color to basic patterns.
                   </p>
                   <p className="text-yellow-400 text-sm">
-                    <strong>Protest Use:</strong> Emphasizes key words in solidarity chants
+                    <strong>Application:</strong> Emphasizes key accents and adds dynamic color
                   </p>
                 </div>
               </CardContent>
@@ -255,7 +255,7 @@ export default function Instruments() {
                     <strong>Purpose:</strong> Creates dramatic build-up effects. Adds textural variation.
                   </p>
                   <p className="text-yellow-400 text-sm">
-                    <strong>Protest Use:</strong> Signals important moments, transitions between sections
+                    <strong>Application:</strong> Signals important moments and section transitions
                   </p>
                 </div>
               </CardContent>
@@ -274,7 +274,7 @@ export default function Instruments() {
                     <strong>Purpose:</strong> Maximum volume and attention-getting power. Cuts through crowd noise.
                   </p>
                   <p className="text-yellow-400 text-sm">
-                    <strong>Protest Use:</strong> Demands attention, signals start/stop of demonstrations
+                    <strong>Application:</strong> Maximum volume and attention-getting power
                   </p>
                 </div>
               </CardContent>
@@ -283,15 +283,15 @@ export default function Instruments() {
 
           <Card className="bg-gray-900 border-red-500 mt-8">
             <CardHeader>
-              <CardTitle className="text-red-400">Practice Tips for Protest Drumming</CardTitle>
+              <CardTitle className="text-red-400">Practice Tips for Ensemble Drumming</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3 text-gray-300 text-sm">
                 <p>• <strong>Start Slow:</strong> Master the motion before increasing speed</p>
                 <p>• <strong>Use a Metronome:</strong> Consistent timing is crucial for group synchronization</p>
-                <p>• <strong>Practice with Chants:</strong> Play along with Palestinian solidarity chants to develop musical connection</p>
-                <p>• <strong>Build Endurance:</strong> Protests can last hours - develop stamina gradually</p>
-                <p>• <strong>Listen and Adapt:</strong> Watch for conductor signals and crowd energy changes</p>
+                <p>• <strong>Practice with Others:</strong> Develop listening skills and ensemble awareness</p>
+                <p>• <strong>Build Endurance:</strong> Long sessions require stamina - develop gradually</p>
+                <p>• <strong>Listen and Adapt:</strong> Watch for conductor signals and dynamic changes</p>
               </div>
             </CardContent>
           </Card>

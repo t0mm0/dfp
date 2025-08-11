@@ -1,0 +1,244 @@
+import { useState, useRef, useCallback, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Play, Pause, RotateCcw } from "lucide-react";
+
+interface TimeSignatureToolProps {}
+
+export default function TimeSignatureTool({}: TimeSignatureToolProps) {
+  const [beatsPerBar, setBeatsPerBar] = useState(4);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentBeat, setCurrentBeat] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStartX, setDragStartX] = useState(0);
+  const [dragStartBeats, setDragStartBeats] = useState(4);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  
+  const sliderRef = useRef<HTMLDivElement>(null);
+
+  // Initialize AudioContext on first user interaction
+  const initAudioContext = useCallback(() => {
+    if (!audioContextRef.current) {
+      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+    }
+    return audioContextRef.current;
+  }, []);
+
+  // Play a beep sound
+  const playBeep = useCallback((isAccent: boolean = false) => {
+    const audioContext = initAudioContext();
+    if (audioContext.state === 'suspended') {
+      audioContext.resume();
+    }
+
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    // Different frequencies for accent vs normal beats
+    oscillator.frequency.setValueAtTime(isAccent ? 800 : 400, audioContext.currentTime);
+    oscillator.type = 'sine';
+    
+    // Volume and envelope
+    gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+    gainNode.gain.linearRampToValueAtTime(isAccent ? 0.15 : 0.1, audioContext.currentTime + 0.01);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.2);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.2);
+  }, [initAudioContext]);
+
+  // Start playing the pattern
+  const startPlaying = useCallback(() => {
+    if (intervalRef.current) return;
+    
+    setIsPlaying(true);
+    setCurrentBeat(0);
+    
+    // Play first beat immediately (accent)
+    playBeep(true);
+    
+    let beatCount = 0;
+    intervalRef.current = setInterval(() => {
+      beatCount = (beatCount + 1) % beatsPerBar;
+      setCurrentBeat(beatCount);
+      
+      // Beat 1 is accented, others are not
+      playBeep(beatCount === 0);
+    }, 500); // 120 BPM (500ms per beat)
+  }, [beatsPerBar, playBeep]);
+
+  // Stop playing
+  const stopPlaying = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    setIsPlaying(false);
+    setCurrentBeat(0);
+  }, []);
+
+  // Reset to 4/4
+  const reset = useCallback(() => {
+    stopPlaying();
+    setBeatsPerBar(4);
+  }, [stopPlaying]);
+
+  // Handle mouse down on slider
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    setIsDragging(true);
+    setDragStartX(e.clientX);
+    setDragStartBeats(beatsPerBar);
+    stopPlaying(); // Stop playback when starting drag
+  }, [beatsPerBar, stopPlaying]);
+
+  // Handle drag
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!isDragging || !sliderRef.current) return;
+    
+    const deltaX = e.clientX - dragStartX;
+    const sliderWidth = sliderRef.current.offsetWidth - 40; // Account for thumb width
+    const deltaBeats = Math.round((deltaX / sliderWidth) * 9); // 9 = max - min
+    
+    const newBeats = Math.max(1, Math.min(10, dragStartBeats + deltaBeats));
+    setBeatsPerBar(newBeats);
+  }, [isDragging, dragStartX, dragStartBeats]);
+
+  // Handle mouse up
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  // Add global mouse event listeners
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+    }
+  }, [isDragging, handleMouseMove, handleMouseUp]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      stopPlaying();
+      if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
+        audioContextRef.current.close();
+      }
+    };
+  }, [stopPlaying]);
+
+  // Generate beat circles for visualization
+  const beatCircles = Array.from({ length: beatsPerBar }, (_, i) => (
+    <div
+      key={i}
+      className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-lg transition-all duration-150 ${
+        currentBeat === i && isPlaying
+          ? i === 0 
+            ? 'bg-red-500 shadow-lg shadow-red-500/50 scale-110' 
+            : 'bg-green-500 shadow-lg shadow-green-500/50 scale-110'
+          : i === 0
+          ? 'bg-red-600/70'
+          : 'bg-gray-600'
+      }`}
+    >
+      {i + 1}
+    </div>
+  ));
+
+  return (
+    <Card className="bg-gray-800 border-gray-700 mt-8">
+      <CardHeader>
+        <CardTitle className="text-xl text-red-400">Interactive Time Signature Tool</CardTitle>
+        <p className="text-gray-400 text-sm">Drag to adjust beats per bar (1-10) and hear different time signatures</p>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-6">
+          
+          {/* Slider Control */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between text-sm text-gray-400">
+              <span>1 beat</span>
+              <span className="text-white font-bold">{beatsPerBar}/4 Time Signature</span>
+              <span>10 beats</span>
+            </div>
+            
+            {/* Custom Slider */}
+            <div 
+              ref={sliderRef}
+              className="relative h-8 bg-gray-700 rounded-full cursor-pointer"
+              onMouseDown={handleMouseDown}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-red-600 to-green-600 rounded-full opacity-30"></div>
+              <div 
+                className={`absolute top-1 w-6 h-6 bg-red-500 rounded-full shadow-lg transition-all duration-150 ${
+                  isDragging ? 'scale-110' : ''
+                }`}
+                style={{
+                  left: `${((beatsPerBar - 1) / 9) * (100 - 6)}%`,
+                  cursor: isDragging ? 'grabbing' : 'grab'
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Beat Visualization */}
+          <div className="bg-black p-6 rounded-lg border border-gray-600">
+            <div className="flex flex-wrap gap-2 sm:gap-4 justify-center items-center min-h-[60px] sm:min-h-[80px]">
+              {beatCircles}
+            </div>
+            <div className="text-center mt-4 text-gray-400 text-sm">
+              {isPlaying ? `Playing ${beatsPerBar}/4 time...` : `${beatsPerBar}/4 time signature`}
+            </div>
+          </div>
+
+          {/* Controls */}
+          <div className="flex gap-3 justify-center">
+            <Button 
+              onClick={isPlaying ? stopPlaying : startPlaying}
+              className={`${
+                isPlaying 
+                  ? 'bg-red-600 hover:bg-red-700' 
+                  : 'bg-green-600 hover:bg-green-700'
+              } text-white`}
+            >
+              {isPlaying ? (
+                <>
+                  <Pause className="h-4 w-4 mr-2" />
+                  Stop
+                </>
+              ) : (
+                <>
+                  <Play className="h-4 w-4 mr-2" />
+                  Play 4 Bars
+                </>
+              )}
+            </Button>
+            
+            <Button 
+              onClick={reset}
+              variant="outline" 
+              className="border-gray-600 hover:bg-gray-700"
+            >
+              <RotateCcw className="h-4 w-4 mr-2" />
+              Reset to 4/4
+            </Button>
+          </div>
+
+          {/* Information */}
+          <div className="text-center text-gray-400 text-sm">
+            <p>Red circle = strong beat (1), others = weaker beats</p>
+            <p>Higher pitch = beat 1, lower pitch = other beats</p>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
