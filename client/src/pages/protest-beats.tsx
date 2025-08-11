@@ -8,6 +8,7 @@ export default function ProtestBeats() {
   const [selectedBeat, setSelectedBeat] = useState(protestBeats[0]);
   const [playingBeat, setPlayingBeat] = useState<string | null>(null);
   const beatboxPlayerRef = useRef<ProtestBeatPlayerRef>(null);
+  const playerSectionRef = useRef<HTMLDivElement>(null);
   
   // Convert protest beat to tune format for the player
   const convertBeatToTune = (beat: any) => ({
@@ -46,6 +47,16 @@ export default function ProtestBeats() {
       setSelectedBeat(beat);
       setPlayingBeat(beat.id);
       // The autoPlay prop will trigger play when the component updates
+      
+      // Auto-scroll to player section after a brief delay to allow state update
+      setTimeout(() => {
+        if (playerSectionRef.current) {
+          playerSectionRef.current.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+          });
+        }
+      }, 100);
     }
   };
 
@@ -105,7 +116,7 @@ export default function ProtestBeats() {
             </div>
           </div>
 
-          <div className="md:col-span-2">
+          <div className="md:col-span-2" ref={playerSectionRef}>
             <div className="bg-gray-800 border border-gray-700 rounded-xl p-3 sm:p-6">
               <div className="mb-4 sm:mb-6">
                 <h2 className="street-text text-2xl sm:text-3xl font-bold mb-2">{selectedBeat.name}</h2>
