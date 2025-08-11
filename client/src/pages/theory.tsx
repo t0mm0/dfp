@@ -278,7 +278,7 @@ export default function Theory() {
                         </div>
                         <div className="text-center">
                           <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center text-white font-bold mb-2">4</div>
-                          <p className="text-green-400 font-bold">TO THE SEA</p>
+                          <p className="text-green-400 font-bold">TO</p>
                         </div>
                       </div>
                     </div>
@@ -288,20 +288,20 @@ export default function Theory() {
                       <p className="text-center text-white mb-2">Bar 2</p>
                       <div className="flex justify-center items-center gap-8">
                         <div className="text-center">
-                          <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center text-white font-bold mb-2">1</div>
-                          <p className="text-red-400 font-bold">PAL-</p>
+                          <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold mb-2">1</div>
+                          <p className="text-blue-400 font-bold">THE</p>
                         </div>
                         <div className="text-center">
-                          <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center text-white font-bold mb-2">2</div>
-                          <p className="text-red-400 font-bold">-ES-TINE</p>
+                          <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold mb-2">2</div>
+                          <p className="text-blue-400 font-bold">SEA</p>
                         </div>
                         <div className="text-center">
-                          <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-black font-bold mb-2">3</div>
-                          <p className="text-white font-bold">WILL</p>
+                          <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center text-white font-bold mb-2">3</div>
+                          <p className="text-red-400 font-bold">PAL-ES-TINE</p>
                         </div>
                         <div className="text-center">
                           <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-black font-bold mb-2">4</div>
-                          <p className="text-white font-bold">BE FREE</p>
+                          <p className="text-white font-bold">WILL BE FREE</p>
                         </div>
                       </div>
                     </div>
