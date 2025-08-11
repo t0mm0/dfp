@@ -9,10 +9,12 @@ export default function TimeSignatureTool({}: TimeSignatureToolProps) {
   const [beatsPerBar, setBeatsPerBar] = useState(4);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentBeat, setCurrentBeat] = useState(0);
+  const [currentBackgroundBeat, setCurrentBackgroundBeat] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartX, setDragStartX] = useState(0);
   const [dragStartBeats, setDragStartBeats] = useState(4);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const backgroundIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -53,22 +55,36 @@ export default function TimeSignatureTool({}: TimeSignatureToolProps) {
 
   // Start playing the pattern
   const startPlaying = useCallback(() => {
-    if (intervalRef.current) return;
+    if (intervalRef.current || backgroundIntervalRef.current) return;
     
     setIsPlaying(true);
     setCurrentBeat(0);
+    setCurrentBackgroundBeat(0);
     
     // Play first beat immediately (accent)
     playBeep(true);
     
     let beatCount = 0;
+    let backgroundBeatCount = 0;
+    
+    // Fixed bar duration (2 seconds) divided by beats per bar for tempo
+    const beatInterval = 2000 / beatsPerBar; // Same time per bar regardless of beat count
+    const backgroundInterval = 500; // Background always at 120 BPM (4/4)
+    
+    // Main pattern interval (variable speed)
     intervalRef.current = setInterval(() => {
       beatCount = (beatCount + 1) % beatsPerBar;
       setCurrentBeat(beatCount);
       
       // Beat 1 is accented, others are not
       playBeep(beatCount === 0);
-    }, 500); // 120 BPM (500ms per beat)
+    }, beatInterval);
+    
+    // Background 4/4 reference (constant speed)
+    backgroundIntervalRef.current = setInterval(() => {
+      backgroundBeatCount = (backgroundBeatCount + 1) % 4;
+      setCurrentBackgroundBeat(backgroundBeatCount);
+    }, backgroundInterval);
   }, [beatsPerBar, playBeep]);
 
   // Stop playing
@@ -77,8 +93,13 @@ export default function TimeSignatureTool({}: TimeSignatureToolProps) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
+    if (backgroundIntervalRef.current) {
+      clearInterval(backgroundIntervalRef.current);
+      backgroundIntervalRef.current = null;
+    }
     setIsPlaying(false);
     setCurrentBeat(0);
+    setCurrentBackgroundBeat(0);
   }, []);
 
   // Reset to 4/4
@@ -191,11 +212,34 @@ export default function TimeSignatureTool({}: TimeSignatureToolProps) {
 
           {/* Beat Visualization */}
           <div className="bg-black p-6 rounded-lg border border-gray-600">
-            <div className="flex flex-wrap gap-2 sm:gap-4 justify-center items-center min-h-[60px] sm:min-h-[80px]">
-              {beatCircles}
+            {/* Background 4/4 Reference */}
+            <div className="mb-6 p-4 bg-gray-900 rounded border border-gray-700">
+              <p className="text-center text-gray-500 text-xs mb-3">Background 4/4 Reference (Constant Tempo)</p>
+              <div className="flex justify-center items-center gap-3">
+                {Array.from({ length: 4 }, (_, i) => (
+                  <div
+                    key={i}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs transition-all duration-100 ${
+                      currentBackgroundBeat === i && isPlaying
+                        ? 'bg-gray-500 text-white scale-105' 
+                        : 'bg-gray-700 text-gray-500'
+                    }`}
+                  >
+                    {i + 1}
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="text-center mt-4 text-gray-400 text-sm">
-              {isPlaying ? `Playing ${beatsPerBar}/4 time...` : `${beatsPerBar}/4 time signature`}
+            
+            {/* Main Pattern */}
+            <div>
+              <p className="text-center text-gray-400 text-sm mb-4">{beatsPerBar}/4 Time Signature</p>
+              <div className="flex flex-wrap gap-2 sm:gap-4 justify-center items-center min-h-[60px] sm:min-h-[80px]">
+                {beatCircles}
+              </div>
+              <div className="text-center mt-4 text-gray-400 text-sm">
+                {isPlaying ? `Playing ${beatsPerBar} beats over 2 seconds` : `${beatsPerBar} beats per bar`}
+              </div>
             </div>
           </div>
 
