@@ -245,7 +245,7 @@ export const protestBeats: ProtestBeat[] = [
     name: "Karla Clave",
     description: "Karla pattern combined with clave",
     fullDescription: "Low surdo line for the Karla Clave combination.",
-    pattern: "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  X  X   X X   ",
+    pattern: "XXXXXXXXXXXXXXXXX  X  X   X X   ",
     difficulty: "Medium",
     tempo: 120,
     imageUrl: "",
