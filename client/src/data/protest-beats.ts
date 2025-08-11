@@ -16,7 +16,7 @@ export const protestBeats: ProtestBeat[] = [
     description: "Single beat every count",
     fullDescription:
       "Basic foundation rhythm - single beat every count. Perfect for beginners and building unified rhythm.",
-    pattern: "X   X   X   X   ",
+    pattern: "X               ",
     difficulty: "Easy",
     tempo: 120,
     imageUrl: "",
@@ -27,7 +27,7 @@ export const protestBeats: ProtestBeat[] = [
     description: "Double beat on counts 1 and 3",
     fullDescription:
       "Double beat on counts 1 and 3. Builds foundation for more complex patterns.",
-    pattern: "X X X X X X X X ",
+    pattern: "X       X       ",
     difficulty: "Easy",
     tempo: 40,
     imageUrl: "",
@@ -38,18 +38,18 @@ export const protestBeats: ProtestBeat[] = [
     description: "Solid beats on counts 1-3 with tri-beat on count 4",
     fullDescription:
       "Solid beats on counts 1-3 with a tri-beat on count 4. Creates powerful momentum.",
-    pattern: "X   X   X   XXX ",
+    pattern: "X   X   X XXX   ",
     difficulty: "Medium",
     tempo: 110,
     imageUrl: "",
   },
   {
     id: "level-4",
-    name: "Level 4",
-    description: "Continuous hi-hat pulse on every count",
+    name: "Level 4", 
+    description: "Level 3 pattern with snare bursts",
     fullDescription:
-      "Continuous hi-hat pulse on every count. Maximum energy and drive.",
-    pattern: "XXXXXXXXXXXXXXXXX   X   X XXX   ",
+      "Same as Level 3 but snare plays 16 beats continuously followed by 16 silent beats. Creates intense rhythmic waves.",
+    pattern: "XXXXXXXXXXXXXXXX                ",
     difficulty: "Medium",
     tempo: 130,
     imageUrl: "",
