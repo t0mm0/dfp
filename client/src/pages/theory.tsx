@@ -175,14 +175,14 @@ export default function Theory() {
           </div>
         </section>
 
-        {/* Palestinian Chant Examples - Educational */}
+        {/* Protest Chant Examples - Educational */}
         <section>
-          <h2 className="street-text text-2xl sm:text-3xl font-bold mb-8 text-red-500">Common Palestinian Chants - Rhythm Analysis</h2>
+          <h2 className="street-text text-2xl sm:text-3xl font-bold mb-8 text-red-500">Common Protest Chants - Rhythm Analysis</h2>
           
           <div className="mb-6 bg-gray-900 border-red-500 border p-4 rounded">
             <p className="text-red-400 font-bold mb-2">Educational Purpose</p>
             <p className="text-gray-300 text-sm">
-              These examples show how Palestinian chants naturally fit into 4/4 time signatures. Understanding these rhythms helps drummers provide proper support without overpowering the voices.
+              These examples show how protest chants naturally fit into 4/4 time signatures. Understanding these rhythms helps drummers provide proper support without overpowering the voices.
             </p>
           </div>
           
@@ -258,102 +258,56 @@ export default function Theory() {
               <CardContent>
                 <div className="space-y-4">
                   <div className="bg-black p-6 rounded border border-gray-600">
-                    <p className="text-center text-gray-400 mb-4">Extended Pattern (4 bars)</p>
+                    <p className="text-center text-gray-400 mb-4">Two-Bar Pattern</p>
                     
                     {/* Bar 1 */}
-                    <div className="mb-4">
+                    <div className="mb-6">
                       <p className="text-center text-white mb-2">Bar 1</p>
-                      <div className="flex justify-center items-center gap-6">
+                      <div className="flex justify-center items-center gap-8 mb-2">
                         <div className="text-center">
-                          <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center text-white text-sm mb-1">1</div>
-                          <p className="text-green-400 text-xs">FROM</p>
+                          <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center text-white font-bold mb-2">1</div>
+                          <p className="text-green-400 font-bold">FROM</p>
                         </div>
                         <div className="text-center">
-                          <div className="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center text-white text-sm mb-1">2</div>
-                          <p className="text-gray-400 text-xs">THE</p>
+                          <div className="w-16 h-16 bg-gray-600 rounded-full flex items-center justify-center text-white font-bold mb-2">2</div>
+                          <p className="text-gray-400">THE</p>
                         </div>
                         <div className="text-center">
-                          <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center text-white text-sm mb-1">3</div>
-                          <p className="text-green-400 text-xs">RI-</p>
+                          <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center text-white font-bold mb-2">3</div>
+                          <p className="text-green-400 font-bold">RI-VER</p>
                         </div>
                         <div className="text-center">
-                          <div className="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center text-white text-sm mb-1">4</div>
-                          <p className="text-gray-400 text-xs">-VER</p>
+                          <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold mb-2">4</div>
+                          <p className="text-blue-400">TO</p>
                         </div>
                       </div>
                     </div>
 
                     {/* Bar 2 */}
-                    <div className="mb-4">
-                      <p className="text-center text-white mb-2">Bar 2</p>
-                      <div className="flex justify-center items-center gap-6">
-                        <div className="text-center">
-                          <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm mb-1">1</div>
-                          <p className="text-blue-400 text-xs">TO</p>
-                        </div>
-                        <div className="text-center">
-                          <div className="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center text-white text-sm mb-1">2</div>
-                          <p className="text-gray-400 text-xs">THE</p>
-                        </div>
-                        <div className="text-center">
-                          <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm mb-1">3</div>
-                          <p className="text-blue-400 text-xs">SEA</p>
-                        </div>
-                        <div className="text-center">
-                          <div className="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center text-white text-sm mb-1">4</div>
-                          <p className="text-gray-400 text-xs">(rest)</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Bar 3 */}
-                    <div className="mb-4">
-                      <p className="text-center text-white mb-2">Bar 3</p>
-                      <div className="flex justify-center items-center gap-6">
-                        <div className="text-center">
-                          <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white text-sm mb-1">1</div>
-                          <p className="text-red-400 text-xs">PAL-</p>
-                        </div>
-                        <div className="text-center">
-                          <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white text-sm mb-1">2</div>
-                          <p className="text-red-400 text-xs">-ES-</p>
-                        </div>
-                        <div className="text-center">
-                          <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white text-sm mb-1">3</div>
-                          <p className="text-red-400 text-xs">-TINE</p>
-                        </div>
-                        <div className="text-center">
-                          <div className="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center text-white text-sm mb-1">4</div>
-                          <p className="text-gray-400 text-xs">WILL</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Bar 4 */}
                     <div>
-                      <p className="text-center text-white mb-2">Bar 4</p>
-                      <div className="flex justify-center items-center gap-6">
+                      <p className="text-center text-white mb-2">Bar 2</p>
+                      <div className="flex justify-center items-center gap-8">
                         <div className="text-center">
-                          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black text-sm mb-1">1</div>
-                          <p className="text-white text-xs">BE</p>
+                          <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold mb-2">1</div>
+                          <p className="text-blue-400 font-bold">THE</p>
                         </div>
                         <div className="text-center">
-                          <div className="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center text-white text-sm mb-1">2</div>
-                          <p className="text-gray-400 text-xs">(rest)</p>
+                          <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center text-white font-bold mb-2">2</div>
+                          <p className="text-red-400 font-bold">SEA</p>
                         </div>
                         <div className="text-center">
-                          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black text-sm mb-1">3</div>
-                          <p className="text-white text-xs">FREE</p>
+                          <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-black font-bold mb-2">3</div>
+                          <p className="text-white font-bold">PAL-ES-</p>
                         </div>
                         <div className="text-center">
-                          <div className="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center text-white text-sm mb-1">4</div>
-                          <p className="text-gray-400 text-xs">(rest)</p>
+                          <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-black font-bold mb-2">4</div>
+                          <p className="text-white font-bold">-TINE FREE</p>
                         </div>
                       </div>
                     </div>
                   </div>
                   <p className="text-gray-300 text-sm">
-                    <strong>Complex Pattern:</strong> This longer chant shows how powerful messages can be structured across multiple bars while maintaining clear rhythmic anchors.
+                    <strong>Two-Bar Structure:</strong> This chant flows naturally over two bars, with strong emphasis on key words and natural pauses for drum support.
                   </p>
                 </div>
               </CardContent>
@@ -430,7 +384,7 @@ export default function Theory() {
                   <p><strong>Tempo Unity:</strong> Keep steady time to help the crowd stay together</p>
                   <p><strong>Strategic Silence:</strong> Know when to stop playing for maximum impact</p>
                   <p><strong>Call and Response:</strong> Create space for crowd participation</p>
-                  <p><strong>Cultural Respect:</strong> Honor Palestinian musical traditions</p>
+                  <p><strong>Cultural Respect:</strong> Honor the musical traditions of protest movements</p>
                   <p><strong>Inclusive Playing:</strong> Ensure everyone can follow and join in</p>
                 </div>
               </CardContent>
