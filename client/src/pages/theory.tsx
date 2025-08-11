@@ -7,7 +7,7 @@ export default function Theory() {
       <div className="max-w-6xl mx-auto px-2 sm:px-3 lg:px-4 py-8 sm:py-16">
         <div className="text-center mb-8 sm:mb-12">
           <h1 className="street-text font-bold text-3xl sm:text-4xl md:text-5xl mb-4">Theory</h1>
-          <p className="text-lg sm:text-xl text-gray-300">Understanding the rhythm of resistance</p>
+          <p className="text-lg sm:text-xl text-gray-300">Playing with the chants, not over them</p>
         </div>
 
         {/* Time Signature & Basic Theory */}
@@ -342,23 +342,23 @@ export default function Theory() {
 
         {/* Pattern Application */}
         <section>
-          <h2 className="street-text text-2xl sm:text-3xl font-bold mb-8 text-red-500">Applying Rhythms to Chants</h2>
+          <h2 className="street-text text-2xl sm:text-3xl font-bold mb-8 text-red-500">Supporting the Chants</h2>
           
           <div className="grid md:grid-cols-2 gap-6">
             <Card className="bg-gray-800 border-gray-700">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-xl">
                   <Target className="h-6 w-6 text-red-500" />
-                  Matching Drums to Voices
+                  Playing Around the Voices
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3 text-gray-300 text-sm">
-                  <p><strong>Surdo:</strong> Plays on strong beats (1 & 3) to anchor the chant</p>
-                  <p><strong>Snare:</strong> Emphasizes key words and syllables</p>
-                  <p><strong>Repinique:</strong> Signals transitions and builds energy</p>
-                  <p><strong>Shaker:</strong> Maintains constant energy between vocal lines</p>
-                  <p><strong>Agogô:</strong> Provides melodic counterpoint to vocal rhythm</p>
+                  <p><strong>Count with the Chant:</strong> Master the 4/4 timing to stay perfectly in sync</p>
+                  <p><strong>Find the Gaps:</strong> Play between vocal lines, not over them</p>
+                  <p><strong>Support, Don't Lead:</strong> Follow the crowd's energy and tempo</p>
+                  <p><strong>Listen First:</strong> Hear the natural rhythm before adding drums</p>
+                  <p><strong>Volume Awareness:</strong> Adjust dynamics to complement, never overpower</p>
                 </div>
               </CardContent>
             </Card>
@@ -367,16 +367,16 @@ export default function Theory() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-xl">
                   <Volume2 className="h-6 w-6 text-red-500" />
-                  Building Crowd Unity
+                  Building Solidarity Through Rhythm
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3 text-gray-300 text-sm">
-                  <p><strong>Start Simple:</strong> Begin with basic 4/4 patterns everyone can follow</p>
-                  <p><strong>Clear Signals:</strong> Use rim shots and breaks to coordinate crowd</p>
-                  <p><strong>Volume Dynamics:</strong> Build and release energy with the protest flow</p>
-                  <p><strong>Cultural Respect:</strong> Honor Palestinian musical traditions while supporting the movement</p>
-                  <p><strong>Accessibility:</strong> Ensure rhythms are learnable for all skill levels</p>
+                  <p><strong>Tempo Unity:</strong> Keep steady time to help the crowd stay together</p>
+                  <p><strong>Strategic Silence:</strong> Know when to stop playing for maximum impact</p>
+                  <p><strong>Call and Response:</strong> Create space for crowd participation</p>
+                  <p><strong>Cultural Respect:</strong> Honor Palestinian musical traditions</p>
+                  <p><strong>Inclusive Playing:</strong> Ensure everyone can follow and join in</p>
                 </div>
               </CardContent>
             </Card>
@@ -384,16 +384,16 @@ export default function Theory() {
 
           <Card className="bg-gray-900 border-red-500 mt-8">
             <CardHeader>
-              <CardTitle className="text-red-400">Key Principles for Protest Rhythms</CardTitle>
+              <CardTitle className="text-red-400">Key Principles: Supporting Not Drowning</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3 text-gray-300 text-sm">
-                <p>• <strong>Simplicity First:</strong> Complex rhythms can divide crowds - start with unifying basics</p>
-                <p>• <strong>Natural Speech Patterns:</strong> Palestinian chants follow spoken Arabic rhythms</p>
-                <p>• <strong>Cultural Authenticity:</strong> Research traditional Palestinian music for inspiration</p>
-                <p>• <strong>Collective Power:</strong> The goal is unity, not individual musical expression</p>
-                <p>• <strong>Adaptive Playing:</strong> Read the crowd energy and adjust accordingly</p>
-                <p>• <strong>Safety First:</strong> Maintain awareness of surroundings during demonstrations</p>
+                <p>• <strong>Count with the Crowd:</strong> Master 4/4 timing to play perfectly in sync with chants</p>
+                <p>• <strong>Listen Before Playing:</strong> Hear the natural rhythm of voices before adding drums</p>
+                <p>• <strong>Fill the Spaces:</strong> Play between vocal lines, during pauses, never over the words</p>
+                <p>• <strong>Support the Tempo:</strong> Help the crowd stay together without overpowering them</p>
+                <p>• <strong>Dynamic Awareness:</strong> Adjust volume and intensity to complement, not compete</p>
+                <p>• <strong>Unity First:</strong> Every beat should strengthen solidarity, not showcase individual skill</p>
               </div>
             </CardContent>
           </Card>

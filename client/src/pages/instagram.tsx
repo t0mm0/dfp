@@ -55,6 +55,12 @@ export default function InstagramPage() {
           <p className="text-xl text-gray-300">
             Connect with Drummers for Palestine groups across the UK
           </p>
+          <div className="mt-6 p-4 bg-gray-900 border border-red-500 rounded-lg">
+            <p className="text-white text-lg font-semibold mb-2">Want to Join a Local Group?</p>
+            <p className="text-gray-300">
+              Message the respective Instagram page for your region to connect with local drummers and find out about upcoming protests and training sessions.
+            </p>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">

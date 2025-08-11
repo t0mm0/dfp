@@ -12,11 +12,11 @@ export default function Navigation() {
     { path: "/", label: "Home" },
     { path: "/about", label: "About" },
     { path: "/instagram", label: "Regional Groups" },
+    { path: "/theory", label: "Theory" },
+    { path: "/instruments", label: "Instruments" },
     { path: "/protest-beats", label: "Protest Beats" },
     { path: "/tunes", label: "Tunes" },
     { path: "/experiment", label: "Create Your Own" },
-    { path: "/instruments", label: "Instruments" },
-    { path: "/theory", label: "Theory" },
     { path: "/shop", label: "Shop" },
   ];
 
