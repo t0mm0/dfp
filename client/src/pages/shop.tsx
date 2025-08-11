@@ -20,6 +20,7 @@ interface OrderItem {
 export default function Shop() {
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
+  const [customerNotes, setCustomerNotes] = useState("");
   const [items, setItems] = useState<OrderItem[]>([
     { id: "1", itemName: "", color: "", size: "", logoType: "MD4P", quantity: 1 }
   ]);
@@ -72,10 +73,12 @@ Email: ${customerEmail}
 Order Details:
 ${itemsText}
 
-Additional Notes:
-- Please confirm total order cost
+${customerNotes.trim() ? `Customer Notes:
+${customerNotes}
+
+` : ''}Additional Information:
+- Please confirm total order cost and provide payment arrangement details
 - Customer understands personalised items are non-returnable/non-refundable
-- Please provide payment details for D4P Nationwide account (Account: 01971654, Sort: 07 12 26)
 - Estimated delivery: 2 weeks (shipping included)
 - For direct home shipping add £3.99 extra
 
@@ -126,6 +129,7 @@ This order was submitted through the D4P website.`;
       // Reset form after successful submission
       setCustomerName("");
       setCustomerEmail("");
+      setCustomerNotes("");
       setItems([{ id: Date.now().toString(), itemName: "", color: "", size: "", logoType: "MD4P", quantity: 1 }]);
       
     } catch (error) {
@@ -204,7 +208,7 @@ This order was submitted through the D4P website.`;
                 </CardTitle>
                 <div className="text-sm text-gray-400">
                   <p className="mb-2">📧 Orders sent to: <span className="text-red-400">drummers4palestine@gmail.com</span></p>
-                  <p className="mb-2">🏦 Payment: D4P Nationwide Account 01971654, Sort Code: 07 12 26</p>
+                  <p className="mb-2">💳 Payment arrangement details will be sent once email received</p>
                   <p className="mb-2">📦 Delivery: ~2 weeks (shipping included)</p>
                   <p className="text-yellow-400">⚠️ Personalised items are non-returnable/non-refundable</p>
                 </div>
@@ -238,6 +242,16 @@ This order was submitted through the D4P website.`;
                         required
                       />
                     </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="customerNotes" className="text-gray-300">Notes (Optional)</Label>
+                    <Textarea
+                      id="customerNotes"
+                      value={customerNotes}
+                      onChange={(e) => setCustomerNotes(e.target.value)}
+                      className="bg-black border-gray-600 text-white min-h-[80px]"
+                      placeholder="Any specific requests or notes about your order..."
+                    />
                   </div>
                 </div>
 
