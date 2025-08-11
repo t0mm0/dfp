@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Play, Pause, OctagonMinus } from "lucide-react";
 import PatternVisualizer from "./pattern-visualizer";
 import InstrumentToggle from "./instrument-toggle";
+import AudioContextWarning from "./audio-context-warning";
 import { useAudioEngine } from "@/lib/audio-engine";
 import type { Tune } from "@/data/tunes";
 
@@ -75,11 +76,13 @@ export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
   if (!pattern) return null;
 
   return (
-    <Card className="bg-gray-800 border-gray-700">
-      <CardHeader>
-        <CardTitle className="street-text text-2xl">D4P Player</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6 px-2 sm:px-4">
+    <>
+      <AudioContextWarning />
+      <Card className="bg-gray-800 border-gray-700">
+        <CardHeader>
+          <CardTitle className="street-text text-2xl">D4P Player</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6 px-2 sm:px-4">
         {/* Pattern Selection */}
         <div>
           <h3 className="street-text font-semibold text-lg mb-3">Pattern</h3>
@@ -107,10 +110,9 @@ export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
           <div className="flex flex-wrap gap-4 items-center">
             <Button
               onClick={togglePlayPause}
-              disabled={!isAudioLoaded}
-              className="bg-red-600 hover:bg-red-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-red-600 hover:bg-red-700 text-white disabled:opacity-50 disabled:cursor-not-allowed min-w-[140px]"
             >
-              {!isAudioLoaded ? (
+              {!isAudioLoaded && isPlaying ? (
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                   Loading Audio...
@@ -260,5 +262,6 @@ export default function BeatboxPlayer({ tune }: BeatboxPlayerProps) {
         </div>
       </CardContent>
     </Card>
+    </>
   );
 }

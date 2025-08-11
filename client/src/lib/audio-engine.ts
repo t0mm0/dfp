@@ -30,22 +30,7 @@ export function useAudioEngine({
   const soundsRef = useRef<Record<string, AudioBuffer>>({});
   const audioLoadedRef = useRef<boolean>(false);
 
-  // Initialize audio context and preload samples
-  const initializeAudio = useCallback(async () => {
-    if (!audioContextRef.current) {
-      audioContextRef.current = new (window.AudioContext ||
-        (window as any).webkitAudioContext)();
-    }
 
-    if (audioContextRef.current.state === "suspended") {
-      await audioContextRef.current.resume();
-    }
-
-    // Load audio samples for the current tune
-    setIsAudioLoaded(false);
-    await loadAudioSamples();
-    setIsAudioLoaded(true);
-  }, [tune]);
 
   // Function to determine which audio files a tune actually needs
   const getRequiredAudioFiles = useCallback((tune: Tune) => {
@@ -290,6 +275,41 @@ export function useAudioEngine({
     soundsRef.current.hs_muted = audioBuffers.hs_58 || soundsRef.current.hs; // muted sound
   }, [tune, getRequiredAudioFiles, loadAudioFile]);
 
+  // Initialize audio context and preload samples (only on user interaction)
+  const initializeAudio = useCallback(async () => {
+    try {
+      if (!audioContextRef.current) {
+        // Create AudioContext only in response to user interaction
+        audioContextRef.current = new (window.AudioContext ||
+          (window as any).webkitAudioContext)();
+        
+        console.log('AudioContext created:', audioContextRef.current.state);
+      }
+
+      // Always try to resume AudioContext on user interaction
+      if (audioContextRef.current.state === "suspended") {
+        console.log('Resuming suspended AudioContext...');
+        await audioContextRef.current.resume();
+        console.log('AudioContext resumed:', audioContextRef.current.state);
+      }
+
+      // Only load audio if not already loaded or if context was suspended
+      if (!audioLoadedRef.current || audioContextRef.current.state !== "running") {
+        console.log('Loading audio samples...');
+        setIsAudioLoaded(false);
+        await loadAudioSamples();
+        audioLoadedRef.current = true;
+        setIsAudioLoaded(true);
+        console.log('Audio samples loaded successfully');
+      }
+    } catch (error) {
+      console.error('Failed to initialize audio:', error);
+      setIsAudioLoaded(false);
+      audioLoadedRef.current = false;
+      throw error;
+    }
+  }, [loadAudioSamples]);
+
   // Fallback synthetic sound creation
   const createFallbackSound = (
     frequency: number,
@@ -411,10 +431,17 @@ export function useAudioEngine({
 
   // Start playback
   const play = useCallback(async () => {
-    await initializeAudio();
-    // Only start playing if audio is loaded
-    if (isAudioLoaded) {
+    try {
+      console.log('Play button clicked - initializing audio...');
+      await initializeAudio();
+      console.log('Audio initialized, isAudioLoaded:', isAudioLoaded);
+      // Start playing after successful initialization
       setIsPlaying(true);
+    } catch (error) {
+      console.error('Failed to start playback:', error);
+      setIsAudioLoaded(false);
+      // Show user-friendly error message
+      alert('Unable to play audio. Please try again or check your browser settings.');
     }
   }, [initializeAudio, isAudioLoaded]);
 
@@ -463,10 +490,13 @@ export function useAudioEngine({
     onStepChange(0);
   }, [patternName, onStepChange]);
 
-  // Preload audio when tune changes
+  // Don't preload audio - only initialize on user interaction
+  // This prevents AudioContext creation before user gesture (required by Chrome/Safari)
   useEffect(() => {
-    initializeAudio();
-  }, [tune, initializeAudio]);
+    // Reset audio loaded state when tune changes
+    audioLoadedRef.current = false;
+    setIsAudioLoaded(false);
+  }, [tune]);
 
   // Cleanup
   useEffect(() => {

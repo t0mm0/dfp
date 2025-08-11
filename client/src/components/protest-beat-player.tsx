@@ -120,10 +120,9 @@ const ProtestBeatPlayer = forwardRef<ProtestBeatPlayerRef, ProtestBeatPlayerProp
           <div className="flex flex-wrap gap-4 items-center">
             <Button
               onClick={togglePlayPause}
-              disabled={!isAudioLoaded}
-              className="bg-red-600 hover:bg-red-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-red-600 hover:bg-red-700 text-white disabled:opacity-50 disabled:cursor-not-allowed min-w-[140px]"
             >
-              {!isAudioLoaded ? (
+              {!isAudioLoaded && isPlaying ? (
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                   Loading Audio...
