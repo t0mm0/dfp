@@ -16,7 +16,7 @@ export default function Home() {
                 Drummers For <span className="text-white">Palestine</span>
               </h1>
               <p className="text-xl md:text-2xl mb-8 text-gray-300">
-                Unite through music. Learn resistance rhythms. Amplify Palestinian solidarity through the power of percussive purpose.
+                Unite through drumming. Learn resistance rhythms. UK's national drumming movement for Palestine.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/tunes">
@@ -43,7 +43,7 @@ export default function Home() {
       <section className="py-16 bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="street-text font-bold text-3xl md:text-4xl mb-4">Power Through Music</h2>
+            <h2 className="street-text font-bold text-3xl md:text-4xl mb-4">Power Through Drumming</h2>
             <p className="text-xl text-gray-300">Professional-grade tools for creating resistance rhythms</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -79,7 +79,7 @@ export default function Home() {
             <Drum className="h-6 w-6 text-red-600" />
             <span className="street-text font-bold text-xl">Drummers For Palestine</span>
           </div>
-          <p className="text-gray-400 mb-4">Music unites us in the struggle for justice</p>
+          <p className="text-gray-400 mb-4">Drumming unites us in the struggle for justice</p>
           <p className="text-sm text-gray-400">
             &copy; 2024 Drummers For Palestine. Free Palestine 🇵🇸
           </p>
