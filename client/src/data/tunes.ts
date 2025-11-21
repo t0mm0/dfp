@@ -368,7 +368,7 @@ export const tunes: Tune[] = [
         loop: true,
         ls: "X         X  X  X         X     X         X  X  X         X     ",
         ms: "    X XXXX  X       X XXXX  X       X XXXX  X       X XXXX  X   ",
-        hs: "@ms",
+        hs: "    X XXXX  X       X XXXX  X       X XXXX  X       X XXXX  X   ",
         re: "    X  X X XX XX    X       X       X  X X XX XX    X       X   ",
         sn: "....X..X....X.......X..X....X   ....X..X....X...X.X.X.X.X.X.X.X.",
         ta: "    X     X X       X   X X X       X     X X       X   X X X   ",
@@ -792,14 +792,14 @@ export const tunes: Tune[] = [
     patterns: {
       Tune: {
         loop: true,
-        // ls: "XXXXXXXXX",
-        ms: "  X   X   XX XX",
-        // hs: "@ms",
+        ls: "XXXXXXXXX       ",
+        ms: "  X   X   XX XX ",
+        hs: "  X   X   XX XX ",
         re: "..X...X...X..XX.",
         sn: "..X...X...X...X.",
-        ta: "X   X   X  XX X",
+        ta: "X   X   X  XX X ",
         ag: "          oa ao ",
-        sh: "@sn",
+        sh: "..X...X...X...X.",
         mnemonics: {
           ls: "This beat? We've been pla-ying it for years",
           ms: "Hey wait, Where's this one from?",
