@@ -13,6 +13,7 @@ export default function Navigation() {
     { path: "/about", label: "About" },
     { path: "/instagram", label: "Regional Groups" },
     { path: "/theory", label: "Theory" },
+    { path: "/technique", label: "Technique" },
     { path: "/instruments", label: "Instruments" },
     { path: "/protest-beats", label: "Protest Beats" },
     { path: "/tunes", label: "Tunes" },

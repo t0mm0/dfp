@@ -5,6 +5,8 @@ server/public
 vite.config.ts.*
 *.tar.gz
 
+.vscode
+
 # replit junk
 .local
 .config
